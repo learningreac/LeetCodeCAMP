@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//CASE 1: reverse a string
+		//my solution
+		function reverseString(str) {
+		  let strArr = str.split('');
+		  strArr.reverse();  //this change the orginal string
+		  let revStr = strArr.join('') // toString() will has a comma here
+		  return revStr;
+		}
+
+		reverseString("hello");
+
+		//hint solution 1
+		function reverseString(str) {
+		  return str
+		    .split("")
+		    .reverse()
+		    .join("");
+		}
+
+		//hint solution 2
+		function reverseString(str) {
+		  for (var reversedStr = "", i = str.length - 1; i >= 0; i--) {
+		    reversedStr += str[i]; // str[i] you do not need to covert it to array 
+		  }
+		  return reversedStr;
+		}
+
+
+		// CASE 2: Factorialize a Number
+		//a factorial is the product of all positive integers less than or equal to n
+		//5! = 1 * 2 * 3 * 4 * 5 = 120
+		//MY solution recursion way
+		function factorialize(num) {
+  			if(num-1<=0){
+  				return 1
+  			} else {
+  				return num*factorialize(num-1);
+  			}
+		  
+		}
+
+		factorialize(5); //120
+
+		//product *= SOLUTION 1
+		function factorialize(num){
+			let product = 1; //product has a function scope
+			for(product; num >0;num--){
+				product*=num;
+				console.log(product);
+			}
+			return product; //if you define product within for, it will have a block scope
+		}
+
+		//SOLUTION 2
+		function factorialize(num) {
+		  if (num === 0) {
+		    return 1;
+		  }
+		  return num * factorialize(num - 1);
+		}
+
+		factorialize(5);
+
+		//SOLUTION 3
+		function factorialize(num, product = 1) {
+		  if (num == 0) {
+		    return product;
+		  } else {
+		    return factorialize(num - 1, product * num);
+		  }
+		}
+
+		//SOLUTION 4
+		function factorialize(num, factorial = 1) {
+		  return num < 0 ? 1 : (
+		    new Array(num)
+		      .fill(undefined)
+		      .reduce((product, val, index) => product * (index + 1), 1)
+		  );
+		}
+		factorialize(5);
+
+
+
+
+	</script>
+
+</body>
+</html>

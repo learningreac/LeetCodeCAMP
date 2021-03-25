@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>how to check the property of object</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function checkObj(obj, checkProp) {
+		// Only change code below this line
+			let val = obj[checkProp];
+			if (val===undefined)
+				return 'Not Found'
+			else
+				return val;
+			//上面调了1次 下面调了2次
+			if(obj.hasOwnProperty(checkProp)){
+			    	return obj[checkProp];
+				} else {
+			    	return "Not Found"
+			}
+		  
+		  // Only change code above this line
+		}
+
+		console.log(checkObj({gift: "pony", pet: "kitten", bed: "sleigh"}, "gift"))
+
+	</script>
+
+</body>
+</html>

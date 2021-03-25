@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Smallest Common Multiple
+		function smallestCommons(arr) {
+
+		  var max = Math.max(arr[0], arr[1]);
+		  var min = Math.min(arr[0], arr[1]);
+		  var mltple = max;
+
+		  for(var i = max; i >= min; i--){
+		    if(mltple % i !== 0){
+		      mltple += max; 
+		      i = max;
+		    } 
+		  }
+
+		  return mltple;  
+		}
+
+
+		//------------Drop it
+		//dropElements([1, 2, 3, 4], function(n) {return n >= 3;}) should return [3, 4]
+		//dropElements([1, 2, 3, 9, 2], function(n) {return n > 2;}) should return [3, 9, 2]
+		//dropElements([1, 2, 3, 4], function(n) {return n > 5;}) should return []
+		function dropElements(arr, func) {
+		  //return arr.filter(num=>func(num)==true);
+
+		  for(let i=0;i<arr.length;i++){
+		  	if(func(arr[i])){
+		  		return arr.slice(i);
+		  	}
+		  }
+		  return [];
+		}
+
+		dropElements([1, 2, 3], function(n) {return n < 3; });
+
+
+		//-----
+		function dropElements2(arr, func) {
+		  // drop them elements.
+		  var times = arr.length;
+		  for (var i = 0; i < times; i++) {
+		    if (func(arr[0])) {
+		      break;
+		    } else {
+		      arr.shift();
+		    }
+		  }
+		  return arr;
+		}
+
+
+		//-----------
+		function dropElements3(arr, func) {
+		  return arr.slice(arr.findIndex(func) >= 0 ? arr.findIndex(func) : arr.length);
+		}
+
+
+		//-----------	
+		function dropElements(arr, func) {
+		  while (arr.length > 0 && !func(arr[0])) {
+		    arr.shift();
+		  }
+		  return arr;
+		}
+
+
+		//------------------
+		function dropElements(arr, func, i = 0) {
+		  return i < arr.length && !func(arr[i])
+		    ? (dropElements(arr.slice(i + 1), func, i))
+		    : arr;
+		}
+
+
+
+		//CHALLENGE Steamroller
+		//Flatten a nested array. You must account for varying levels of nesting.
+		//steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4]
+		//steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4]
+		//Array.prototype.flat() or Array.prototype.flatMap() methods
+		
+		function steamrollArray(arr) {
+		  let flat = [].concat(...arr);
+		  return flat.some(Array.isArray) ? steamrollArray(flat) : flat;
+		}
+
+
+		//------------------------
+		function steamrollArray2(val,flatArr=[]) {
+		  val.forEach(item => {
+		    if (Array.isArray(item)) steamrollArray(item, flatArr);
+		    else flatArr.push(item);
+		  });
+		  return flatArr;
+		}
+
+		//--------------
+		function steamrollArray3(arr, flatArr = []) {
+		  const elem = arr.pop();
+		  return elem
+		    ? !Array.isArray(elem)
+		      ? steamrollArray(arr, [elem, ...flatArr])
+		      : steamrollArray(arr.concat(elem), flatArr)
+		    : flatArr;
+		}
+
+
+		//CHALLENGE Binary Agents
+		//Return an English translated sentence of the passed binary string.
+		//binaryAgent("01001001 00100000 01101100 01101111 01110110 01100101 00100000 01000110 01110010 01100101 01100101 01000011 01101111 01100100 01100101 01000011 01100001 01101101 01110000 00100001") should return "I love FreeCodeCamp!"
+		//You should first convert from binary to decimal before translating those values into characters
+		
+
+		function binaryAgent(str) {
+
+			let newBin = str.split(" ");
+			let binCode = [];
+
+			for (i = 0; i < newBin.length; i++) {
+			    binCode.push(String.fromCharCode(parseInt(newBin[i], 2)));
+			    //console.log(binCode);
+			  }
+			return binCode.join("");
+		}
+
+		function binaryAgent2(str) {
+			let binString = '';
+
+			str.split(' ').map(function(bin) {
+		    binString += String.fromCharCode(parseInt(bin, 2));
+		  });
+			return binString;
+		}
+
+		binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111");
+
+
+		//Everything Be True
+		//Check if the predicate (second argument) is truthy on all elements of a collection (first argument)
+		//All values are truthy unless they are defined as falsy 89 (i.e. except for false , 0 , "" , null , undefined and NaN ).
+		function truthCheck(collection, pre) {
+			return collection.every(item => !!item[pre] === true)
+		}
+
+		truthCheck([{"user": "Tinky-Winky", "sex": "male"}, {"user": "Dipsy", "sex": "male"}, {"user": "Laa-Laa", "sex": "female"}, {"user": "Po", "sex": "female"}], "sex");
+
+		//-------------------
+		function truthCheck2(collection, pre) {
+		  return collection.every(function(element) {
+		    return element.hasOwnProperty(pre) && Boolean(element[pre]);
+		  });
+		}
+
+		//-----------------------------
+		function truthCheck3(collection, pre) {
+		  // Is everyone being true?
+		  return collection.every(obj => obj[pre]);
+		}
+
+
+		//CHALLENGE Arguments Optional
+		//Create a function that sums two arguments together. 
+		//If only one argument is provided, then return a function that expects one argument and returns the sum.
+
+		//jshint esversion: 6
+		function addTogether() {
+		  let args = Array.from(arguments);
+		  return args.some(n => typeof n !== "number")
+		    ? undefined
+		    : args.length > 1
+		    ? args.reduce((acc, n) => (acc += n), 0)
+		    : n => (typeof n === "number" ? n + args[0] : undefined);
+		}
+
+		// test here
+		addTogether(2, 3); 
+		addTogether(2); //==>   n => (typeof n === "number" ? n + args[0] : undefined)
+
+
+		//another solution 
+		function addTogether2(first, second) {
+		  if (typeof first !== "number") {
+		    return undefined;
+		  }
+		  const sum = second =>
+		    typeof second === "number" ? first + second : undefined;
+		  return typeof second === "undefined" ? second => sum(second) : sum(second);
+		}
+		// test here
+		addTogether2(2, 3);
+		addTogether2(2); //==> second => sum(second)
+
+
+		///combined solution
+
+		function addTogether3(){
+			const checkNum = function(num) {
+			    if (typeof num !== "number") {
+			      return undefined;
+			    } else return num;
+			};
+
+			// Check if we have two parameters, check if they are numbers
+			  // handle the case where one is not
+			  // returns the addition.
+			  if (arguments.length > 1) {
+			    var a = checkNum(arguments[0]);
+			    var b = checkNum(arguments[1]);
+			    if (a === undefined || b === undefined) {
+			      return undefined;
+			    } else {
+			      return a + b;
+			    }
+			  } else {
+			    // If only one parameter was found, returns a new function that expects two
+			    // Store first argument before entering the new function scope
+			    var c = arguments[0];
+
+			    // Check the number again, must be outside the function to about returning an object
+			    // instead of undefined.
+			    if (checkNum(c)) {
+			      // Return function that expect a second argument.
+			      return function(arg2) {
+			        // Check for non-numbers
+			        if (c === undefined || checkNum(arg2) === undefined) {
+			          return undefined;
+			        } else {
+			          // if numbers then add them.
+			          return c + arg2;
+			        }
+			      };
+			    }
+			  }
+			}
+
+
+
+			
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
+	<p>输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]</p>
+	<p>输出：[1,2,3,6,9,8,7,4,5]</p>
+
+	<script type="text/javascript">
+		let mytrix =  [[1,2,3],
+					   [4,5,6],
+					   [7,8,9]]
+
+		const spiralOrder = function(matrix) {
+			// 特殊情况
+			if(!matrix.length) return [];
+
+			let top = 0;
+			let bottom = matrix.length-1;
+			let left = 0;
+			let right = matrix[0].length-1;
+
+			let res = [];
+			//let size = (bottom + 1) * (right + 1);
+
+			while(true){
+				for(let i=left; i<= right; i++)	res.push(matrix[top][i]); // left to right
+				if(++top > bottom) break; // 上边界下移一格
+
+				for(let i=top; i<= bottom; i++) res.push(matrix[i][right]); // top to bottom
+				if(left > --right) break; // 右边界左移一格
+
+				for(let i=right; i>=left; i--) res.push(matrix[bottom][i]); // right to left
+				if(top > --bottom) break;
+
+				for(let i=bottom; i>=top;i--) res.push(matrix[i][left]); //bottom to top
+				if(++left > right) break;
+			}
+
+			return res;
+
+
+		};
+		//spiralOrder(mytrix);		
+	</script>
+
+	<p>59. 螺旋矩阵 II</p>
+	<p>给你一个正整数 n(正整数不包括0) ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。</p>
+	<p>输入：n = 3. 输出：[[1,2,3],[8,9,4],[7,6,5]]</p>
+	<script type="text/javascript">
+		const generateMatrix = function(n) {
+			if(n===1) return [[1]];
+
+			let res = new Array(n).fill(0).map(i => new Array()); // 建立了二维数组
+			let t = 0; let b = n-1; let l = 0; let r = n-1;
+			let value = 0; // 如果 let value=1; 后面就写成 value++
+
+			while(true){ // while(value<=n*n)
+
+				// left --> right
+				for(let i=l; i<= r; i++) res[t][i] = ++ value;
+				if(++t > b) break;
+
+				//top --> bottom
+				for(let i=t; i<=b; i++) res[i][r] = ++ value;
+				if(l > --r) break;
+
+				//right --> left
+				for(let i=r; i>=l; i--) res[b][i] = ++ value;
+				if(t > --b) break;
+
+				// bottom --> top
+				for(let i=b;i>=t; i--) res[i][l] = ++ value;
+				if(++l >r) break;
+			}
+
+
+			return res;
+			//console.log(res)
+
+
+		};
+		
+	</script>
+
+</body>
+</html>

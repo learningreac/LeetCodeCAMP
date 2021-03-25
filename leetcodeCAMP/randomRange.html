@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		function randomRange(myMin, myMax) {
+
+			return Math.floor(Math.random() * (myMax - myMin + 1)) + myMin;
+
+		}
+
+		// range of numbers 
+		//my solution
+		function rangeOfNumbers(startNum, endNum) {
+
+			if (endNum - startNum < 0) {
+				return []
+			} else {
+				const arr = rangeOfNumbers(startNum, endNum - 1);
+				arr.push(endNum)
+				return arr;
+			}
+		};
+
+		//same as
+		function rangeOfNumbers(startNum, endNum) {
+			if (endNum - startNum === 0) {
+				return [startNum];
+			} else {
+				var numbers = rangeOfNumbers(startNum, endNum - 1);
+				numbers.push(endNum);
+				return numbers;
+			}
+		}
+
+		//or
+		function rangeOfNumbers(startNum, endNum) {
+			return startNum === endNum
+				? [startNum]
+				: rangeOfNumbers(startNum, endNum - 1).concat(endNum);
+		}
+
+		//or
+		function rangeOfNumbers(startNum, endNum) {
+			return startNum === endNum
+				? [startNum]
+				: [...rangeOfNumbers(startNum, endNum - 1), endNum];
+		}
+
+	</script>
+
+</body>
+
+</html>

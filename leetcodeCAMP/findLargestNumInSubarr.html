@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Return an array consisting of the largest number from each provided sub-array
+
+
+		function largestOfFour(arr) {
+			let largestNum = [];
+
+			// 1. using for..of
+			for(let subArr of arr){
+				largestNum.push(Math.max(...subArr));
+			}
+			return largestNum;
+			
+			// 2. using forEach
+			arr.forEach(subArr => largestNum.push(Math.max(...subArr)));
+		  	return largestNum;
+
+		  	//3. using traditional for loop
+		  	for(i=0;i<arr.length;i++){
+		  		let currentMax = arr[i][0];
+		  		for(j=0;j<arr[i].length;j++){		  			
+		  			arr[i][j]> currentMax ? currentMax = arr[i][j]:currentMax;
+
+		  		} // end inner for
+
+		  		//largestNum.push(currentMax); 
+		  		// or same as above
+		  		largestNum[i] = currentMax;
+		  	} //end for
+
+
+		  	//4. using array.map() and array.reduce()
+		  	//group is each inner array
+		  	function largestOfFour(arr) {
+			  return arr.map(function(group) {
+			    return group.reduce(function(prev, current) {
+			      return current > prev ? current : prev;
+			    });
+			  });
+			}
+
+
+		}
+
+		largestOfFour([[4, 5, 1, 3], [13, 27, 18, 26], [32, 35, 37, 39], [1000, 1001, 857, 1]]);//[5, 27, 39, 1001]
+	</script>
+
+</body>
+</html>

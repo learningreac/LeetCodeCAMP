@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>不使用任何内建的哈希表库设计一个哈希映射（HashMap）。</p>
+
+<p>实现 MyHashMap 类：</p>
+<p>用空映射初始化对象</p>
+<p>MyHashMap() </p>
+<p>void put(int key, int value) 向 HashMap 插入一个键值对 (key, value) 。如果 key 已经存在于映射中，则更新其对应的值 value 。</p>
+<p>int get(int key) 返回特定的 key 所映射的 value ；如果映射中不包含 key 的映射，返回 -1 。</p>
+<p>void remove(key) 如果映射中存在 key 的映射，则移除 key 和它所对应的 value 。</p>
+<p>链表法：hashtable的每一个下面是一条链表。</p>
+
+	<script type="text/javascript">
+		/**
+		 * Initialize your data structure here.
+		 
+		 function linkNode(key,value){
+		 	this.key = key;
+		 	this.value = value;
+		 	this.next = null;
+		 };
+
+		const MyHashMap = function() {
+			const bucket = 1009;
+			const hash = new Array(1009);
+			for(let i =0; )
+		};
+		*/
+		/**
+		 * value will always be non-negative. 
+		 * @param {number} key 
+		 * @param {number} value
+		 * @return {void}
+		 
+		MyHashMap.prototype.put = function(key, value) {
+
+		};*/
+
+		/**
+		 * Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key 
+		 * @param {number} key
+		 * @return {number}
+		 
+		MyHashMap.prototype.get = function(key) {
+
+		};*/
+
+		/**
+		 * Removes the mapping of the specified value key if this map contains a mapping for the key 
+		 * @param {number} key
+		 * @return {void}
+		
+		MyHashMap.prototype.remove = function(key) {
+
+		}; */
+
+		/**
+		 * Your MyHashMap object will be instantiated and called as such:
+		 * var obj = new MyHashMap()
+		 * obj.put(key,value)
+		 * var param_2 = obj.get(key)
+		 * obj.remove(key)
+		 */
+
+
+
+	
+		
+		function linkNode(key,val){
+		    this.key=key;
+		    this.val=val;
+		    this.next=null;
+		}
+
+		var MyHashMap1 = function() {
+		   const N=2011; 
+		   const hash=new Array(N);
+		   for(let i=0;i<hash.length;i++){
+		       hash[i]=new linkNode();
+		   }
+		   this.hash=hash;
+		};
+
+		// let has = new MyHashMap1();  ==>hash: Array(2011);
+		//has.hash[0];   ==> linkNode {key: undefined, val: undefined, next: null}
+
+		
+		MyHashMap1.prototype.put = function(key, value) {
+		    const N=2011;
+		    const index=key%N;
+		    let head=this.hash[index];
+		    let cur=head;
+		    while(cur && cur.next){
+		        if(cur.next.key===key){
+		            cur.next.val=value;
+		            return ;
+		        }
+		        cur=cur.next;
+		    }
+		    const node=new linkNode(key,value);
+		    cur.next=node;
+		};
+
+		
+		MyHashMap1.prototype.get = function(key) {
+		   const N=2011;
+		   const index=key%N;
+		   let head=this.hash[index];
+		   let cur=head;
+		   while(cur && cur.next){
+		       if(cur.next.key===key){
+		           return cur.next.val;
+		       }
+		       cur=cur.next;
+		   }
+		   return -1;
+
+
+		};
+
+		
+		MyHashMap1.prototype.remove = function(key) {
+		   const N=2011;
+		   const index =key%N;
+		   let head=this.hash[index];
+		   let cur=head;
+		   while(cur && cur.next){
+		       if(cur.next.key===key){
+		           cur.next=cur.next.next;
+		       }
+		       cur=cur.next;
+		   }
+		};
+ 
+
+	</script>
+
+
+	<script type="text/javascript">
+		
+		/**
+		 * 要实现哈希表映射，首先我们需要用到数组来存储映射关系
+		 * 但是，为了解决 hash 函数的返回值重复，导致多个数据映射在数组的同一索引位置
+		 * 我们就需要使用链表来存储对应键值对，便于查找
+		 */
+		var MyHashMap = function() {
+		    // 声明一个基本的数字，用于取余操作，计算出一个 hash 值
+		    this.base = 1000;
+		    // 声明一个足够大的空间来存储映射关系
+		    this.data = new Array(this.base).fill(0).map(i => new Array()); // 这里建立了一个length 为1000的二维数组，数组的每一项为[].
+		};
+
+		/**
+		 * 该函数只需注意，若是数组某位上的 key 不存在，直接追加数据
+		 * 若是 key 已存在，修改对应 key 的值即可
+		 */
+		MyHashMap.prototype.put = function(key, value) {
+		    let hash = key % this.base;
+		    // 遍历该数组某索引上的链表
+		    for(let i of this.data[hash]){
+		        // 若已存在该 key，执行更新 value 的操作即可
+		        // ！！注意 这里是更新值，而不是建立一个新的值。
+		        if(i[0] === key) return i[1] = value;
+		    }
+		    // 该链表上无此 key，新增一个链表值即可
+		    this.data[hash].push([key, value]);
+		};
+		////mbj.put(1,55);
+		//mbj.data[1] ; // [1,55]
+		//mbj.put(5,88);
+		//mbj.put(5,999);  // 这里之前key为5的值被更新了。
+
+		/**
+		 * 在数组某位上查找链表，找到就返回对应值
+		 * 否则，返回 -1
+		 */
+		MyHashMap.prototype.get = function(key) {
+		    let hash = key % this.base;
+		    for(let i of this.data[hash]){
+		        if(i[0] === key) return i[1];
+		    }
+		    return -1;
+		};
+		//mbj.get(1); // 
+
+		/**
+		 * 在数组某位遍历链表，找到就删除即可
+		 */
+		MyHashMap.prototype.remove = function(key) {
+		    let hash = key % this.base;
+		    for(let i of this.data[hash]){
+		        if(i[0] === key) {
+		            let index = this.data[hash].indexOf(i);
+		            this.data[hash].splice(index, 1);
+		        }
+		    }
+		};
+
+		/**
+		 * Your MyHashMap object will be instantiated and called as such:
+		 * var obj = new MyHashMap()
+		 * obj.put(key,value)
+		 * var param_2 = obj.get(key)
+		 * obj.remove(key)
+		 */
+		//时间复杂度：O(n)，数组操作和链表操作次数。
+		//空间复杂度：O(n)，数组和链表的存储空间数。
+		
+
+		//作者：demigodliu
+		//链接：https://leetcode-cn.com/problems/design-hashmap/solution/wu-tu-guan-fang-tui-jian-ti-jie-she-ji-h-guuw/
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>写一个函数，输入 n ，求斐波那契（Fibonacci）数列的第 n 项（即 F(N)）。</p>
+	<p>思路1：直接递归，f(n)=f(n-1)+f(n-2)>,缺点是存在重复计算，时间复杂度高。 </p>
+	<p>思路2：动态规划：将每次计算出来得f(n)保存在一个数组中，之后计算如果需要用到，则直接调用该值，不需要再重新计算，空间。</p>
+	<p>思路3：动态规划，将每次的计算结果cache一下，只要留当前计算中需要用到的上两个计算结果，降低空间占用。</p>
+	<script type="text/javascript">
+		/**
+		 * @param {number} n
+		 * @return {number}
+		 */
+		/*
+		const fib = function(n) {
+			if(n===0) {
+				return 0;
+			} else if(n===1){
+				return 1;
+			} else{
+				return fib(n-1)+fib(n-2);
+			}
+
+		};
+
+
+		const fib = function(n) {
+			if(n<=0) return n;
+			return (fib(n-1)+fib(n-2)) % 1000000007;
+		};
+
+		*/
+
+		
+
+		const fib3 = function(n){
+			let dp = [0,1];
+			
+			function f(n){
+				if(dp[n] != undefined){
+					return dp[n];
+				}
+
+				dp[n] = f(n-1)+f(n-2);
+				console.log(dp)
+
+				return dp[n] % 1000000007 
+			}
+
+			return f(n);	
+		};
+
+
+		const fib = function(n){
+			let a=0, b=1;
+			let sum;
+
+			for(let i=0; i<n; i++){ // i<n 很重要
+				sum = (a+b) % 1000000007
+				a=b;
+				b=sum;
+			}
+
+			return a;		
+
+		}
+		
+
+	</script>
+
+</body>
+</html>

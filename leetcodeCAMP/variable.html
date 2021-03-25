@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	//Example 1
+	let a = {a:'apple', b:'pear', clist:[]};
+	let copy_a = a.a;
+	copy_a = 'banana';
+	console.log(a);//{a:'apple', b:'pear', clist:[]};//string varible cannot be changed
+
+	let copy_c = a.clist;
+	copy_c.push('orange');
+	console.log(copy_c);//["orange"]
+	console.log(a.clist);//["orange"] ///array can be changed
+
+	//Example 2
+	let myobj = {c0:'apple', b0:'dek'};
+	let c= myobj;
+	c.c0='pan';
+	console.log(c);//{c0: "pan", b0: "dek"}
+	console.log(myobj);//{c0: "pan", b0: "dek"}///object can be changed
+
+	
+
+</script>
+
+	
+</body>
+</html>

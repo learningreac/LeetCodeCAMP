@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript" type="module" src="index.js">
+		//module 
+		//exporting parts of a file for use in one or more other files
+		//importing the parts you need, where you need them
+
+
+		//Use export to Share a Code Block
+		// add is one of function in math_functions.js
+		// you want to use it in several different js files
+		// you need export it first before share it
+		const add = (x, y) => {
+		  return x + y;
+		}
+
+		export { add }; // or export { add, subtract } for export multiple things
+
+		//Using import to reuse JavaScript Code 
+		import { add } from './math_functions.js';
+
+		//Use * to Import Everything from a File
+		import * as myMathModule from "./math_functions.js";
+		//create an object called myMathModule, which contains all of the exports from that file
+
+
+		//export default 
+		// if only one value is being exported from a file, or to creat a fallback value for a file or module.
+		//Fallback value: a value you would use when the main thing you requested is not available.
+		//The default export (opposed to the named exports) can be used only once per module. 
+		//This is because it’s the value imported when the functionality you requested is not found (it’s not one of the named exports of the module).
+		//you cannot use export default with var, let, or const
+
+
+		//Import a Default Export
+		import add from "./math_functions.js";
+		// no {}
+		//add here is simply a variable name for whatever the default export of the math_functions.js file is. 
+		//You can use ANY name here when importing a default.
+
+
+	</script>
+
+</body>
+</html>

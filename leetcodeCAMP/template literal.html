@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>template literal</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		const person = {
+			name: "Zodiac Hasbro",
+			age: 56
+		};
+
+		// Template literal with multi-line and string interpolation
+		// backticks (``) but not quotes('' or "")
+		// multiline without \n
+		//${js variable}
+		const greeting = `Hello, my name is ${person.name}! 
+							I am ${person.age} years old.`;
+
+		console.log(greeting); // prints
+		// Hello, my name is Zodiac Hasbro!
+		// I am 56 years old.
+
+		//create an array of list element (li) strings. 
+		const result = {
+			success: ["max-length", "no-amd", "prefer-arrow-functions"],
+			failure: ["no-var", "var-on-top", "linebreak"],
+			skipped: ["no-extra-semi", "no-dup-keys"]
+		};
+		function makeList(arr) {
+			// Solution 1
+			const failureItems = [];//you can not put this in for loop
+			for (let i = 0; i < arr.length; i++) {
+				//console.log(arr[i]);
+				//failureItems.push(arr[i]);
+				//console.log(failureItems);
+				failureItems.push(`<li class="text-warning">${arr[i]}</li>`)
+			}
+			return failureItems;
+		}
+
+		//solution 2  Array.map
+		function makeList2(arr){
+			const failureItems = arr.map(item=>`<li class="text-warning">${item}</li>`);
+			return failureItems;
+		}
+
+		const failuresList = makeList2(result.failure);
+
+	</script>
+
+</body>
+
+</html>

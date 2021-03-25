@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		// the Formula is T = 2PI * squart(a(power 3) / miu)
+		function orbitalPeriod(arr) {
+		  const GM = 398600.4418;
+		  const earthRadius = 6367.4447;
+		  const c = 2*Math.PI;
+		  let newArr = [];
+
+		  let getOrbPeriod = function(obj) {
+		  	let a = Math.pow(earthRadius + obj.avgAlt, 3);
+		  	let b = Math.sqrt(a/GM);
+		  	LET obrPeriod = Math.round(c*b);
+		  	//create a new object
+		  	return {name:obj.name, orbitalPeriod:obrPeriod};
+		  };
+
+		  for(let elem in arr) {
+		  	newArr.push(getOrbPeriod(arr[elem]))
+		  }
+		  return newArr;
+		}
+
+		orbitalPeriod([{name : "sputnik", avgAlt : 35873.5553}]);
+
+
+
+		// array.map()
+		function orbitalPeriod(arr) {
+		  const GM = 398600.4418;
+		  const earthRadius = 6367.4447;
+		  return arr.map(({ name, avgAlt }) => {
+		    const earth = earthRadius + avgAlt;
+		    const orbitalPeriod = Math.round(2 * Math.PI * Math.sqrt(Math.pow(earth, 3)/GM));
+		    return { name, orbitalPeriod };
+		  });
+		}
+
+		orbitalPeriod([{name : "sputnik", avgAlt : 35873.5553}]);
+
+
+		//
+		function orbitalPeriod(arr) {
+		  var GM = 398600.4418;
+		  var earthRadius = 6367.4447;
+		  // Create new array to prevent modification of the original
+		  var newArr = JSON.parse(JSON.stringify(arr));
+		  // Loop through each item in the array arr
+		  newArr.forEach(function(item) {
+		    // Calculate the Orbital period value
+		    var tmp = Math.round(
+		      2 * Math.PI * Math.sqrt(Math.pow(earthRadius + item.avgAlt, 3) / GM)
+		    );
+		    //Delete the avgAlt property
+		    delete item.avgAlt;
+		    //Add orbitalPeriod property
+		    item.orbitalPeriod = tmp;
+		  });
+		  return newArr;
+		}
+	</script>
+
+</body>
+</html>

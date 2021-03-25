@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Use Higher-Order Functions map, filter, or reduce to Solve a Complex Problem</title>
+</head>
+
+<body>
+	<p> Array.sort()</p>
+	<p>When such a callback function, normally called compareFunction, is supplied, the array elements are sorted according to the return value of the compareFunction: </p>
+		<p>If compareFunction(a,b) returns a value less than 0 for two elements a and b, then a will come before b. If compareFunction(a,b) returns a value greater than 0 for two elements a and b, then b will come before a. If compareFunction(a,b) returns a value equal to 0 for two elements a and b, then a and b will remain unchanged.</p>
+	<script type="text/javascript">
+		//so that it returns a new array containing only the square of only the positive integers
+		const squareList = (arr) => {
+			// Only change code below this line
+			return arr
+				.filter(item => Number.isInteger(item) && item > 0)
+				.map(item => Math.pow(item, 2));
+			// Only change code above this line
+		};
+
+		const squaredIntegers = squareList([-3, 4.8, 5, 3, -3.2]);
+		console.log(squaredIntegers);
+
+
+		//Sort an Array Alphabetically using the sort Method
+		function ascendingOrder(arr) {
+		  return arr.sort(function(a, b) {
+		    return a - b;
+		  });
+		}
+		ascendingOrder([1, 5, 2, 3, 4]);
+		// Returns [1, 2, 3, 4, 5]
+
+		function reverseAlpha(arr) {
+		  return arr.sort(function(a, b) {
+		    return a === b ? 0 : a < b ? 1 : -1;
+		  });
+		}
+		reverseAlpha(['l', 'h', 'z', 'b', 's']);
+		// Returns ['z', 's', 'l', 'h', 'b']
+
+
+		//Challenge
+		function alphabeticalOrder(arr) {
+		  // Only change code below this line
+		  	return arr.sort(function(a, b) {
+		    return a === b ? 0 : a < b ? -1 : 1;
+		  });
+
+		  // Only change code above this line
+		}
+		alphabeticalOrder(["a", "d", "c", "a", "z", "g"]);
+
+
+
+		//Return a Sorted Array Without Changing the Original Array
+		var globalArray = [5, 6, 3, 2, 9];
+		function nonMutatingSort(arr) {
+		  // Only change code below this line
+		  let newArr = [].concat(arr);
+		  newArr.sort(function(a,b){ return a-b });
+		  return newArr;
+
+		  // Only change code above this line
+		}
+		nonMutatingSort(globalArray);
+
+
+		//Split a String into an Array Using the split Method
+		var str = "Hello World";
+		var bySpace = str.split(" "); //by whitespace
+		// Sets bySpace to ["Hello", "World"]
+
+		var otherString = "How9are7you2today";
+		var byDigits = otherString.split(/\d/); //by number  note there is not quotes
+		// Sets byDigits to ["How", "are", "you", "today"]
+
+
+		let mySplit = "Hello World,I-am code".split(/\W/) //["Hello", "World", "I", "am", "code"]
+
+
+		//Combine an Array into a String Using the join Method
+		var arr = ["Hello", "World"];
+		var str = arr.join(" ");
+		// Sets str to "Hello World"
+
+		function sentensify(str) {
+		  // Only change code below this line
+		  return str.split('-').join(' ');
+
+		  // Only change code above this line
+		}
+		sentensify("May-the-force-be-with-you");
+
+
+		//Convert Strings to URL Slugs
+		//urlSlug("Winter Is Coming") ==>"winter-is-coming"
+
+		function urlSlug(title) {
+			return title.toLowerCase().trim().split(/\s+/).join('-')
+			//or return title.toLowerCase().split(' ').filter(obj => obj!=='').join('-')
+		}
+
+		urlSlug(" Winter Is  Coming"); //==>"winter-is-coming"
+
+
+		//Use the every Method to Check that Every Element in an Array Meets a Criteria
+		var numbers = [1, 5, 8, 0, 10, 11];
+		numbers.every(function(currentValue) {
+		  return currentValue < 10;
+		});
+		// Returns false
+
+		function checkPositive(arr) {
+		  return arr.every(currentValue => currentValue>0)
+		}
+		checkPositive([1, 2, 3, -4, 5]);
+
+
+		//Use the some Method to Check that Any Elements in an Array Meet a Criteria
+		//returns a Boolean value - true if any of the values meet the criteria, false if not.
+		var numbers = [10, 50, 8, 220, 110, 11];
+		numbers.some(function(currentValue) {
+		  return currentValue < 10;
+		});
+		// Returns true
+
+		//Introduction to Currying and Partial Application
+		//Un-curried function
+		function unCurried(x, y) {
+		  return x + y;
+		}
+
+		//Curried function
+		function curried(x) {
+		  return function(y) {
+		    return x + y;
+		  }
+		}
+		//Alternative using ES6
+		const curried = x => y => x + y
+
+		curried(1)(2) // Returns 3
+
+		// Call a curried function in parts:
+		var funcForY = curried(1);
+		console.log(funcForY(2)); // Prints 3
+
+		//Impartial function
+		function impartial(x, y, z) {
+		  return x + y + z;
+		}
+		var partialFn = impartial.bind(this, 1, 2);
+		partialFn(10); // Returns 13
+
+		function add(x) {
+		  return function(y) {
+		    return function(z) {
+		      return x+y+z;
+		    }
+		  }
+		}
+		add(10)(20)(30);//10+20+30
+
+		
+
+
+	</script>
+
+</body>
+
+</html>

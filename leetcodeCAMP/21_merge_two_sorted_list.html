@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val, next) {
+		 *     this.val = (val===undefined ? 0 : val)
+		 *     this.next = (next===undefined ? null : next)
+		 * }
+		 */
+		/**
+		 * @param {ListNode} l1
+		 * @param {ListNode} l2
+		 * @return {ListNode}
+		 */
+
+		 function ListNode(val, next) {
+		      this.val = (val===undefined ? 0 : val)
+		      this.next = (next===undefined ? null : next)
+		  }
+
+		// 1.set up some seperate nodes;
+		const nodeA = new ListNode(1);
+		const nodeB = new ListNode(5);
+		const nodeC = new ListNode(7);
+
+		//2. list the nodes to make a linked list
+		nodeA.next = nodeB;
+		nodeB.next = nodeC;
+
+		//console.log(nodeA); //ListNode {val: 1, next: ListNode}
+
+		//3. Q: how to count there are how many nodes in the linked list?
+		const nodesSum = function(currNode){
+			let counter=0;
+			let nodeHead = currNode;
+			let nodeTail = currNode;
+			
+			//while(nodeTail.next != null) 
+
+				while(nodeTail){
+				counter++;
+				nodeTail = nodeTail.next;
+				//console.log(nodeTail);
+				} 
+
+			return counter
+
+		}
+
+		//4. you need make your own linked-list input 
+
+		let l1 = {
+			val:1,
+			next: {
+				val:2,
+				next:{val:4, next:null},
+			},
+		};
+
+		let l2 = {
+			val:1,
+			next: {
+				val:3,
+				next:{val:4, next:null},
+			},
+		};
+
+
+		var mergeTwoLists = function(l1, l2) {
+			//1. set up a new list, then insert the nodes(from L1 and L2) one by one into the new list;
+			//2. while inserting, compare the nodes value between l1 and l2, then choose the smaller one.
+
+			let tempListNode = new ListNode();
+			const dummh = tempListNode;
+			while(null!==l1 &&null!== l2) {
+				if(l1.val <= l2.val){
+					tempListNode.next = l1;
+					//tempListNode=l1;
+					l1 = l1.next;
+					
+				} else {
+					tempListNode.next = l2;
+					//tempListNode=l2;
+					l2 = l2.next;
+				}
+
+				console.log(tempListNode)
+				tempListNode = tempListNode.next;
+			}
+
+			tempListNode.next =l1? l1:l2;
+			return dummh.next;	    
+		};
+
+		// mergeTwoLists(l1,l2);
+
+	</script>
+
+</body>
+</html>

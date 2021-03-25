@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。</p>
+	<p>输入：head = [1,2,3,4,5], n = 2</p>
+	<p>输出：[1,2,3,5]</p>
+	<p>需要设置一个哑结点，是因为有可能要删除的就是头结点。</p>
+
+	<script type="text/javascript">
+		const mylist = {
+		 	val:1,
+		 	next:{
+		 		val:2,
+		 		next:{
+		 			val:3,
+		 			next:{
+		 				val:4,
+		 				next:{
+		 					val:5,
+		 					next:null
+		 				}
+		 			}
+		 		}
+		 	}
+		 };
+
+		 const tc2 = {
+		 	val:1,
+		 	next:{
+		 		val:2,
+		 		next:null
+		 	}
+		 };
+
+		const tc1 = {
+		 	val:1,
+		 	next:null
+		 };
+
+
+		const removeNthFromEnd = function(head, n) {
+			
+			let fast = head;
+			let slow = head;
+
+
+			while(n>0){
+				fast = fast.next;
+				n--
+			};
+
+			//if(fast === null) return null;
+
+			while(fast.next){
+				fast = fast.next;
+				slow = slow.next; 
+			};
+
+			slow.next = slow.next.next;
+
+
+			return head;
+
+		};
+
+		//removeNthFromEnd(mylist,2);
+		//removeNthFromEnd(tc2,1);
+		//removeNthFromEnd(tc1,1);
+		//removeNthFromEnd(tc2,2);
+
+	</script>
+
+</body>
+</html>

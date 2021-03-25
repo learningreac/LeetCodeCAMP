@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>3. Longest Substring Without Repeating Characters</title>
+</head>
+<body>
+	<p>3.无重复最长子串</p>
+	<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p>
+	<p>输入: s = "abcabcbb"   输出: 3 </p>
+	<script type="text/javascript">
+		/**
+		 * @param {string} s
+		 * @return {number}
+		 */
+		let lengthOfLongestSubstring1 = function(s) {
+
+			// charArr splice the s in to 
+			// currArr: current arr
+			// currMax: current Max
+
+			let currArr = [];
+			let max = 0;
+
+			for(let i=0; i< s.length; i++){
+
+				let index = currArr.indexOf(s.charAt(i));
+				console.log(index);
+
+				if(index !== -1){ // the char is already included 
+					currArr.splice(0,index+1);
+					console.log(currArr);
+				} 
+
+				currArr.push(s.charAt(i));
+				max = Math.max(currArr.length, max);
+			}
+
+			return max;
+					    
+		};
+
+
+		////思路2：快慢指针 通过max变量动态保存最大值  在for循环里检测是否重复
+
+		let lengthOfLongestSubstring = function(s) {
+			
+			let maxLength = 0;
+
+			if(s.length <= 1) return s.length;
+			
+			for(let slow = 0, fast = 1; fast < s.length;){
+				//between the slow and fast 在快慢指针之间，如果当前fast的指向的字母在这个区间出现过
+				for(let i=slow;i<fast;i++){
+					if(s[i] === s[fast]){
+						slow = i+1;  //slow 指向重复字母的下一个；
+					};
+				} 
+			
+			//console.log(slow,fast);
+			maxLength = Math.max(maxLength, fast - slow + 1); 
+			fast++; // move one to the right
+
+			}
+
+			return maxLength;  
+
+		}
+
+		/*//思路2：这个思路不可行了。   
+		// 不能用字典是因为，当出现重复时，可能字典中有些已经保存的，需要完全被删掉。 通过字典保存已经走过的字母 
+		//lengthOfLongestSubstring("abba") 报错
+		let lengthOfLongestSubstring2 = function(s) {
+			
+			let maxLength = 0;
+			let dic = new Map(); // {letter, index}
+
+			for(let slow = fast = 0; fast < s.length;){
+				//if fast pointer locates the letter which is repeated
+				if(dic.has(s[fast])){
+					slow = dic.get(s[fast]) + 1; // slow point to the next letter of the repeated letter in dic当前重复字母的下一位
+				}
+
+				// store the current letter in the map
+			dic.set(s[fast], fast);
+			console.log(fast,slow);
+			maxLength = Math.max(maxLength, fast - slow + 1); 
+			fast++; // move one to the right
+
+			}
+
+			return maxLength;  
+
+		}
+
+		*/
+
+		// test
+		// lengthOfLongestSubstring(" "); // 1
+		//lengthOfLongestSubstring("dvdf"); // 'vdf', 3
+		// lengthOfLongestSubstring("pwwkew"); // 'wke', 3
+		//lengthOfLongestSubstring("abba");  // 2
+	</script>
+
+	<p>30. 串联所有单词的子串</p>
+	<p>给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。</p>
+	<p>注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。</p>
+	<p>  s = "barfoothefoobarman",  words = ["foo","bar"]. 输出：[0,9] or [9,0] ("barfoo" 和 "foobar")</p>
+
+	<script type="text/javascript">
+		const findSubstring = function(s, words) {
+
+		};
+	</script>
+
+</body>
+</html>

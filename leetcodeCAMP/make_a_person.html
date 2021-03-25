@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		// getter and setter
+		class Book {
+		  constructor(author) {
+		    this._author = author;
+		  }
+		  // getter
+		  get writer() {
+		    return this._author;
+		  }
+		  // setter
+		  set writer(updatedAuthor) {
+		    this._author = updatedAuthor;
+		  }
+		}
+		const novel = new Book('anonymous');
+		console.log(novel.writer);  // anonymous
+		novel.writer = 'newAuthor';
+		console.log(novel.writer);  // newAuthor
+
+
+		// CHALLENGE Make a Person
+			// Object get and set method
+			var Person = function(firstAndLast) {
+			  // Only change code below this line
+			  let fullname = firstAndLast;
+			  let firstname = fullname.split(' ')[0];
+			  let lastname = fullname.split(' ')[1];
+
+			  // Complete the method below and implement the others similarly
+			  this.getFullName = function() {
+			    return fullname;
+			  };
+
+			  this.getFirstName = function() {
+			  	return fullname.split(' ')[0];
+			  };
+			  this.getLastName = function() {
+			  	return fullname.split(' ')[1];
+			  };
+			  this.setFirstName = function(first){
+			  	fullname = first + " " + lastname;	
+			  	console.log(fullname);
+			  };
+			  this.setLastName = function(last){
+			  	fullname = firstname + " " + last;
+			  	console.log(fullname);
+			  };
+			  this.setFullName = function(newFull){
+			  	fullname = newFull;
+			  	console.log(fullname);
+			  };
+			  
+			};
+
+			var bob = new Person('Bob Ross');
+			bob.getFullName();
+
+			
+
+
+			//ES6 way
+			/*class Person {
+				constructor(firstAndLast) {
+					this._fullname = firstAndLast;
+					this.firstname = firstAndLast.split(' ')[0];
+					this.lastname = firstAndLast.split(' ')[1];
+				};
+
+				//getter
+				get getFirstName() {
+					return this.firstname;
+				};
+				get getLastName() {
+					return this.lastname;
+				};
+				get getFullName() {
+					return this._fullname;
+				};
+
+				//setter
+				set setFirstName(updatedFirst) {
+					this.firstname = updatedFirst;
+				}
+				//bob.setFirstName = 'Tom'; ===>'Tom'
+				//bob; ==> Person {_fullname: "Bob Ross", firstname: "Tom", lastname: "Ross"}
+			};
+			const bob = new Person('Bob Ross');
+			*/
+
+
+
+
+
+	</script>
+
+</body>
+</html>

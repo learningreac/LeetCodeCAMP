@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Return the lowest index at which a value (second argument) should be inserted into an array (first argument) once it has been sorted. 
+		//Where do I Belong
+
+		// this is not a good practice, do not write i++ there
+		/*function getIndexToIns(arr, num) {
+		  //sort and change the original arr
+		  arr.sort(function(a, b) {
+			  return a - b;
+			}); 
+		  let Numindex;
+		  for(let i=0; i<arr.length;){
+		  	if(arr[i] < num){
+		  		i++;
+		  	} else {
+		  		Numindex = i;
+		  		console.log(Numindex);
+		  		break;
+		  		
+		  	}
+		  }
+
+		  return Numindex;
+		}
+		*/
+
+
+		//my solution
+		function getIndexToIns(arr, num) {
+		  //sort and change the original arr
+		  arr.sort(function(a, b) {
+			  return a - b;
+			}); 
+
+
+		  let i=0;
+		  for(; i<=arr.length;i++){
+		  	if(arr[i] >= num){
+		  		break; 	
+		  	}
+		  }
+
+		  return i;
+		}
+
+		getIndexToIns([40, 60], 50); //1
+		getIndexToIns([10, 20, 30, 40, 50], 35); //3
+		getIndexToIns([2, 5, 10], 15);//3
+		getIndexToIns([], 1);//0
+
+
+		//solution 1  there are 2 returns, if the for loop 
+		function getIndexToIns2(arr, num) {
+		  arr.sort(function(a, b) {
+		    return a - b;
+		  });
+
+		  for (var a = 0; a < arr.length; a++) {
+		    if (arr[a] >= num) 
+		    	return a; // return  mean break
+		  }
+
+		  return arr.length;
+
+		}
+		getIndexToIns2([10, 20, 30, 40, 50], 35);
+
+		//
+		function getIndexToIns(arr, num) {
+		  return arr
+		    .concat(num)
+		    .sort((a, b) => a - b)
+		    .indexOf(num);
+		}
+
+		//
+		function getIndexToIns(arr, num) {
+		  arr.push(num);
+		  arr.sort(function(a, b) {
+		    return a - b;
+		  });
+		  return arr.indexOf(num);
+		}
+
+		//
+		function getIndexToIns(arr, num) {
+		  return arr.filter(val => num > val).length;
+		}
+
+
+	</script>
+
+</body>
+</html>

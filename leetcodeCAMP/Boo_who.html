@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Check if a value is classified as a boolean primitive
+		/*function booWho(bool) {
+		  return typeof(bool) === "boolean";
+		};
+		booWho(null);*/
+
+
+		//Title Case a Sentence
+		//1. use regular expression
+		function titleCase(str) {
+			let lowerStr = str.toLowerCase();
+			let tcStr = lowerStr.replace(/^\w|\s[a-z]/g, function (x) {
+  				return x.toUpperCase();
+  			});
+  			console.log(tcStr);
+  			return tcStr;
+		}
+		titleCase("I'm a little tea pot"); //I'm A Little Tea Pot
+
+		//1. 答案
+		function titleCase(str) {
+		  return str.toLowerCase().replace(/(^|\s)\S/g, L => L.toUpperCase());
+		}
+		
+
+		//2. use array.join()
+		function titleCase(str) {
+			let wordsArr = str.toLowerCase().split(' ');
+			let caseArr = [];
+			for(let i=0; i<wordsArr.length; i++){
+				caseArr[i] = wordsArr[i].replace(/^\w/g, function (x) {
+  					return x.toUpperCase()});
+				console.log(caseArr[i]);
+			}
+			return caseArr.join(" ");
+		};
+		titleCase("I'm a little tea pot");
+
+		//2. use array.join() 优化版
+		function titleCase(str) {
+			let wordsArr = str.toLowerCase().split(' ');
+			let caseArr = [];
+			for(let i=0; i<wordsArr.length; i++){
+				caseArr[i] = wordsArr[i].replace(wordsArr[i][0],wordsArr[i][0].toUpperCase());
+			}
+			return caseArr.join(" ");
+		};
+		titleCase("I'm a little tea pot");
+
+
+		//3. modify string.replaceat
+		String.prototype.replaceAt = function(index, character) {
+		  return (
+		    this.substr(0, index) + character + this.substr(index + character.length)
+		  );
+		};
+
+		function titleCase(str) {
+		  var newTitle = str.split(" ");
+		  var updatedTitle = [];
+		  for (var st in newTitle) {
+		    updatedTitle[st] = newTitle[st]
+		      .toLowerCase()
+		      .replaceAt(0, newTitle[st].charAt(0).toUpperCase());
+		  }
+		  return updatedTitle.join(" ");
+		}
+
+		//4. array.map  String charAt() 
+		function titleCase(str) {
+		  var convertToArray = str.toLowerCase().split(" ");
+		  var result = convertToArray.map(function(val) {
+		    return val.replace(val.charAt(0), val.charAt(0).toUpperCase());
+		  });
+		  return result.join(" ");
+		};
+
+
+
+
+
+
+	</script>
+
+</body>
+</html>

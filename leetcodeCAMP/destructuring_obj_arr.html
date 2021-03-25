@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>ES6 objects practice</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		//destructuring objets
+		const HIGH_TEMPERATURES = {
+			yesterday: 75,
+			today: 77,
+			tomorrow: 80
+		};
+
+		const { today, tomorrow } = HIGH_TEMPERATURES;
+		//by this,you define two new variables
+		// today = 77;
+		//tomorrow = 80;
+
+		//assign a new variable name when extracting values
+		const { today: highToday, tomorrow: highTomorrow } = HIGH_TEMPERATURES;
+		// const highToday = HIGH_TEMPERATURES.today;
+		// const highTomorrow = HIGH_TEMPERATURES.tomorrow;
+
+
+		//from Nested Objects
+		const user = {
+			johnDoe: {
+				age: 34,
+				email: 'johnDoe@freeCodeCamp.com'
+			}
+		};
+
+		//same name
+		const { johnDoe: { age, email } } = user;
+		//new name
+		const { johnDoe: { age: userAge, email: userEmail } } = user;
+
+		//another example
+		const LOCAL_FORECAST = {
+			yesterday: { low: 61, high: 75 },
+			today: { low: 64, high: 77 },
+			tomorrow: { low: 68, high: 80 }
+		};
+
+		const { today: { low, high } } = LOCAL_FORECAST;
+		const { today: { low: todayLow }, tomorrow: { low: tomorrowLow } } = LOCAL_FORECAST;
+		//todayLow = 64
+		//tomorrowLow =68
+
+		//-------------------------------------------------------
+		//Destructuring Assignment to Assign Variables from Arrays
+		const [a, b] = [1, 2, 3, 4, 5, 6];
+		console.log(a, b); // 1, 2
+
+		const [a, b, , , c] = [1, 2, 3, 4, 5, 6];
+		console.log(a, b, c); // 1, 2, 5
+
+		// swap the values of a and b
+		let a = 8, b = 6;
+		[a, b] = [b, a];//a=6,b=8
+
+		//the Rest Parameter 
+		const [a, b, ...arr] = [1, 2, 3, 4, 5, 7];
+		console.log(a, b); // 1, 2
+		console.log(arr); // [3, 4, 5, 7]
+
+		//Pass an Object as a Function's Parameters
+		const profileUpdate = (profileData) => {
+			const { name, age, nationality, location } = profileData;
+			// do something with these variables
+		}
+
+		//same as above   REACT COMPONENT USE THIS WAY
+		const profileUpdate = ({ name, age, nationality, location }) => {
+			/* do something with these fields */
+		}
+
+		//another example, my solution
+		const stats = {
+			max: 56.78,
+			standard_deviation: 4.34,
+			median: 34.54,
+			mode: 23.87,
+			min: -0.75,
+			average: 35.85
+		};
+
+		const half = (stats) => (stats.max + stats.min) / 2.0; //28.015
+
+		//solution 1
+		const half = (stats) => {
+			const { max, min } = stats;
+			return (max + min) / 2.0
+		};
+		//solution 2
+		const half = ({ max, min }) => (max + min) / 2.0;
+		half(stats)//28.015
+
+
+	</script>
+
+</body>
+
+</html>

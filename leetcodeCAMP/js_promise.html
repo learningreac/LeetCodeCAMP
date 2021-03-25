@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Promise</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//asynchronously
+		// promise is a constructor function,  use the new keyword to create one. 
+		//It takes a function, as its argument, with two parameters - resolve and reject(methods)
+
+		const myPromise = new Promise((resolve, reject) => {
+
+		});
+
+		//with resolve and reject
+		//the argument for resolve usually might be an object, that you would use data from
+		const myPromise = new Promise((resolve, reject) => {
+		  if(condition here) {
+		    resolve("Promise was fulfilled");
+		  } else {
+		    reject("Promise was rejected");
+		  }
+		});
+
+		//Handle a Fulfilled Promise with then
+		//The then method is executed immediately after your promise is fulfilled with resolve.
+		myPromise.then(result => {
+		  // do something with the result.
+		}); //result comes from the argument given to the resolve method.
+
+		//example here
+		const makeServerRequest = new Promise((resolve, reject) => {
+		  // responseFromServer is set to true to represent a successful response from a server
+		  let responseFromServer = true;
+		    
+		  if(responseFromServer) {
+		    resolve("We got the data");
+		  } else {  
+		    reject("Data not received");
+		  }
+		});
+
+		makeServerRequest.then(result => console.log(result))// We got the data
+
+
+		//Handle a Rejected Promise with catch
+		myPromise.catch(error => {
+		  // do something with the error.
+		});
+
+
+	</script>
+
+</body>
+</html>

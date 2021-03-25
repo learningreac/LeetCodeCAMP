@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//1) Usernames can only use alpha-numeric characters.
+
+		//2) The only numbers in the username have to be at the end. There can be zero or more of them at the end. Username cannot start with the number.
+
+		//3) Username letters can be lowercase and uppercase.
+
+		//4) Usernames have to be at least two characters long. A two-character username can only use alphabet letters as characters.
+
+		//solution 1
+		let username = "JackOfAllTrades";
+		let userCheck = /^[a-z][a-z]+\d*$|^[a-z]\d\d+$/i; 
+		let result = userCheck.test(username);
+
+		//solution 2
+		const userCheck = /^[a-z]([0-9]{2,}|[a-z]+\d*)$/i;
+		//1. ^ - start of input
+		//2. [a-z] - first character is a letter
+		//3. [0-9]{2,0} - ends with two or more numbers
+		//4. | - or
+		//5. [a-z]+ - has one or more letters next
+		//6. \d* - and ends with zero or more numbers
+		//7. $ - end of input
+		//8. i - ignore case of input
+
+
+		//case 2 Lookaheads password matching
+		//1. at least 5 characters long
+		//2. do not begin with numbers
+		//3. have 2 adjcent numbers
+		let sampleWord = "astronaut";
+		let pwRegex = /^\D(?=\w{5,})(?=\w*\d{2})/; 
+		let result = pwRegex.test(sampleWord);
+
+		//search and replace
+		"Code Camp".replace(/(\w+)\s(\w+)/, '$2 $1');
+		// Returns "Camp Code"
+		//inserts the nth parenthesized submatch string, provided the first argument was a RegExp object. 
+		//Note that this is 1-indexed.
+		"TheAndyGriffith_Show".replace(/([a-z])([A-Z])/g, "$1 $2"); //"The Andy Griffith_Show"
+		"TheAndyGriffith_Show".replace(/([a-z])([A-Z])/g, "$1$2"); //"TheAndyGriffith_Show"
+		"TheAndyGriffith_Show".replace(/([a-z])([A-Z])/g, "$1-$2");//"The-Andy-Griffith_Show"
+
+		//Remove Whitespace from Start and End
+		//string.trim
+		let hello = "   Hello, World!  ";
+		hello.trim();// "Hello, World!"
+
+		let hello = "   Hello, World!  ";
+		let wsRegex = /^\s+|\s+$/g; 
+		let result = hello.replace(wsRegex,""); 
+
+
+
+	</script>
+
+</body>
+</html>

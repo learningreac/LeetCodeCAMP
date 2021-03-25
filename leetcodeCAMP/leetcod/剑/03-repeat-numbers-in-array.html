@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<P>在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。</P>
+	<P>数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。</P>
+	<p>2 <= n <= 100000</p>
+	<h3>思路</h3>
+	<p>思路1：If use Array methods like slice and includes, 会超时，而且牵涉到method背后本身的逻辑.</p>
+	<p>思路2：暴力遍历，若num[i]等于nums[i+1],则重复。 时间复杂度O(N*N),空间复杂度O(1)</p>
+	<p>思路3：遍历1遍，用Harsh table登记Key, 后续若发现记录过，则表示出现过。</p>
+	<p>思路4：原地置换。待补充</p>
+</body>
+	<script type="text/javascript">
+	/**
+	 * @param {number[]} nums
+	 * @return {number}
+	 */
+
+	const mynums =  [2, 3, 1, 0, 2, 5, 3]
+
+	//method 1: array methods
+	const findRepeatNumber1 = function(nums) {
+		let i=0;
+		let j=nums.length-1;
+		let res;
+
+		for(i;i<=j;i++){
+			if(nums.slice(i+1).includes(nums[i])){
+				return res = nums[i]
+			}
+		}
+
+	};		
+
+
+	//method 2 sort first, then use a for loop to check if nums[i] = nums[i+1].
+	const findRepeatNumber2 = function(nums) {
+		nums.sort((a,b) => a-b);
+		let i=0;
+		let res;
+
+		for(i;i<nums.length;i++){
+			if(nums[i]===nums[i+1]){
+				return res = nums[i]
+			}
+		}
+
+	};
+
+
+	// method 3: use an harsh table(or Map OBJ) to register the nums
+	const findRepeatNumber = function(nums) {
+		let dic = new Map();
+
+		for(let i=0;i<nums.length;i++){
+			if(dic.get(nums[i]) != undefined){
+				return nums[i]
+			} else {
+				dic.set(nums[i],1)
+			}
+		}
+
+		console.log(dic);
+
+	};
+
+	findRepeatNumber(mynums);
+	</script>
+
+</body>
+</html>
+
+

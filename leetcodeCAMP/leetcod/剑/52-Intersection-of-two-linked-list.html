@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>输入两个链表，找出它们的第一个公共节点。</p>
+	<p>输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3</p>
+	<p>输出：Reference of the node with value = 8</p>
+
+	<script type="text/javascript">
+		const mylist1 = {
+		 	val:4,
+		 	next:{
+		 		val:1,
+		 		next:{
+		 			val:8,
+		 			next:{
+		 				val:4,
+		 				next:{
+		 					val:5,
+		 					next:null
+		 				}
+		 			}
+		 		}
+		 	}
+		 };
+		 const mylist2 = {
+		 	val:5,
+		 	next:{
+		 		val:0,
+		 		next:{
+		 			val:1,
+		 			next:{
+		 				val:8,
+		 				next:{
+		 					val:4,
+		 					next:{
+		 						val:5,
+		 					next:null
+		 					}
+		 				}
+		 			}
+		 		}
+		 	}
+		 };
+
+		 // A走到尾指向B，B走到尾指向A； A、B相遇的第一个节点，就是公共节点。
+		 // 双指针浪漫相遇。
+		
+		const getIntersectionNode1 = function(headA, headB) {
+
+			//保留AB头结点的位置；
+			let dumA = headA; 
+			let dumB = headB;
+
+
+			while(dumA != dumB){
+				dumA ? dumA = dumA.next: dumA = headB;
+				dumB ? dumB = dumB.next: dumB = headA; 
+			}
+
+			return dumA;
+
+				
+		};
+
+
+		// 如果套两个循环呢？
+		// 单纯这样写不行，怎么来定义两个linked-list相等呢？
+		/*const getIntersectionNode = function(headA, headB) {
+
+			while(headA.next){
+				while(headB.next){
+					if(headA === headB) return headA;
+						headA = headA.next;
+						headB = headB.next;
+					}
+				}
+				
+		};
+
+		*/////////这么写错啦
+		
+
+		//getIntersectionNode(mylist1,mylist2);
+	</script>
+
+</body>
+</html>

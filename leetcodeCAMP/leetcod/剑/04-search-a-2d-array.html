@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+	<p>思路1：从矩阵左下角开始搜索，matrix[i][j]大于target，则删除该行；小于target，则删除该列</p>
+	<script type="text/javascript">
+		/**
+		 * @param {number[][]} matrix
+		 * @param {number} target
+		 * @return {boolean}
+		 */
+
+		let myarr= [
+		  [1,   4,  7, 11, 15],
+		  [2,   5,  8, 12, 19],
+		  [3,   6,  9, 16, 22],
+		  [10, 13, 14, 17, 24],
+		  [18, 21, 23, 26, 30]
+		];
+
+
+		let mytrix = [
+			[1,4,7,11,15],
+			[2,5,8,12,19],
+			[3,6,9,16,22],
+			[10,13,14,17,24],
+			[18,21,23,26,30]
+		];
+
+		const findNumberIn2DArray = function(matrix, target) {
+
+			if(matrix.length===0 || matrix[0].length===0) {
+				return false;
+			}; // 不写这行的话，若输入为空，会报错。 
+
+			//boundries and pointers
+			let maxRow = matrix.length;  
+			let maxCol = matrix[0].length; 
+			let c=0,r=maxRow-1; // 左下角
+
+			while(r>=0 && c<maxCol){
+				if (matrix[r][c] > target){ 
+					//matrix.pop();
+					r--; //指针上移
+					console.log(matrix);
+				} else if (matrix[r][c] < target){ 
+					//matrix.forEach(subarr => subarr.shift()); 
+					c++; // 指针右移
+				} else { 
+					return true;//相等
+				}	
+
+			}
+
+			return false;
+
+		};
+
+		findNumberIn2DArray(myarr,5);
+		findNumberIn2DArray(mytrix,20);
+
+
+
+	</script>
+
+</body>
+</html>

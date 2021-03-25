@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+			
+	/**
+	 * @param {number} n
+	 * @return {number}
+	 */
+	const numWays1 = function(n) {
+		if(n<=1) return 1;
+		return (numWays(n-1) + numWays(n-2))% 1000000007;
+	};
+
+	const numWays2 = function(n) {
+		let dp = [1,1];
+
+		for(let i=0; i<=n; i++){
+			if(dp[i] === undefined){
+			    dp[i] = (dp[i-1] + dp[i-2]) % 1000000007;
+			}
+		}
+
+		//return dp[dp.length-1];
+		return dp[n];
+	}
+
+
+	const numWays = function(n){
+		let a=1,b=1;
+		let sum;
+
+		for(let i=0; i<n; i++){
+			sum = (a+b) % 1000000007;
+			a=b;
+			b=sum
+		}
+
+		return a;
+	} 
+
+		
+	</script>
+
+</body>
+</html>

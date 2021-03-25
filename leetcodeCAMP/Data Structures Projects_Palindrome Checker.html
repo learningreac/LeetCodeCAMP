@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Data Structures Projects: Palindrome Checker</title>
+</head>
+<body>
+	<p>Return true if the given string is a palindrome. Otherwise, return false.</p>
+	<p>A palindrome is a word or sentence that's spelled the same way both forward and backward, ignoring punctuation, case, and spacing.</p>
+	<p>palindrome("nope") should return false.</p>
+	<p>palindrome("_eye") should return true.</p>
+
+
+	<script type="text/javascript">
+		function palindrome(str) {
+
+			const regex = /[a-z0-9]/g;
+			let filteredstr = str.toLowerCase().match(regex); 
+			
+
+			let reversedStr = [...filteredstr].reverse();
+
+
+		  return filteredstr.join('')===reversedStr.join(''); //// Array 传引用，所以这里的 origal 与 reverse 均为 epon
+		}
+
+
+		// test here
+		palindrome("nope");
+
+
+		// Another solution 
+		function palindrome2(str) {
+		  return (
+		    str.replace(/[\W_]/g, "").toLowerCase() ===
+		    str
+		      .replace(/[\W_]/g, "")
+		      .toLowerCase()
+		      .split("")
+		      .reverse()
+		      .join("")
+		  );
+		}
+
+
+		//Challenge 2 Roman Numeral Converter
+		//convertToRoman(2) should return "II".
+		//convertToRoman(29) should return "XXIX".
+		function convertToRoman(num) {
+		  let roman = {
+					    M: 1000,
+					    CM: 900,
+					    D: 500,
+					    CD: 400,
+					    C: 100,
+					    XC: 90,
+					    L: 50,
+					    XL: 40,
+					    X: 10,
+					    IX: 9,
+					    V: 5,
+					    IV: 4,
+					    I: 1
+					  };
+
+		 //console.log(Object.keys(roman));
+		 let str = '';
+
+		 for (let i of Object.keys(roman)) {
+		 	//console.log(roman[i]);
+		    let q = Math.floor(num / roman[i]);
+		    console.log(q);
+		    
+		    num -= q * roman[i];
+		    //console.log(num);
+		    //console.log('------')
+		    //repeat q times of the current I 
+		    str += i.repeat(q);
+		    console.log(i);
+		    //console.log(str);
+		    console.log('++++++')
+		  }
+
+		  return str;
+		}
+
+		//convertToRoman(6);
+
+
+
+		
+	</script>
+
+</body>
+</html>

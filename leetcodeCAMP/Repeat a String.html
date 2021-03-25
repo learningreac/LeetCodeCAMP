@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Repeat a String</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// using state
+		function repeatStringNumTimes(str, num) {
+			let reStr = "";
+			for(let i = 0; i< num;i++){
+				reStr += str;
+				console.log(reStr);
+			}
+		  return reStr;
+		}
+
+		// do...while
+		function repeatStringNumTimes(str, num) {
+		  var accumulatedStr = "";
+
+		  while (num > 0) {
+		    accumulatedStr += str;
+		    num--;
+		  }
+
+		  return accumulatedStr;
+		}
+
+		//using recursion
+		function repeatStringNumTimes(str, num) {
+		  return num > 0 ? str + repeatStringNumTimes(str, num - 1) : '';
+		}
+
+repeatStringNumTimes("abc", 3);
+	</script>
+
+</body>
+</html>

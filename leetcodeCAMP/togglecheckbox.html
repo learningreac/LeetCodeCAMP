@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+		<style type="text/css">
+		ul{
+			list-style-type: none;
+			padding-left: 5px;
+		}
+
+		li{
+			/*text-decoration-line:none;*/
+
+			text-decoration:none;
+
+		}
+
+
+	</style>
+	<title></title>
+</head>
+<body>
+
+
+
+	<input type="text" name="" class='myinput'></input>
+	<button class='subbtn'>Add</button>
+	<ul class='mylist'>
+		<li name ="wishList"> <input type="checkbox" class="mycheck" > Pear </li>
+		<li name ="wishList"> <input type='checkbox' class="mycheck" > Box </li>
+		<li name ="wishList"> <input type="checkbox" class="mycheck" > Apple </li>
+		<li name ="wishList"> <input type='checkbox' class="mycheck" > Banna </li>
+		<li name ="wishList"> <input type="checkbox" class="mycheck" > Orange </li>
+		<li name ="wishList"> <input type='checkbox' class="mycheck" > grapes </li>
+
+	</ul>
+
+
+
+	<script type="text/javascript">
+
+	let myulist= document.querySelector('.mylist');
+	//const toggleCheckbox = document.getElementsByTagName('input');
+	//const toggleLi= document.getElementsByTagName('li');
+
+	myulist.addEventListener('click', function(e){
+		//const type = toggleLi.getAttribute('textDecoration'==="none")? "line-through": "none";
+		//toggleLi.setAttribute('textDecoration', type);
+		//let toggleInput= e.target;
+		const toggleLi = e.target.parentElement; 
+		console.log(toggleLi.getAttribute('textDecoration'));
+
+		//const type = toggleLi.getAttribute('textDecoration'==="none")? "line-through": "none";
+		//toggleLi.setAttribute('textDecoration', type);
+
+		console.log(toggleLi);
+	});
+
+
+
+
+	</script>
+
+</body>
+</html>

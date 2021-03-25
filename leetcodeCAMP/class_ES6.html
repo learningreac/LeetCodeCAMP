@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ES6 Object</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//class=>to create objects
+		//ES5
+		var SpaceShuttle = function(targetPlanet){
+		  this.targetPlanet = targetPlanet;
+		}
+		var zeus = new SpaceShuttle('Jupiter');
+		//console.log(zeus)
+		//SpaceShuttle {targetPlanet: "Jupiter"}
+
+		//ES6
+		class SpaceShuttle2 {
+			constructor(targetPlanet){
+				this.targetPlanet = targetPlanet;
+			}
+		}
+		const zeus2 = new SpaceShuttle2 ('Jupiter');
+
+
+		// my solution
+		class Vegetable {
+		    constructor(name) {
+		        this.name = name;
+		    }
+		}
+		const carrot = new Vegetable('carrot');
+		//console.log(carrot.name); // Should display 'carrot'
+
+
+
+
+		//getters and setters
+		class Thermostat {
+			constructor(fahrenheit){
+				this._fahrenheit = fahrenheit;
+			}
+			//getter
+			get temperature(){
+				return (5/9) * (this._fahrenheit -32); //celsius
+			}
+			//setter
+			set temperature(celsius){
+				this._fahrenheit = (celsius*9.0)/5 + 32;
+			}
+		}
+
+		// Setting in Fahrenheit scale
+		const thermos = new Thermostat(76); //Thermostat {_fahrenheit: 76}
+		
+		//use getter to get the temp which was transformed to C
+		let temp = thermos.temperature; // 24.44 in Celsius 
+
+		// call set,ter 
+		// it will return the updated thermos in F
+		thermos.temperature = 30; // set the thermos.temperature to 30 in Celsius
+		console.log(thermos);// Thermostat {_fahrenheit: 95}
+
+
+		//another example of getter and setter
+		// You are creating an API for another user, who can get the correct result regardless of which one you track.
+		class Book {
+		  constructor(author) {
+		    this._author = author;
+		  }
+		  // getter
+		  get writer() {
+		    return this._author;
+		  }
+		  // setter
+		  set writer(updatedAuthor) {
+		    this._author = updatedAuthor;
+		  }
+		}
+		const novel = new Book('anonymous');
+		console.log(novel.writer);  // anonymous
+		novel.writer = 'newAuthor';
+		console.log(novel.writer);  // newAuthor
+		
+	</script>
+
+</body>
+</html>

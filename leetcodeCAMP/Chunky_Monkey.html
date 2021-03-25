@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Write a function that splits an array (first argument) 
+		//into groups the length of size (second argument) 
+		//and returns them as a two-dimensional array.
+
+		function chunkArrayInGroups(arr, size) {
+
+			let chunkarr = [];
+			for(let i=0; i<arr.length; i+=size ) {
+				chunkarr.push(arr.slice(i,i+size));
+				console.log(chunkarr);
+			}
+			return chunkarr;
+		}
+
+		chunkArrayInGroups(["a", "b", "c", "d"], 2); //[["a", "b"], ["c", "d"]]
+		//chunkArrayInGroups([0, 1, 2, 3, 4, 5], 3); //[[0, 1, 2], [3, 4, 5]]
+		//chunkArrayInGroups([0, 1, 2, 3, 4, 5, 6], 3); //[[0, 1, 2], [3, 4, 5], [6]]
+
+
+		function chunkArrayInGroups(arr, size) {
+		  var newArr = [];
+		  var i = 0;
+
+		  while (i < arr.length) {
+		    newArr.push(arr.slice(i, i + size));
+		    i += size;
+		  }
+		  return newArr;
+		}
+
+
+		//array.splice()
+		function chunkArrayInGroups(arr, size) {
+		  var newArr = [];
+		  while (arr.length) {
+		    newArr.push(arr.splice(0, size));
+		  }
+		  return newArr;
+		}
+
+		
+	</script>
+
+</body>
+</html>

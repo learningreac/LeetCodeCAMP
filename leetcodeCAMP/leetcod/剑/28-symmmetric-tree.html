@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。</p>
+	<script type="text/javascript">
+
+		/**
+		 * Definition for a binary tree node.
+		 * function TreeNode(val) {
+		 *     this.val = val;
+		 *     this.left = this.right = null;
+		 * }
+		 */
+		/**
+		 * @param {TreeNode} root
+		 * @return {boolean}
+		 */
+
+		const mytree = {
+			val: 1,
+			left: {
+				val: 2,
+				left: {
+					val: 3,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 4,
+					left: null,
+					right: null
+				}
+			},
+			right: {
+				val: 2,
+				left: {
+					val: 3,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 4,
+					left: null,
+					right: null
+				} 
+			}
+		}
+
+		const isSymmetric = function(root) {
+
+			function recur(leftnode, rightnode){
+				if(leftnode ===null && rightnode ===null) return true;
+				if(leftnode === null || rightnode ===null) return false;
+				if(leftnode.val != rightnode.val) return false;
+				return recur(leftnode.left, rightnode.right) && recur(leftnode.right, rightnode.left);
+			};		
+
+
+			return (root === null)? true: recur(root.left,root.right);
+			
+		};
+
+		//isSymmetric(mytree);
+		
+	</script>
+
+</body>
+</html>

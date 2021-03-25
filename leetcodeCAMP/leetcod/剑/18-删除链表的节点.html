@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。返回删除后的链表的头节点。</p>
+	<script type="text/javascript">
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val) {
+		 *     this.val = val;
+		 *     this.next = null;
+		 * }
+		 */
+		/**
+		 * @param {ListNode} head
+		 * @param {number} val
+		 * @return {ListNode}
+		 */
+		 const mylist = {
+		 	val:4,
+		 	next:{
+		 		val:5,
+		 		next:{
+		 			val:1,
+		 			next:{
+		 				val:9,
+		 				next:null
+		 			}
+		 		}
+		 	}
+		 }
+		const deleteNode1 = function(head, val) {
+			let dummpH = head;
+
+			while(head.next){
+				if(head.next.val === val){
+					head.next = head.next.next;
+					console.log(head);
+					//head = head.next; 
+				}else{
+					head = head.next
+				}
+			} 
+
+			return dummpH;
+
+		}; // 当需要删除的节点在链表中间时，这么写可以；但是当要删除头结点的时候，这样写就不对了。
+
+		//deleteNode(mylist,5);
+
+
+		//特例处理： 当应删除头节点 head 时，直接返回 head.next 即可
+		const deleteNode2 = function(head, val) {
+			let dummpH = head;
+
+			if(head.val === val) return head.next;
+
+			while(head.next){
+				if(head.next.val === val){
+					head.next = head.next.next;
+				}else{
+					head = head.next
+				}
+			} 
+
+			return dummpH;
+
+		}; 
+
+
+		//将dummpH.next指向head  将特殊情况
+		const deleteNode3 = function(head, val) {
+			let dummpH = {
+				val:-1,
+				next:head
+			};//保存head指针 
+
+			let node = dummpH;
+
+			while(node.next){
+				if(node.next.val === val){
+					node.next = node.next.next;
+				}else{
+					node = node.next
+				}
+			} 
+
+			return dummpH.next;
+
+		}; 
+		
+	</script>
+
+</body>
+</html>

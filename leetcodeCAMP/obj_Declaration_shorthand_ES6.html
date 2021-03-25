@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//objects literal for OBJECT PROP SHORTHAND
+		const getMousePosition = (x, y) => ({
+			x: x,
+			y: y
+		});
+		//same as in ES6
+		const getMousePosition = (x, y) => ({ x, y });
+		// creat a person object
+		const createPerson = (name, age, gender) => ({ name, age, gender });
+		createPerson("Zodiac Hasbro", 56, "male");//{name: "Zodiac Hasbro", age: 56, gender: "male"}
+		// SAME AS
+		const createPerson = (name, age, gender) => {
+			"use strict";
+			return {
+				name,
+				age,
+				gender
+			};
+		};
+
+
+		//remove the function keyword and colon altogether when defining functions in objects
+		//ES5
+		const person = {
+		  name: "Taylor",
+		  sayHello: function() {
+		    return `Hello! My name is ${this.name}.`;
+		  }
+		};
+		//ES6
+		const person = {
+		  name: "Taylor",
+		  sayHello() {
+		    return `Hello! My name is ${this.name}.`;
+		  }
+		};
+	</script>
+
+</body>
+</html>

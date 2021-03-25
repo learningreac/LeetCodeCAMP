@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		function findLongestWordLength(str) {
+			const words = str.split(' ');
+			
+			
+			//trial 1: failed 只是两两对比
+			/*let currentMax='';
+			for (let i =0; i<words.length-1; i++){
+				words[i].length>= words[i+1].length? currentMax=words[i]:currentMax=words[i+1];
+				console.log(currentMax);
+			}
+			*/
+
+			//trial 2: successed
+			/*let currentMax = words[0];
+			for(let i =0; i<words.length; i++){
+				words[i].length < currentMax.length? currentMax:currentMax=words[i];
+				console.log(currentMax);
+			}
+		  	return currentMax.length;
+		  	*/
+
+		  	//trial 3: for...of 
+		  	let currentMax = words[0];
+		  	for(let item of words){
+		  		item.length < currentMax.length? currentMax:currentMax=item;
+				console.log(currentMax);
+		  	}
+
+		  	//array.map 答案
+		  	function findLongestWordLength(str) {
+			  return Math.max(...str.split(" ").map(word => word.length));
+			};
+
+
+			//array.reduce 答案
+			function findLongestWordLength(s) {
+			  return s.split(' ')
+			    .reduce(function(x, y) {
+			      return Math.max(x, y.length)
+			    }, 0);
+			};
+
+
+		}
+
+		findLongestWordLength("The quick brown fox jumped over the lazy dog");
+	</script>
+
+</body>
+</html>

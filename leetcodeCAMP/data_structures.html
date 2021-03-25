@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		function greaterThanTen(arr) {
+		  let newArr = [];
+		  for (let i = 0; i < arr.length; i++) {
+		    if (arr[i] > 10) {
+		      newArr.push(arr[i]);
+		    }
+		  }
+		  return newArr;
+		}
+
+		greaterThanTen([2, 12, 8, 14, 80, 0, 1]);
+		// returns [12, 14, 80]
+
+		function filteredArray(arr, elem) {
+		  let newArr = [];
+		  // Only change code below this line
+		  for(let i =0;i<arr.length;i++){
+		    if(arr[i].indexOf(elem)<0){
+		      newArr.push(arr[i]);
+		    }
+		  }
+		  // Only change code above this line
+		  return newArr;
+		}
+
+		console.log(filteredArray([[3, 2, 3], [1, 6, 3], [3, 13, 26], [19, 3, 9]], 3)); //[]
+
+		
+		//Access Property Names with Bracket Notation
+		let foods = {
+		  apples: 25,
+		  oranges: 32,
+		  plums: 28,
+		  bananas: 13,
+		  grapes: 35,
+		  strawberries: 27
+		};
+
+		function checkInventory(scannedItem) {
+		  // Only change code below this line
+		    return foods[scannedItem];
+		  // Only change code above this line
+		}
+
+		console.log(checkInventory("apples"));
+
+
+		//check if an obj has a property
+		//users.hasOwnProperty('Alan');
+		//'Alan' in users; //sama as above
+
+		let users = {
+		  Alan: {
+		    age: 27,
+		    online: true
+		  },
+		  Jeff: {
+		    age: 32,
+		    online: true
+		  },
+		  Sarah: {
+		    age: 48,
+		    online: true
+		  },
+		  Ryan: {
+		    age: 19,
+		    online: true
+		  }
+		};
+
+		function isEveryoneHere(obj) {
+	
+		  return ['Alan','Jeff','Sarah','Ryan'].every(name => obj.hasOwnProperty(name));
+		  // return true if obj has all 4 names
+		}
+
+		console.log(isEveryoneHere(users));
+
+
+
+	</script>
+
+</body>
+</html>

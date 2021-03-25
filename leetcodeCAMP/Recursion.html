@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		//Recursion is the concept that 
+		//a function can be expressed in terms of itself. 
+		function multiply(arr, n) {
+			var product = 1;
+			for (var i = 0; i < n; i++) {
+				product *= arr[i];
+			}
+			return product;
+		}
+
+		//same as
+		function myMultiply(arr, n) {
+			if (n <= 0) {
+				return 1; //base case
+			} else {
+				return myMultiply(arr, n - 1) * arr[n - 1];
+			}
+		}
+
+
+
+		//return the sum
+		function sum(arr, n) {
+			if (n <= 0) {
+				return 0;
+			} else {
+				return sum(arr, n - 1) + arr[n - 1];
+			}
+		}
+
+		//count up
+		function countup(n) {
+			if (n < 1) {
+				return [];
+			} else {
+				const countArray = countup(n - 1);
+				countArray.push(n);
+				return countArray;
+			}
+		}
+		console.log(countup(5)); // [ 1, 2, 3, 4, 5 ]
+
+		//count down
+		function countdown(n) {
+			if (n < 1) {
+				return [];
+			} else {
+				const arr = countdown(n - 1);
+				arr.unshift(n);
+				return arr;
+			}
+		}
+
+		//same as
+		function countdown(n) {
+			if (n < 1) {
+				return [];
+			} else {
+				const arr = countdown(n - 1);
+				//splice() insert at index 0
+				// insert if the 2nd para is 0
+				// replace if the 2nd para is >0, replace 1 or 2... 
+				arr.splice(0, 0, n);
+				return arr;
+			}
+		}
+		//same as
+		function countdown(n) {
+			return n < 1 ? [] : [n].concat(countdown(n - 1));
+		}
+		//or
+		function countdown(n) {
+			return n < 1 ? [] : [n, ...countdown(n - 1)];
+		}
+
+	</script>
+
+</body>
+
+</html>

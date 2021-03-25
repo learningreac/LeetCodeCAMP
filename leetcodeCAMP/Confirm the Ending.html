@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Confirm the Ending</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//1. using array.slice(), array.join()
+		function confirmEnding(str, target) {
+			let length = target.length;
+			return str.split('').slice(-length).join('') === target;	  
+		} //my solution 
+
+		//2. 答案
+		function confirmEnding(str, target) {
+		  return str.slice(str.length - target.length) === target;
+		}
+
+		//3. 不需要先分成单个字母
+		function confirmEnding(str, target) {
+		  return str.slice(-target.length) === target
+		}
+
+
+
+		// construct a new RegExp object 
+		function confirmEnding(str, target) {
+
+			let re =  new RegExp(target + "$", "i");
+			return re.test(str);
+		}
+
+
+
+		confirmEnding("Bastian", "n");
+
+	</script>
+
+</body>
+</html>

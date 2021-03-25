@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>Return true if the passed string looks like a valid US phone number.</p>
+	<p>telephoneCheck("555)-555-5555") should return false.</p>
+
+
+	<p> Project 2 :Cash Register
+	<script type="text/javascript">
+		function telephoneCheck(str) {
+			//only have numbers and () and -
+			
+			//1. the first digit area code should be 1, if exits;
+			//2. (?555)? ()show both or not
+			//3.-?555-?
+			//4.5555 $
+
+			
+			let regex = /^(1\s?)?(\(\d{3}\)|\d{3})[\-\s]?\d{3}[\-\s]?\d{4}$/;
+			//or
+			let re = /^([+]?1[\s]?)?((?:[(](?:[2-9]1[02-9]|[2-9][02-8][0-9])[)][\s]?)|(?:(?:[2-9]1[02-9]|[2-9][02-8][0-9])[\s.-]?)){1}([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2}[\s.-]?){1}([0-9]{4}){1}$/;
+
+			return regex.test(str);
+		}
+
+
+		//test here
+		telephoneCheck("555-555-5555");
+
+
+
+		// Challenge 2 Cash Register
+		function checkCashRegister(price, cash, cid) {
+			// if status = open, list the currency you need;
+			// if status = insufficent funds, change = [];
+			// if status = closed, change = cid;
+
+			// STEP 1
+			let total  = cid.map(item => item[1]).reduce(function(acc,curr){return acc+curr});
+			//console.log( `total= ${total}`);
+			let chanAmount = cash-price;
+			//console.log(`change= ${chanAmount}`);
+			let status;
+			let change = [];
+
+
+			// STEP 2
+			let currUnit = [0.01,0.05,0.1,0.25,1,5,10,20,100];
+
+
+			//STEP 3: CACULATE
+			let currChange = 0;
+			function calCulate([name,amount],unit){
+				let weight = Math.floor(chanAmount/unit);
+				if(weight*unit > amount){ 
+					weight = Math.floor(amount/unit);
+				}
+
+				chanAmount = Math.round((chanAmount-weight*unit)*10000)/10000;
+				currChange +=  weight*unit;
+				change.push([name, weight*unit]);
+
+				console.log(change)
+			}
+
+
+		  //
+			for(let i=cid.length-1, j=currUnit.length-1; i>=0,j>=0; i--,j--){calCulate(cid[i],currUnit[i])}
+				
+			
+			if(total === cash-price){
+				status = "CLOSED";
+				change = cid
+			}else if(total<cash-price || currChange<cash-price){
+				status = "INSUFFICIENT_FUNDS";
+				change = []
+			} else {
+				status = "OPEN";
+				change = change.filter(item => item[1] != 0);
+			}
+
+
+
+
+		  return {"status": status,
+				  "change": change};
+		}
+
+
+		//checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);//should return {status: "OPEN", change: [["TWENTY", 60], ["TEN", 20], ["FIVE", 15], ["ONE", 1], ["QUARTER", 0.5], ["DIME", 0.2], ["PENNY", 0.04]]}.
+		//checkCashRegister(19.5, 20, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]); //should return {status: "INSUFFICIENT_FUNDS", change: []}
+		//checkCashRegister(19.5, 20, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]); //should return {status: "INSUFFICIENT_FUNDS", change: []}
+		//checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]); // [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]}
+
+		/// OTHER SOLUTIONS
+		function checkCashRegister2(price, cash, cid) {
+		  // All amounts are multiplied by 100 until the final result to avoid errors with floating point math
+		  const denominations = { "PENNY": 1, "NICKEL": 5, "DIME": 10, "QUARTER": 25, "ONE": 100, "FIVE": 500, "TEN": 1000, "TWENTY": 2000, "ONE HUNDRED": 10000 }
+		  let changeDue = (cash * 100 - price * 100);
+		  const register = cid.reverse().map(el => [el[0], Math.round(el[1]*100)]);
+		  const registerTotal = register.reduce((sum, elem) => (sum + elem[1]), 0);
+		  
+		  if (changeDue > registerTotal ) return "Insufficient Funds";
+		  if (changeDue === registerTotal ) return "Closed";
+
+		  let partial;
+		  let change = register.reduce((acc, elem) => {
+		        // for each denomination calculate the lesser of (a) the amount that could be paid with that
+		         // denomination without going over the amount owed, and (b) the actual amount of that denomination in 
+		        // the register. Denominations not used to make change are excluded from the resulting array.
+		        partial = Math.min(elem[1], Math.floor(changeDue / denominations[elem[0]]) * denominations[elem[0]]);
+		        if ( partial > 0 ) {
+		          changeDue -= partial;
+		          acc.push([elem[0], partial / 100]);
+		        } return acc;
+		    }, [])
+		      
+		  // If the correct change could not be made from what was in the register.
+		  if (changeDue > 0 ) return "Insufficient Funds"
+
+		  return change;
+		}
+
+		
+	</script>
+
+</body>
+</html>

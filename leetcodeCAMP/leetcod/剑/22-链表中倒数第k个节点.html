@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>给定一个链表: 1->2->3->4->5, 和 k = 2.  返回链表 4->5.</p>
+	<script type="text/javascript">
+		
+		 const mylist = {
+		 	val:1,
+		 	next:{
+		 		val:2,
+		 		next:{
+		 			val:3,
+		 			next:{
+		 				val:4,
+		 				next:{
+		 					val:5,
+		 					next:null
+		 					}
+		 				}
+		 			}
+		 		}
+		 	};
+
+		 	// 特殊情况》 head为空或者K=0
+		 	// 快慢双指针
+		const getKthFromEnd = function(head, k) {
+			let slow = head;
+			let fast = head;
+
+			if(head === null || k ===0) return null; //考虑特殊情况
+
+			while(k > 0){
+				fast = fast.next;
+				k--;
+			}
+
+			//console.log(fast);
+
+			while(fast){
+				fast = fast.next;
+				slow = slow.next;
+			}
+
+			return slow;
+
+		};	
+
+
+		//用map遍历存储所有节点
+		const getKthFromEnd2 = function(head, k) {
+			let nodeMap = new Map();
+			let nodeIndex = 1;
+
+			while(head){
+				nodeMap.set(nodeIndex, head);
+				head = head.next;
+				nodeIndex++;
+			}
+
+			return nodeMap.get(nodeIndex - k);
+		}
+
+		//getKthFromEnd(mylist,2);
+
+
+	</script>
+
+</body>
+</html>

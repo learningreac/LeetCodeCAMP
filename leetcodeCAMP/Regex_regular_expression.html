@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Regular Expressions</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		//1.CHECKING IF EXISTS
+		//.test()
+		let testStr = "freeCodeCamp";
+		let testRegex = /Code/;//case sentitive
+		testRegex.test(testStr); // Returns true
+
+		// multi search
+		let petString = "James has a pet cat.";
+		let petRegex = /dog|cat|bird|fish/; 
+		let result = petRegex.test(petString);
+
+		//ignore case  using flag i
+		let myString = "freeCodeCamp";
+		let fccRegex = /freecodecamp/i; 
+
+		//2. Extract Matches pass in []
+		"Hello, World!".match(/Hello/);
+		// Returns ["Hello"]
+
+		//.test() and .match() have opposite syntax ？？？
+		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		'string'.match(/regex/);
+		/regex/.test('string');
+		let firstString = "Ricky is first and can be found.";
+		let firstRegex = /^Ricky/;
+		firstRegex.test(firstString);
+		// Returns true
+		let notFirst = "You can't find Ricky now.";
+		firstRegex.test(notFirst);
+		// Returns false
+
+
+
+		// find a pattern more than once
+		// g flag
+		let repeatRegex = /Repeat/g;
+		testStr.match(repeatRegex);
+		// Returns ["Repeat", "Repeat", "Repeat"]
+
+		//Wildcard Period
+		let humStr = "I'll hum a song";
+		let hugStr = "Bear hug";
+		let huRegex = /hu./;
+		huRegex.test(humStr); // Returns true
+		huRegex.test(hugStr); // Returns true
+
+		//character classes for multiple possibilities
+		let bigStr = "big";
+		let bagStr = "bag";
+		let bugStr = "bug";
+		let bogStr = "bog";
+		let bgRegex = /b[aiu]g/;
+
+		let quoteSample = "Beware of bugs in the above code; I have only proved it correct, not tried it.";
+		let vowelRegex = /[aeiou]/ig; // find all the vowels
+		let result = quoteSample.match(vowelRegex); 
+
+		//Match Letters of the Alphabet
+		//hyphen (-) 
+		let catStr = "cat";
+		let batStr = "bat";
+		let matStr = "mat";
+		let bgRegex = /[a-e]at/;
+
+		// also numbers
+		let jennyStr = "Jenny8675309";
+		let myRegex = /[a-z0-9]/ig;
+		// matches all letters and numbers in jennyStr
+		jennyStr.match(myRegex);
+
+		//negated character sets
+		///[^aeiou]/gi matches all characters that are not a vowel
+		let quoteSample = "3 blind mice.";
+		let myRegex = /[^aeiou0-9]/ig; // no vowels and no numbers
+		let result = quoteSample.match(myRegex); //[" ", "b", "l", "n", "d", " ", "m", "c", "."]
+
+		//Match Characters that Occur One or More Times
+		let difficultSpelling = "Mississippi";
+		let myRegex = /s+/g; // + sign to look for occur one or more times
+		let result = difficultSpelling.match(myRegex);//["ss", "ss"]
+
+		//Match Characters that Occur Zero or More Times
+		let soccerWord = "gooooooooal!";
+		let gPhrase = "gut feeling";
+		let oPhrase = "over the moon";
+		let goRegex = /go*/;
+		soccerWord.match(goRegex); // Returns ["goooooooo"]
+		gPhrase.match(goRegex); // Returns ["g"]
+		oPhrase.match(goRegex); // Returns null
+
+		//Greedy Matching and Lazing Mathcing
+		let boatWord = 'titanic';
+		let greedyMatch = /t[a-z]*i/;
+		let  lazyMatch = /t[a-z]*?i/;
+		boatWord.match(greedyMatch); //returns ['titani']
+		boatWord.match(lazyMatch); //returns ['ti']
+
+		//return HTML tag<h1> not the text
+		let text = "<h1>Winter is coming</h1>";
+		let myRegex = /<.*?>/; // lazy match
+		let result = text.match(myRegex);
+
+
+		//match beginning string patterns
+		//caret character(^) inside a [] to creat a negated character set
+		//(^) outside a character set is to search for patterns at the beginning of the strings
+		let firstString = "Ricky is first and can be found.";
+		let firstRegex = /^Ricky/;
+		firstRegex.test(firstString);
+		// Returns true
+		let notFirst = "You can't find Ricky now.";
+		firstRegex.test(notFirst);
+		// Returns false
+
+
+		//match ending string patterns
+		let theEnding = "This is a never ending story";
+		let storyRegex = /story$/;
+		storyRegex.test(theEnding);
+		// Returns true
+		let noEnding = "Sometimes a story will have to end";
+		storyRegex.test(noEnding);
+		// Returns false
+
+		//match all letters and numbers and (_)
+		//shorthand character classes 
+		// /\w/
+		let longHand = /[A-Za-z0-9_]+/;
+		let shortHand = /\w+/;
+		let numbers = "42";
+		let varNames = "important_var";
+		longHand.test(numbers); // Returns true
+		shortHand.test(numbers); // Returns true
+
+		//Match Everything But Letters and Numbers-non-alphanumeric characters
+		// /\W/  same as [^A-Za-z0-9_]
+		let shortHand = /\W/;
+		let numbers = "42%";
+		let sentence = "Coding!";
+		numbers.match(shortHand); // Returns ["%"]
+		sentence.match(shortHand); // Returns ["!"]
+
+		let quoteSample = "The five boxing wizards jump quickly.";
+		let nonAlphabetRegex = /\W/g; // Change this line
+		let result = quoteSample.match(nonAlphabetRegex).length;
+
+		//MATCH all numbers  \d eaual to [0-9]
+		//all Non-numbers \D equal to [^0-9]
+		let movieName = "2001: A Space Odyssey";
+		//how many digits are in movie titles.
+		let numRegex = /\d/g; 
+		let result = movieName.match(numRegex).length;
+		//how many non-digits are in movie titles.
+		let noNumRegex = /\D/g; 
+		let result = movieName.match(noNumRegex).length;
+
+		//Whitespace /\s/ 
+		//Non-whitespace /\S/
+
+
+
+		//Specify exact number of matches
+		let A4 = "haaaah";
+		let A3 = "haaah";
+		let A100 = "h" + "a".repeat(100) + "h";
+		let multipleHA = /ha{3}h/;
+		multipleHA.test(A4); // Returns false
+		multipleHA.test(A3); // Returns true
+		multipleHA.test(A100); // Returns false
+
+		// check for all or none
+		let american = "color";
+		let british = "colour";
+		let rainbowRegex= /colou?r/;
+		rainbowRegex.test(american); // Returns true
+		rainbowRegex.test(british); // Returns true
+
+		//positive and negative lookahead
+		let password = "abc123";
+		let checkPass = /(?=\w{3,6})(?=\D*\d)/;
+		checkPass.test(password); // Returns true
+
+		//specify upper and lower number of matches
+		let A4 = "aaaah";
+		let A2 = "aah";
+		let multipleA = /a{3,5}h/; //to match only the letter a appearing between 3 and 5 times
+		multipleA.test(A4); // Returns true
+		multipleA.test(A2); // Returns false
+
+		//Specify Only the Lower Number of MatchesPassed
+		let A4 = "haaaah";
+		let A2 = "haah";
+		let A100 = "h" + "a".repeat(100) + "h";
+		let multipleA = /ha{3,}h/; //a appearing at least 3 times
+		multipleA.test(A4); // Returns true
+		multipleA.test(A2); // Returns false
+		multipleA.test(A100); // Returns true
+
+		let multipleHA2 = /ha{3}h/; // exact number
+
+
+
+
+		
+
+
+		
+
+
+
+
+
+
+
+	</script>
+
+</body>
+</html>

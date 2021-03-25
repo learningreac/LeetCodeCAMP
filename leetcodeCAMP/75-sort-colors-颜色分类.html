@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>sortColors</title>
+</head>
+<body>
+	<script type="text/javascript">
+		/**
+		 * @param {number[]} nums
+		 * @return {void} Do not return anything, modify nums in-place instead.
+		 */
+
+		 const quickSort = function(nums, left,right){
+				let tmp; // for swapping
+				let i=left;
+				let j=right;
+				let pivot = nums[left];
+
+			//
+				while(i!=j){
+
+					//find the first num smaller than bmk at the right side
+					while(nums[j]>pivot && i<j){
+						j--;
+					};
+
+					// find the first num bigger than the bmk at the left side
+					while(nums[i]<=pivot && i<j){
+						i++;
+					};
+
+					//swap
+					if(i<j){
+						[nums[i],nums[j]] = [nums[j],nums[i]];
+					}
+					
+			
+				};
+
+				//benchmark
+				
+				console.log(i,j);
+				console.log(nums);
+				[nums[left],nums[i]] = [nums[i],nums[left]];
+				console.log(nums);
+
+				//recursion the leftside and the rightside respectively
+				//quickSort(nums, left,i-1);
+				//quickSort(nums, i+1, right);
+
+			}// end quickshort
+
+		const sortColors = function(nums) {
+			let n = nums.length-1;
+			quickSort(nums, 0,n);
+		    return nums;
+		};
+
+		//sortColors([2,1,0,2,0,1]);
+		sortColors([3,5,2,4,1]);
+
+
+		//Solution 2
+		const sortColors2 = function(nums) {
+			let left = 0;
+			let right = nums.length-1;
+
+			for(let i=left; i<=right;i++){
+				if(nums[i]===0){
+					[nums[left],nums[i]] = [nums[i],nums[left]];
+					left++;
+				} else if(nums[i]===2){
+					[nums[right],nums[i]] = [nums[i],nums[right]];
+					right--;
+					i--;
+				}
+			}
+
+			console.log(nums);
+    
+		};
+
+		console.log(sortColors2([2,0,2,1,1,0]));
+	</script>
+
+</body>
+</html>

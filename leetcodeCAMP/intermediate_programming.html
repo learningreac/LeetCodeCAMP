@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//1.Sum All Numbers in a Range
+		//sumAll([4,1]) ==> 1+2+3+4=10
+		function sumAll(arr) {
+		  let copyArr = [].concat(arr).sort((a,b) => a-b); // don't change the orignal arr
+		  let sum=0;
+		  for( let i=copyArr[0]; i<=copyArr[1]; i++){
+		  	sum += i;
+		  	//console.log(sum);
+
+		  }
+		  return sum
+		}
+
+		sumAll([1, 4]);
+
+		//2.Diff Two Arrays
+		//[1, 2, 3, 5], [1, 2, 3, 4, 5]  ==>[4];
+		//[1, "calf", 3, "piglet"], [1, "calf", 3, 4]  ==> ["piglet", 4]
+		function diffArray(arr1, arr2) {
+		  var newArr = [];
+		  /*arr2.forEach( num => {
+		  		if(arr1.includes(num)===false){
+		  		newArr.push(num);
+		  		console.log(newArr);
+		  	}});
+		  	*/
+
+		  function checkF(arr,num){
+		  	if(arr.includes(num)===false){
+		  		newArr.push(num);
+		  	}
+		  }
+
+		  arr1.forEach(num => checkF(arr2,num));
+		  arr2.forEach(num => checkF(arr1,num));
+		  
+
+		  /*for(let num of arr2){
+		  	if(arr1.includes(num)===false){
+		  		newArr.push(num);
+		  		console.log(newArr);
+		  	}
+		  }*/
+		  return newArr;
+		}
+
+		diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);// [4]
+		diffArray([1, 2, 3, 6], [1, 2, 3, 4, 5,7]);//[4, 5, 7, 6]
+		diffArray([1, "calf", 3, "piglet"], [1, "calf", 3, 4]); //[4, "piglet"]
+
+
+		//use array.concat() and array.filter()
+		function diffA(arr1,arr2){
+			return arr1.concat(arr2)
+					   .filter(item => {!arr1.includes(item) ||!arr2.includes(item)});
+		}
+
+
+		//3.Seek and Destroy
+		//destroyer([3, 5, 1, 2, 2], 2, 3, 5) should return [1]
+		function destroyer(arr) {
+			//converte the arguments object to a real Array
+		 	let args = Array.prototype.slice.call(arguments, 0);
+		 	//or
+		 	//var args = [].slice.call(arguments);
+		 	//let args = Array.from(arguments);
+			// or
+			//let args = [...arguments];
+			let checkNums = args.slice(1); //
+			let checkArr = args[0];
+			return checkArr.filter(item => !checkNums.includes(item))
+		}
+
+		destroyer([1, 2, 3, 1, 2, 3], 2, 3);
+
+
+		function destroyer2(arr) {
+		  var args = Array.prototype.slice.call(arguments);
+		  console.log(arr);//=>[1, 2, 3, 1, 2, 3]  
+
+		  for (var i = 0; i < arr.length; i++) {
+		    for (var j = 0; j < args.length; j++) {
+		      if (arr[i] === args[j]) {
+		        delete arr[i];
+		      }
+		    }
+		  }
+		  console.log(arr); //[1, 空 × 2, 1, 空 × 2] ==> after delete, the index is still there.
+		  return arr.filter(Boolean);
+		}
+
+
+		//another solution
+		function destroyer3(arr) {
+		  var args = Array.from(arguments).slice(1); // the rest of the arguments(1st not include)
+		  return arr.filter(function(val) {
+		    return !args.includes(val);
+		  });
+		}
+
+		// ES6
+		const destroyer4 = (arr, ...valsToRemove) => arr.filter(elem => !valsToRemove.includes(elem));
+
+
+		//4. looks through an array of objects (first argument) 
+		//and returns an array of all objects that have matching name and value pairs (second argument)
+
+		function whatIsInAName(collection, source) {
+		  		  
+		  //get the keys from source;
+		  let keys = Object.keys(source); //return an array
+
+		  //filter the collection 
+		  return collection.filter(function(obj) {
+		  	for(let i=0; i<keys.length; i++) {
+		  		if(
+		  			!obj.hasOwnProperty(keys[i]) ||
+		  			obj[keys[i]] !== source[keys[i]]
+		  		) {
+		  			return false;
+		  		} 
+		  	}
+		  	return true;
+		  });
+		  
+
+		}
+
+		//whatIsInAName([{ first: "Romeo", last: "Montague" }, { first: "Mercutio", last: null }, { first: "Tybalt", last: "Capulet" }], { last: "Capulet" }); 
+		//[{ first: "Tybalt", last: "Capulet" }]
+		whatIsInAName([{ "apple": 1 }, { "apple": 1 }, { "apple": 1, "bat": 2 }], { "apple": 1 }) ;
+		//[{ "apple": 1 }, { "apple": 1 }, { "apple": 1, "bat": 2 }]
+		whatIsInAName([{ "apple": 1, "bat": 2 }, { "apple": 1 }, { "apple": 1, "bat": 2, "cookie": 2 }], { "apple": 1, "cookie": 2 });
+		//[{ "apple": 1, "bat": 2, "cookie": 2 }].
+
+
+		function whatIsInAName2(collection,source) {
+			const keys = Object.keys(source);
+
+			//array.every
+			return collection.filter(function(obj){
+				return keys.every(function(key){
+					return obj.hasOwnProperty(key) && obj[key] === source[key];
+				});
+			});
+		}
+
+		//array.map
+		function whatIsInAName3(collection,source){
+			const keys = Object.keys(source);
+
+			return collection.filter(function(obj){
+				return keys.map(function(key) {
+					return obj.hasOwnProperty(key) && obj[key] === source[key];
+					})
+					.reduce(function(a, b) {
+				        return a && b;
+				     });
+			});
+		}
+
+
+		// CHANNLENG 5: Spinal Tap Case
+		// all-lowercase-words-joined-by-dashes.
+		function spinalCase(str) {
+
+		  // Create a variable for the white space and underscores.
+		  var regex = /\s+|_+/g;
+
+		  // Replace low-upper case to low-space-uppercase
+		  str = str.replace(/([a-z])([A-Z])/g, "$1 $2");
+
+		  // Replace space and underscore with -
+		  return str.replace(regex, "-").toLowerCase();
+		}
+
+		//OR
+		function spinalCase2(str) {
+		  // Replace low-upper case to low-space-uppercase
+		  str = str.replace(/([a-z])([A-Z])/g, "$1 $2");
+		  // Split on whitespace and underscores and join with dash
+		  return str
+		    .toLowerCase()
+		    .split(/(?:_| )+/)
+		    .join("-");
+		}
+
+		function spinalCase3(str) {
+
+		  return str
+		    .split(/\s|_|(?=[A-Z])/) //
+		    .join("-")
+		    .toLowerCase();
+		}
+		//or is followed by an uppercase letter [(?=[A-Z])]
+
+		//spinalCase('This Is Spinal Tap');//==> "this-is-spinal-tap"
+		//spinalCase("TheAndyGriffith_Show"); //"the-andy-griffith-show"
+		//spinalCase("thisIsSpinalTap");
+		spinalCase("AllThe-small Things") //"all-the-small-things"
+
+
+		//CHALLENGE 6 Pig Latin
+		//- If a word begins with a consonant, take the first consonant or consonant cluster, move it to the end of the word, and add "ay" to it.
+		//- If a word begins with a vowel, just add "way" at the end.
+
+		function translatePigLatin(str) {
+		  return str
+		    .replace(/^[aeiou]\w*/, "$&way")
+		    .replace(/(^[^aeiou]+)(\w*)/, "$2$1ay");
+		}
+
+		// test here
+		translatePigLatin("consonant");
+
+
+		//CHALLAENGE 6 Search and Replace
+		//myReplace("Let us go to the store", "store", "mall") ==> "Let us go to the mall"
+		// the case must be the same after replace
+
+		function myReplace(str, before, after) {
+		  //break the str into words
+		  let strArr = str.split(' ');
+
+		  //check if there is a Capital letter in before
+		  if( /^[A-Z]/.test( before) ) { 
+		  		//change after
+		  		after = after.replace(after[0],after[0].toUpperCase());
+		  } else {
+		  	after = after.replace(after[0],after[0].toLowerCase());
+		  };
+
+
+		  for(let i=0; i<strArr.length;i++){
+		  	strArr[i] === before? strArr[i]=after:strArr[i];
+		  }
+
+		  return strArr.join(' ');
+
+		}
+
+		myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped");; //
+		myReplace("His name is Tom", "Tom", "john"); // "His name is John"
+
+
+		// using str.substring()
+		function myReplace2(str, before, after) {
+		  // Check if first character of argument "before" is a capital or lowercase letter and change the first character of argument "after" to match the case
+		  if (/^[A-Z]/.test(before)) {
+		    after = after[0].toUpperCase() + after.substring(1)
+		  } else {
+		    after = after[0].toLowerCase() + after.substring(1)
+		  }
+
+		  // return string with argument "before" replaced by argument "after" (with correct case)
+		  return str.replace(before, after);
+		}
+
+
+		// using str.charAt()
+		function myReplace(str, before, after) {
+		  // Find index where before is on string
+		  var index = str.indexOf(before);
+		  // Check to see if the first letter is uppercase or not
+		  if (str[index] === str[index].toUpperCase()) {
+		    // Change the after word to be capitalized before we use it.
+		    after = after.charAt(0).toUpperCase() + after.slice(1);
+		  } else {
+		    // Change the after word to be uncapitalized before we use it.
+		    after = after.charAt(0).toLowerCase() + after.slice(1);
+		  }
+		  // Now replace the original str with the edited one.
+		  str = str.replace(before, after);
+
+		  return str;
+		}
+
+
+		//---------------------------------------------------------------------------
+		// CHALLENGE 7: DNA Pairing
+		// there are four potential characters that exist in DNA: “A”, “T”, “G”, and “C”. 
+		//“A” and “T” are always paired together, and “G” and “C” are always paired together.
+		//pairElement("ATCGA") should return [["A","T"],["T","A"],["C","G"],["G","C"],["A","T"]]
+
+		function pairElement(str) {
+		  let DNAarr = str.split('');
+
+		  for(let i=0; i<DNAarr.length; i++){
+		  	if(DNAarr[i]==="A") {
+		  		DNAarr[i] = new Array('A','T')
+		  	} else if(DNAarr[i]==="T") {
+		  		DNAarr[i] = new Array('T','A')
+		  	} else if(DNAarr[i]==="G") {
+		  		DNAarr[i] = new Array('G','C')
+		  	} else {
+		  		DNAarr[i] = new Array('C','G')
+		  	}
+		  }
+		  return DNAarr;
+		}
+
+		pairElement("GCG"); 
+
+
+		//inner function swtich case
+		function pairElement(str) {
+			let pairedArr = [] 
+
+			const search = function(char) {
+				switch(char) {
+					case 'A':
+						pairedArr.push(['A','T']);
+						break;
+					case 'T':
+						pairedArr.push(['T','A']);
+						break;
+					case 'C':
+						pairedArr.push(['C','G']);
+						break;
+					case 'G':
+						pairedArr.push(['G','C']);
+						break;
+				}
+			} //END SEARCH
+
+			//LOOP THROUGH THE STR
+			for(let i=0; i<str.length;i++){
+				search(str[i]);
+			}
+
+			return pairedArr;
+		}
+
+		//create object for pair lookup
+
+		function pairElement(str) {
+		  var pairs = {
+		    A: "T",
+		    T: "A",
+		    C: "G",
+		    G: "C"
+		  };
+		  //split string into array of characters
+		  var arr = str.split("");
+		  //map character to array of character and matching pair
+		  return arr.map(x => [x, pairs[x]]);
+		}
+//----------------------------------------------------
+		//CHALLENGE 8:Missing letters
+		//Find the missing letter in the passed letter range and return it.
+		//fearNotLetter("abce") should return "d".
+
+		function fearNotLetter(str) {
+
+			let alphbt = [...Array(26)].reduce(a=>a+String.fromCharCode(i++),'',i=97); 
+			//==>"abcdefghijklmnopqrstuvwxyz"
+			//get the index of the first and last letter 
+			let start = alphbt.charAt(str[0]);
+			let end = alphbt.charAt(str[str.length-1]);
+			//get the sub str
+			let sstr = alphbt.slice(start, end);
+			let strArr = str.split('');
+			console.log(strArr);
+
+		  return sstr.split('')
+		  			 .filter(letter => !strArr.includes(letter))
+		  			 .join('');
+		}
+
+		fearNotLetter("abce");
+
+		//
+		function fearNotLetter2(str) {
+		  for (let i = 1; i < str.length; ++i) {
+		    if (str.charCodeAt(i) - str.charCodeAt(i - 1) > 1) {
+		      return String.fromCharCode(str.charCodeAt(i - 1) + 1);
+		    }
+		  }
+		}
+
+		//
+		function fearNotLetter3(str) {
+		  var compare = str.charCodeAt(0),
+		    missing;
+
+		  str.split("").map(function(letter, index) {
+		    if (str.charCodeAt(index) == compare) {
+		      ++compare;
+		    } else {
+		      missing = String.fromCharCode(compare);
+		    }
+		  });
+
+		  return missing;
+		}
+
+		//
+		function fearNotLetter4(str) {
+		  for (var i = 0; i < str.length; i++) {
+		    /* code of current character */
+		    var code = str.charCodeAt(i);
+
+		    /* if code of current character is not equal to first character + no of iteration
+		        hence character has been escaped */
+		    if (code !== str.charCodeAt(0) + i) {
+		      /* if current character has escaped one character find previous char and return */
+		      return String.fromCharCode(code - 1);
+		    }
+		  }
+		  return undefined;
+		}
+
+
+	</script>
+
+</body>
+</html>

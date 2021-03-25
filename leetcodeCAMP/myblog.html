@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Blog</title>
+</head>
+<body>
+
+
+	<script type="text/javascript">
+		let obj = {a:10, b:20, c:'apple'};
+
+
+		function handleobj(event) {
+			console.log(event.a);
+			console.log(event.b);
+			console.log(event.c);
+		}
+
+
+		handleobj(obj);
+
+
+		let obj2 = {anumber:100, a:300, b:50, key:'id', c:"pad"}
+		handleobj(obj2);
+
+
+		function handlebody(bodyelement) {
+			console.log(bodyelement);
+		}
+
+		handlebody(document.body);
+
+		let appendItem = function(newItem) {
+			let newitemlist = [
+				...itemlist,
+				newItem];
+				setItemlist(newitemlist)
+		}
+
+	</script>
+
+</body>
+</html>

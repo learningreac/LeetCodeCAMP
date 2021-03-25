@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Remove all falsy values from an array.
+
+		//1.my code
+		function bouncer(arr) {
+			for(let i = 0; i<arr.length; i++){
+				if(Boolean(arr[i])===false){
+					arr.splice(i,1);
+					i--;// make sure not skip the next item
+					console.log(arr);
+				}
+			}
+		  return arr;
+		}
+
+		bouncer([7, "ate", "", false, 9]);// [7, "ate", 9]
+
+		//2. my code ==> array.filter() 
+		function bouncer(arr) {
+			return arr.filter(item => Boolean(item)===true);
+		};
+
+		// 官方答案
+		function bouncer(arr) {
+		  return arr.filter(Boolean);
+		}
+
+		//array.push()
+		function bouncer(arr) {
+			let newArr = [];
+			for(let item of arr){
+				if(Boolean(item)){
+					newArr.push(item);
+				}
+			}
+			return newArr;
+		}
+
+
+
+
+	</script>
+
+</body>
+</html>

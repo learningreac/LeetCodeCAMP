@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p> 59 - I. 滑动窗口的最大值</p>
+	<p>给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。</p>
+	<script type="text/javascript">
+
+		//暴力法，时间复杂度O(KN)
+		const maxSlidingWindow1 = function(nums, k) {
+			if(nums.length === 0 || k ===1) return nums;
+			
+			let res = [];
+
+			for(let i=0; i <= nums.length-k ;i++){
+				let curMax = nums[i];
+				//nxtMax = nums[i+1]
+				for(let l =i+1; l<i+k; l++){	
+					curMax = Math.max(curMax, nums[l]);
+				};
+
+				res.push(curMax);
+
+			};
+
+			return res;
+
+		};
+
+		/*// 这样写不对，因为我其实是写成了K=3时的情况。
+		const maxSlidingWindow = function(nums, k) {
+			if(nums.length === 0 || k ===1) return nums;
+			let res = [];
+
+			for(let i=0; i <= nums.length-k ;i=i+2){
+
+				//console.log(nums[i]);
+				
+				let curMax = nums[i];
+				let nexMax = Math.max(nums[i+1],nums[i+2]);
+				res.push(Math.max(curMax,nexMax));
+				res.push(Math.max(nexMax, nums[i+3]));
+				
+
+			};
+
+			return res;
+
+
+		}
+		*/
+
+		S
+		//maxSlidingWindow([1,3,-1,-3,5,3,6,7],3);
+
+
+
+
+	</script>
+
+</body>
+</html>

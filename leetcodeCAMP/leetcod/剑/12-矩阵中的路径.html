@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一格开始，每一步可以在矩阵中向左、右、上、下移动一格。如果一条路径经过了矩阵的某一格，那么该路径不能再次进入该格子。</p>
+	<p>输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true </p>
+	<script type="text/javascript">
+		/**
+		 * @param {character[][]} board
+		 * @param {string} word
+		 * @return {boolean}
+		 */
+		let myboard =  [["A","B","C","E"],
+						["S","F","C","S"],
+						["A","D","E","E"]];
+
+		let test2 = [["C","A","A"],
+					 ["A","A","A"],
+					 ["B","C","D"]];
+
+
+
+		const exist = function(board, word) {
+
+			function dfs(i,j,k){
+
+				if(i < 0 || i >= board.length || j < 0 || j>= board[0].length || board[i][j] !== word[k] ) return false;
+				if(k === word.length - 1) return true;
+
+				board[i][j] = ''; // change value to void visit the visited grid.
+				let res =  dfs(i+1,j,k+1) || dfs(i-1,j,k+1) || dfs(i,j+1,k+1) || dfs(i, j-1,k+1);
+
+				board[i][j] = word[k]; // set the value from '' back to the previous value
+				return res;
+			} 
+
+
+			//遍历矩阵中的每个格子
+			for(let i=0; i<board.length; i++){
+				for(let j=0; j<board[0].length; j++){
+					if(dfs(i,j,0)) return true;
+				}
+			}
+
+
+			return false;
+
+		};
+
+		//test here
+		//exist(myboard,"ABCCED")
+		//exist([["a"]],"a")
+		//exist(test2,"AAB");
+		
+	</script>
+
+
+
+	<script type="text/javascript">
+	/*	
+		var exist = function(board, word) {
+		    var row = board.length;
+		    var col = board[0].length;
+
+		    var dfs = function(i,j,board,word,index){
+		        if(i < 0 || i >= row || j < 0 || j > col || board[i][j] !== word[index]) return false; // 判断不符合条件
+		        if(index === word.length - 1) return true;  // word遍历完了
+		        var tmp = board[i][j];  // 记录到board的值
+		        board[i][j] = '-'      // 锁上，因为后续的递归是4个方向上的，无法保证上一个方向的值
+		        var res =  dfs(i - 1,j,board,word,index + 1) || dfs(i + 1,j,board,word,index + 1) || dfs(i,j - 1,board,word,index + 1) || dfs(i,j + 1,board,word,index + 1);
+		        board[i][j] = tmp;   // 恢复现场
+		        return res;
+		        
+		    }
+
+		    // 遍历整个board，找到初始位置点
+		    for(var i = 0;i < row; i++){
+		        for(var j = 0; j < col; j++){
+		            if(dfs(i,j,board,word,0)) return true;
+		        }
+		    }
+		    // 没找到
+		    return false
+		};
+
+	//作者：user3502je
+	//链接：https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/solution/dfssuan-fa-by-user3502je/
+	*/
+	</script>
+
+</body>
+</html>
