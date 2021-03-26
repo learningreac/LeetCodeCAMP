@@ -6,6 +6,7 @@
 <body>
 	<p>114.二叉树的前序遍历</p>
 	<p>94. 二叉树的中序遍历</p>
+	<p>145. 二叉树的后序遍历</p>
 	<script type="text/javascript">
 		 let myroot = {
 			val:1,
@@ -97,6 +98,7 @@
 			let stack = [], res = [], cur = root;
 
 			while(stack.length>0 || cur){
+
 				while(cur){
 					res.push(cur.val);
 					stack.push(cur);
@@ -161,31 +163,71 @@
 		};
 
 
-		//迭代2
-		const inorderTraversal = function(root) {
-			let stack = [], res = [];
-            if(root) stack.push(root);
+		//inorderTraversal(myroot);
+	</script>
 
-			while(stack.length >0){
-				let node = stack.pop();
+	<script type="text/javascript">
+		//递归
+		const postorderTraversal1 = function(root) {
+			let res = [];
 
+			const dfs = function(node){
+				if(node === null) return;
 
-				if(node.left) {
-					stack.push(node.left);
-				};
-				if(node) res.push(node.val);
-				if(node.right) {
-					stack.push(node.right);
-				};
+				dfs(node.left);
+				dfs(node.right);
+				res.push(node.val);
 			}
 
-			return res;
+			dfs(root);
 
+			return res;
+		};
+
+		//迭代 
+		// 按照根节点-右子树-左子树的顺序，全部压进栈，那么由栈底到栈顶的顺序，刚好是 后序遍历的顺序。
+		// 所以反着操作res数组，新的元素从前进。
+		const postorderTraversal2 = function(root) {
+			let res = [], stack = [], cur = root;
+
+				while(stack.length >0 || cur) {
+					while(cur){
+
+						res = [cur.val, ...res]; // same as array.unshift
+						stack.push(cur);
+						cur = cur.right;
+					}
+
+					
+					let node = stack.pop()
+					cur = node.left;
+				}
+
+				return res
 		}
 
 
+		// 迭代2
+		const postorderTraversal = function(root) {
+			let stack = [], res = [];
+	            if(root) stack.push(root);
 
-		//inorderTraversal(myroot);
+				while(stack.length >0){
+					let node = stack.pop();
+					if(node) res.unshift(node.val);
+					
+					if(node.left) {
+						stack.push(node.left);
+					};
+					if(node.right) {
+						stack.push(node.right);
+					};
+				}
+
+				return res;
+		}
+
+		//postorderTraversal(myroot);
 	</script>
 
 </body>
