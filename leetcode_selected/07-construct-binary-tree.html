@@ -30,14 +30,23 @@
 
 			//console.log(inleftTree, inrightTree);  
 
-			let preleftTree = preorder.slice(1, inleftTree.length+1);
-			let prerightTree = preorder.slice(inleftTree.length+1);
+			//let preleftTree = preorder.slice(1, inleftTree.length+1); // SAME AS BELOW
+			let preleftTree = preorder.slice(1, rootIndex+1);
+			//let prerightTree = preorder.slice(inleftTree.length+1);
+			let prerightTree = preorder.slice(rootIndex + 1);
 			//console.log(preleftTree, prerightTree);
+
+			/* 如果写成这样的话，nodeLeft就变成了下层下层递归的值，而不是当前递归的值。
 			nodeLeft = buildTree(preleftTree, inleftTree);
 			nodeRight = buildTree(prerightTree,inrightTree);
 
 			root.left = nodeLeft;
 			root.right = nodeRight;
+
+			*/
+
+			root.left = buildTree(preleftTree, inleftTree);
+			root.right = buildTree(prerightTree,inrightTree);
 
 			return root;
 
