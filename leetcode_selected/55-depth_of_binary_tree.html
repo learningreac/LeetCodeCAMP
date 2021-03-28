@@ -59,8 +59,9 @@
 
 	<script type="text/javascript">
 		// BFS
-		const maxDepth = function(root) {
-			//if(!root) return 0;
+		const maxDepth1 = function(root) {
+			if(!root) return 0;
+
 			let queue = [], depth = 0;
 			if(root) queue.push(root);
 
@@ -69,7 +70,7 @@
 				depth++;
 
 				for(let i=0; i<levelsize; i++){
-					let node = queue.shift(); // ATTENTION 这里用shift 模拟队列，不是pop.
+					let node = queue.shift(); // ATTENTION use shift here not pop.
 					if(node.left) queue.push(node.left);
 					if(node.right) queue.push(node.right);
 				};
@@ -82,6 +83,33 @@
 
 		//maxDepth(tree1); 
 		//maxDepth(tree2);
+
+		//BFS 2
+		const maxDepth2 = function(root) {
+			if(!root) return 0;
+			let queue = [root], depth = 0;
+
+			while(queue.length) {
+				let tmp = [];
+				queue.forEach( node => {
+					if(node.left) tmp.push(node.left);
+					if(node.right) tmp.push(node.right);
+				});
+
+				queue = tmp;
+				depth++;
+			};
+
+			return depth; 
+
+		};
+
+		//DFS 后序遍历 Postorder traversal
+		// maxDepth = Math.max(left tree, right tree);
+		const maxDepth = function(root) {
+
+		}
+
 
 
 	</script>
