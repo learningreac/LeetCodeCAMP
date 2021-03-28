@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>剑指 Offer 07. 重建二叉树</p>
+	<script type="text/javascript">
+		// * function TreeNode(val) {
+		// *     this.val = val;
+		//*     this.left = this.right = null;
+		//* }
+		 
+
+		 function TreeNode(val) {
+		     this.val = val;
+		      this.left = this.right = null;
+		 };
+
+		const buildTree = function(preorder, inorder) {
+
+			// 终止条件是什么呢？
+			if(!preorder.length || !inorder.length) return null
+
+			let root = new TreeNode(preorder[0]);
+			//console.log(root);
+			let rootIndex  = inorder.indexOf(preorder[0]);
+			let inleftTree = inorder.slice(0, rootIndex);
+			let inrightTree = inorder.slice(rootIndex + 1);
+
+			//console.log(inleftTree, inrightTree);  
+
+			let preleftTree = preorder.slice(1, inleftTree.length+1);
+			let prerightTree = preorder.slice(inleftTree.length+1);
+			//console.log(preleftTree, prerightTree);
+			nodeLeft = buildTree(preleftTree, inleftTree);
+			nodeRight = buildTree(prerightTree,inrightTree);
+
+			root.left = nodeLeft;
+			root.right = nodeRight;
+
+			return root;
+
+		
+		};
+
+		//buildTree( [3,9,20,15,7],[9,3,15,20,7]);
+
+		
+	</script>
+
+</body>
+</html>
