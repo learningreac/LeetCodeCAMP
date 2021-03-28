@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>leetcode selected: 55 - I. 二叉树的深度(depth of the binary tree) // same as leetcode 104 </p>
+	<p>leetcode selected: 55 - II. 平衡二叉树(balanced binary tree)</p>
+	<p>leetcode: 111. Manimum depth of binary tree 二叉树的最小深度 </p>
+
+
+	<script type="text/javascript">
+		const tree1 = {
+			val: 3,
+			left: {
+				val: 9,
+				left: null,
+				right: null
+			},
+			right: {
+				val: 20,
+				left: {
+					val: 15,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 7,
+					left: null,
+					right: null
+				} 
+			}
+		};
+
+		const tree2 = {
+			val: 1,
+			left: {
+				val: 2,
+				left: {
+					val: 4,
+					left:null,
+					right:null
+				},
+				right: null
+			},
+			right: {
+				val: 3,
+				left: null,
+				right: {
+					val: 5,
+					left: null,
+					right: null
+				} 
+			}
+		};
+
+		
+	</script>
+
+	<script type="text/javascript">
+		// BFS
+		const maxDepth = function(root) {
+			//if(!root) return 0;
+			let queue = [], depth = 0;
+			if(root) queue.push(root);
+
+			while(queue.length >0) {
+				let levelsize = queue.length;
+				depth++;
+
+				for(let i=0; i<levelsize; i++){
+					let node = queue.shift(); // ATTENTION 这里用shift 模拟队列，不是pop.
+					if(node.left) queue.push(node.left);
+					if(node.right) queue.push(node.right);
+				};
+				
+				
+			};
+
+			return depth;
+		};
+
+		//maxDepth(tree1); 
+		//maxDepth(tree2);
+
+
+	</script>
+
+</body>
+</html>

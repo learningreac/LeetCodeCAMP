@@ -6,11 +6,7 @@
 <body>
 	<p>剑指 Offer 07. 重建二叉树</p>
 	<script type="text/javascript">
-		// * function TreeNode(val) {
-		// *     this.val = val;
-		//*     this.left = this.right = null;
-		//* }
-		 
+
 
 		 function TreeNode(val) {
 		     this.val = val;
@@ -22,18 +18,21 @@
 			// 终止条件是什么呢？
 			if(!preorder.length || !inorder.length) return null
 
-			let root = new TreeNode(preorder[0]);
-			//console.log(root);
-			let rootIndex  = inorder.indexOf(preorder[0]);
-			let inleftTree = inorder.slice(0, rootIndex);
-			let inrightTree = inorder.slice(rootIndex + 1);
+			let root = new TreeNode(preorder[0]); // Preorder 首位是根节点
+			let rootIndex  = inorder.indexOf(preorder[0]); // 根节点在中序遍历中的位置
+			let inleftTree = inorder.slice(0, rootIndex); // 该Index左为左子树；
+			let inrightTree = inorder.slice(rootIndex + 1); // 该Index右为右子树；
 
 			//console.log(inleftTree, inrightTree);  
 
-			//let preleftTree = preorder.slice(1, inleftTree.length+1); // SAME AS BELOW
-			let preleftTree = preorder.slice(1, rootIndex+1);
-			//let prerightTree = preorder.slice(inleftTree.length+1);
-			let prerightTree = preorder.slice(rootIndex + 1);
+			 
+
+			let preleftTree = preorder.slice(1, inleftTree.length+1); // 在前序遍历中也切割出左、右子树。
+			let prerightTree = preorder.slice(inleftTree.length+1);
+			// SAME AS ABOVE
+			//let preleftTree = preorder.slice(1, rootIndex+1);
+			//let prerightTree = preorder.slice(rootIndex + 1);
+			
 			//console.log(preleftTree, prerightTree);
 
 			/* 如果写成这样的话，nodeLeft就变成了下层下层递归的值，而不是当前递归的值。

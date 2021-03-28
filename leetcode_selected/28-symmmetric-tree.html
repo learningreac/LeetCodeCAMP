@@ -4,7 +4,11 @@
 	<title></title>
 </head>
 <body>
+	<p>28.对称二叉树   symmmetric tree</p>
 	<p>请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。</p>
+
+	<p>27.二叉树的镜像 invert binary tree</p>
+
 	<script type="text/javascript">
 
 		/**
@@ -19,7 +23,7 @@
 		 * @return {boolean}
 		 */
 
-		const mytree = {
+		const symtree = {
 			val: 1,
 			left: {
 				val: 2,
@@ -47,7 +51,37 @@
 					right: null
 				} 
 			}
-		}
+		};
+
+		const tree = {
+			val: 4,
+			left: {
+				val: 2,
+				left: {
+					val: 1,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 3,
+					left: null,
+					right: null
+				}
+			},
+			right: {
+				val: 7,
+				left: {
+					val: 6,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 9,
+					left: null,
+					right: null
+				} 
+			}
+		};
 
 		const isSymmetric = function(root) {
 
@@ -63,8 +97,43 @@
 			
 		};
 
-		//isSymmetric(mytree);
+		//isSymmetric(symtree);
 		
+	</script>
+
+	<script type="text/javascript">
+		/**
+		 * @param {TreeNode} root
+		 * @return {TreeNode}
+		 * 0 <= 节点个数 <= 1000
+		 */
+		const mirrorTree = function(root) {
+			
+
+			//swap
+			const swap = function (node){
+				
+				if(!node) return null;  //不加这句的话，如果节点本身为空Null，再指向其左右枝，会报错。
+
+				//if(node.left === null && node.right === null) return;
+				if(!node.left  && !node.right ) return; // SAME AS ABOVE
+
+				let tmp = node.left;
+				node.left = node.right; 
+				node.right = tmp;
+
+				swap(node.left);
+				swap(node.right);
+			};
+
+			swap(root);
+
+			return root;
+			
+
+		};
+
+		//mirrorTree(tree);
 	</script>
 
 </body>
