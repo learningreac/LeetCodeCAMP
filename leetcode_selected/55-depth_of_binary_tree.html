@@ -54,6 +54,36 @@
 			}
 		};
 
+		const tree3 = {
+			val: 1,
+			left: {
+				val: 2,
+				left: {
+					val: 3,
+					left:{
+						val:4,
+						left:null,
+						right:null
+					},
+					right:{
+						val:4,
+						left:null,
+						right:null
+					}
+				},
+				right: {
+					val: 3,
+					left:null,
+					right:null
+				}
+			},
+			right: {
+				val: 2,
+				left: null,
+				right: null
+			} 
+		};
+
 		
 	</script>
 
@@ -151,9 +181,48 @@
 			return depth;
 		}
 
+	</script>
 
+	<script type="text/javascript">
+		/**
+		 * @param {TreeNode} root
+		 * @return {boolean}
+		 */
 
+		 //BFS
+		 // this solution can not pass the test case:[1,2,2,3,3,3,3,4,4,4,4,4,4,null,null,5,5] 
+		 // as the definition of a balanced tree: for this one, Depth of root.left is 5, depth of root.right is 4. 
+		 // even the shortest branch is depth 3,  while the longest is 5. they belong to different subtree.
+		  
+		const isBalanced = function(root) {
+			if(!root) return null;
 
+			let queue = [root], dif = 0;
+
+			while (queue.length) {
+
+				let levelsize = queue.length;
+				let curdif = 0;
+
+				while(levelsize--) {
+					let node = queue.shift();
+					if(!node) return;
+					if(node.left) queue.push(node.left);
+					if(node.right) queue.push(node.right);
+					if(node.left === null || node.right === null) curdif++;
+				}
+
+				if(curdif >0) dif++;
+			};
+
+			console.log(dif)
+
+			return dif<=2;
+
+		};
+
+		//isBalanced(tree1);
+		
 	</script>
 
 </body>
