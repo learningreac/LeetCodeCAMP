@@ -106,12 +106,51 @@
 
 		//DFS 后序遍历 Postorder traversal
 		// maxDepth = Math.max(left tree, right tree) + 1;
+		const maxDepth3 = function(root) {
+			if(!root) return 0;
+			return Math.max(maxDepth3(root.left), maxDepth3(root.right)) + 1;
+
+		};
+
+
+		// 携带上层深度 levelDepth, 不断用depth = Math.max(depth, levelDepth+1)迭代对比
+		const maxDepth4 = function(root) {
+			if(!root) return 0;
+
+			let depth = 0;
+
+			const DFS = function(node, level) {
+				if(!node) return;
+
+				depth = Math.max(depth, level+1);
+
+				if(node.left) DFS(node.left, level+1);
+				if(node.right)  DFS(node.right, level+1);
+			}; 
+
+			DFS(root, 0);
+
+			return depth;
+
+		};
+
+		//模拟栈
 		const maxDepth = function(root) {
 			if(!root) return 0;
-			return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
-			
+			let depth = 0;
+			const stack = [[root, 0]];
 
+			while(stack.length) {
+				const [node, p] = stack.pop();
+				depth = Math.max(depth, p+1);
+
+				if(node.left) stack.push([node.left, p+1]);
+				if(node.right) stack.push([node.right, p+1]);
+			};
+
+			return depth;
 		}
+
 
 
 
