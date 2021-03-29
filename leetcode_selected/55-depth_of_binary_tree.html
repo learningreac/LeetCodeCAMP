@@ -107,6 +107,22 @@
 		//DFS 后序遍历 Postorder traversal
 		// maxDepth = Math.max(left tree, right tree);
 		const maxDepth = function(root) {
+			if(!root) return 0;
+			let leftDepth = rightDepth = 0;
+
+			function DFS(node){
+				if(!node) return 
+				if(node.left) leftDepth ++;
+				if(node.right) rightDepth ++;
+
+				console.log(leftDepth, rightDepth);
+
+				DFS(node.left);
+				DFS(node.right);
+			};
+
+			DFS(root);
+			return Math.max(leftDepth, rightDepth);
 
 		}
 
