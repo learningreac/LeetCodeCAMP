@@ -258,18 +258,33 @@
 
 		};
 
-		const isBalanced = function(root) {
+		const isBalanced2 = function(root) {
 			if(!root) return true;	
 
 			let left = depth(root.left);
 			let right= depth(root.right);
 
-			return Math.abs(left - right ) <= 1 && isBalanced(root.left) && isBalanced(root.right); 
+			return Math.abs(left - right ) <= 1 && isBalanced2(root.left) && isBalanced2(root.right); 
 		};
 
 		//isBalanced(tree4);
 
 		// DFS 剪枝版
+		const isBalanced = function(root) {
+			const recur = function(node) {
+				if(!node) return 0;
+				let left = recur(node.left);
+				if(left === -1) return -1; // 如果左子树不满足条件，直接返回（剪枝）
+				let right = recur(node.right);
+				if(right === -1) return -1; // 如果右子树不满足条件，直接返回（剪枝）
+
+				Math.abs(left - right) <= -1 ? Math.max(left, right)+1 : -1; 
+
+			}
+
+			return recur(root) != -1;
+
+		}
 
 		
 	</script>
