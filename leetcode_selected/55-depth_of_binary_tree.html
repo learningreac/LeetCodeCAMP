@@ -4,9 +4,9 @@
 	<title></title>
 </head>
 <body>
-	<p>leetcode selected: 55 - I. 二叉树的深度(depth of the binary tree) // same as leetcode 104 </p>
+	<p>leetcode selected: 55 - I. 二叉树的深度(depth of the binary tree) // same as leetcode 104 maxium</p>
 	<p>leetcode selected: 55 - II. 平衡二叉树(balanced binary tree)</p>
-	<p>leetcode: 111. Manimum depth of binary tree 二叉树的最小深度 </p>
+	<p>leetcode: 111. Minimum depth of binary tree 二叉树的最小深度 </p>
 
 
 	<script type="text/javascript">
@@ -269,8 +269,10 @@
 
 		//isBalanced(tree4);
 
-		// DFS 剪枝版
+		// DFS 剪枝版 自下而上
 		const isBalanced = function(root) {
+			if(!root) return true;
+
 			const recur = function(node) {
 				if(!node) return 0;
 				let left = recur(node.left);
@@ -278,11 +280,10 @@
 				let right = recur(node.right);
 				if(right === -1) return -1; // 如果右子树不满足条件，直接返回（剪枝）
 
-				Math.abs(left - right) <= -1 ? Math.max(left, right)+1 : -1; 
-
+				return Math.abs(left - right) <=1 ? Math.max(left, right)+1 : -1; // 需要写RETURN 
 			}
 
-			return recur(root) != -1;
+			return recur(root) !== -1;
 
 		}
 
