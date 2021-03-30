@@ -97,6 +97,45 @@
 			
 		};
 
+
+		//BFS
+		const isSymmetric = function(root) {
+    		//if(root === null) return false;
+    		if(!root) return false;
+			let queue1 = [root]; // set up the queue
+			let queue2 = [];
+			
+			while(queue1.length){ // until the queue is clear
+				const levelSize = queue1.length; // the amount of nodes at current level
+				
+				for(let i=0; i<levelSize; i++){ // same level
+					const cur = queue1.shift(); 
+						if(cur.left===null && cur.right===null) return true;// leaf node	
+						if(cur.left===null || cur.right===null) return false;// only one child				
+						if(cur.left) queue2.push(cur.left);
+						if(cur.right) queue2.push(cur.right);		
+														
+				}
+
+				// check if the current level is symmetric
+				let l = queue2.length;
+				for(let j=0;j<l/2;j++){
+					
+					let k=l-1-j;
+					//console.log(j,k);
+					console.log(queue2[j].val, queue2[k].val);
+					if(queue2[j].val !== queue2[k].val) return false
+				}
+
+				queue1 = queue2;
+				queue2 = []		
+			}
+
+			return true;
+		
+		};
+
+
 		//isSymmetric(symtree);
 		
 	</script>
