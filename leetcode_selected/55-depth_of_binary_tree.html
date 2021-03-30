@@ -84,6 +84,21 @@
 			} 
 		};
 
+
+		const tree4 = {
+			val:1,
+			left:null,
+			right:{
+				val:2,
+				left:null,
+				right:{
+					val:3,
+					left:null,
+					right:null
+				}
+			}
+		}
+
 		
 	</script>
 
@@ -183,6 +198,7 @@
 
 	</script>
 
+
 	<script type="text/javascript">
 		/**
 		 * @param {TreeNode} root
@@ -193,35 +209,68 @@
 		 // this solution can not pass the test case:[1,2,2,3,3,3,3,4,4,4,4,4,4,null,null,5,5] 
 		 // as the definition of a balanced tree: for this one, Depth of root.left is 5, depth of root.right is 4. 
 		 // even the shortest branch is depth 3,  while the longest is 5. they belong to different subtree.
-		  
-		const isBalanced = function(root) {
+
+		const isBalanced1 = function(root) {
 			if(!root) return null;
+			if(root.left === null && root.right === null) return true;	
 
-			let queue = [root], dif = 0;
+			function isSubtreeBalanced(subtreeNode){
+				let queue = [],dif = 0;
 
-			while (queue.length) {
+				if(subtreeNode != null) queue.push(subtreeNode);
 
-				let levelsize = queue.length;
-				let curdif = 0;
+				while (queue.length) {
 
-				while(levelsize--) {
-					let node = queue.shift();
-					if(!node) return;
-					if(node.left) queue.push(node.left);
-					if(node.right) queue.push(node.right);
-					if(node.left === null || node.right === null) curdif++;
-				}
+					let levelsize = queue.length;
+					let curdif = 0;
+					while(levelsize--) {
+						let node = queue.shift();
+						if(!node) return;
+						if(node.left) queue.push(node.left);
+						if(node.right) queue.push(node.right);
+						if(node.left === null || node.right === null) curdif++;
+					}
 
-				if(curdif >0) dif++;
+					if(curdif >0) dif++;
+				};
+
+				//console.log(dif)
+
+				return dif<=2;
+
 			};
 
-			console.log(dif)
+			console.log(isSubtreeBalanced(root.left));
 
-			return dif<=2;
+			console.log(isSubtreeBalanced(root.right));
+			console.log(isSubtreeBalanced(root));
+			//return isSubtreeBalanced(root.left) && isSubtreeBalanced(root.right) && isSubtreeBalanced(root);
 
 		};
 
 		//isBalanced(tree1);
+
+		//DFS A seperate function to compute the depth of the subtree.
+
+		function depth(node){
+				if(!node) return 0; 
+				return Math.max(depth(node.left), depth(node.right)) + 1;
+
+		};
+
+		const isBalanced = function(root) {
+			if(!root) return true;	
+
+			let left = depth(root.left);
+			let right= depth(root.right);
+
+			return Math.abs(left - right ) <= 1 && isBalanced(root.left) && isBalanced(root.right); 
+		};
+
+		//isBalanced(tree4);
+
+		// DFS 剪枝版
+
 		
 	</script>
 
