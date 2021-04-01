@@ -7,7 +7,7 @@
 	<p>114.二叉树的前序遍历</p>
 	<p>94. 二叉树的中序遍历</p>
 	<p>145. 二叉树的后序遍历</p>
-	<p>102. 二叉树的层序遍历</p>
+	<p>102. 二叉树的层序遍历(I,II,III)</p>
 	<script type="text/javascript">
 		 let myroot = {
 			val:1,
@@ -232,6 +232,23 @@
 	</script>
 
 	<script type="text/javascript">
+
+		const levelOrder1 = function(root) {
+			let res = [], queue = [];
+
+			if(root) queue.push(root);
+
+			while(queue.length>0){			
+					let node = queue.shift();
+					if(node) res.push(node.val);
+					if(node.left) queue.push(node.left);
+					if(node.right) queue.push(node.right);
+				};
+
+			return res;
+
+		};
+
 		//（即逐层地，从左到右访问所有节点）。
 		/*[
 			  [3],
@@ -240,7 +257,7 @@
 			]
 		*/
 
-		const levelOrder = function(root) {
+		const levelOrder2 = function(root) {
 			let res = [], queue = [];
 
 			if(root) queue.push(root);
@@ -264,23 +281,42 @@
 
 		};
 
-		//levelOrder(myroot);
 
-		const levelOrder2 = function(root) {
-			let res = [], queue = [];
+		//之字形打印
+		// [
+  		//  [3],
+  		//	[20,9],
+  		//	[15,7]
+		// ]
+		// 增加一个depth变量 判断层数的奇偶，偶数层逆序打印 使用array.reverse();
+		const levelOrder = function(root) {
+			let res = [], queue = [], depth = 0;
 
 			if(root) queue.push(root);
 
-			while(queue.length>0){			
+			while(queue.length>0){
+				let levelSize = queue.length;
+				let curLevel = [];
+
+				for(let i=0; i<levelSize;i++){
 					let node = queue.shift();
-					if(node) res.push(node.val);
+					if(node) curLevel.push(node.val);
 					if(node.left) queue.push(node.left);
 					if(node.right) queue.push(node.right);
 				};
 
+				depth++;
+				depth %2 ===0? res.push(curLevel.reverse()) : res.push(curLevel);
+				
+			};
+
 			return res;
 
-		};
+		}
+
+		//levelOrder(myroot);
+
+		
 	</script>
 
 </body>
