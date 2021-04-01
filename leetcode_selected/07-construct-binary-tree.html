@@ -221,7 +221,9 @@
 		//special case:
 		// A or B is null
 		// [4,2,3,4,5,6,7,8,9],[4,8,9] A has one more element that equals the first element of B. 
-		const isSubStructure = function(A, B) {
+		//!! my solution is not general, it failed at the case[10,12,6,8,3,11],[10,12,6,8]. 
+		// for this case, the preorder travasal is [10, 12, 8, 3, 6, 11] and  [10, 12, 8, 6].
+		const isSubStructure1 = function(A, B) {
 			// A 或者B 为空节点
             if(!A || !B) return false;
 
@@ -246,6 +248,19 @@
 		}
 
 		//isSubStructure(tree1,tree2);
+		const match = function(nodeA, nodeB){
+			if(nodeB === null) return true; //B reach the leaf
+			if(nodeA === null) return false; // A reach the leaf
+			if(nodeA.val !== nodeB.val) return false;
+
+			return match(nodeA.left, nodeB.left) && match(nodeA.right, nodeB.right);
+		};
+
+		const isSubStructure = function(A, B) { 
+			 if(!A || !B) return false;
+			 return match(A,B) || isSubStructure(A.left, B) || isSubStructure(A.right, B);
+		}
+
 
 	</script>
 
