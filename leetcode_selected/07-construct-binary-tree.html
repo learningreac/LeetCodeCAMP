@@ -5,6 +5,8 @@
 </head>
 <body>
 	<p>剑指 Offer 07. 重建二叉树</p>
+	<P>剑指 Offer 26. 树的子结构</P>
+
 	<script type="text/javascript">
 
 
@@ -55,6 +57,196 @@
 		//buildTree( [3,9,20,15,7],[9,3,15,20,7]);
 
 		
+	</script>
+
+	<script type="text/javascript">
+		/**
+		 * @param {TreeNode} A
+		 * @param {TreeNode} B
+		 * @return {boolean}
+		 */
+		 //限制：0 <= 节点个数 <= 10000
+		 //前序遍历树A,B, 找到树B.root在A中的Index.
+		 // 以该INDEX截取树A中与树B相同长度的数组，如果完全相等，则B为A的子树。
+		//优化：为了提升时间效率，在遍历树A的过程中，一旦发现树B的根节点，就开启对比。
+
+		const tree1 = {
+			val: 3,
+			left: {
+				val: 4,
+				left: {
+					val: 1,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 2,
+					left: null,
+					right: null
+				} 				
+			},
+			right: {
+				val: 5,
+				left: null,
+				right: null			
+			}
+		};
+
+		const tree2 = {
+			val: 4,
+			left: {
+				val: 1,
+				left:null,
+				right: null
+				},
+			right: null
+		};
+
+
+		const tree3 = {
+			val: 4,
+			left: {
+				val: 2,
+				left: {
+					val: 4,
+					left: {
+						val: 8,
+						left: null,
+						right: null
+					},
+					right: {
+						val: 9,
+						left: null,
+						right: null
+					}
+				},
+				right: {
+					val: 5,
+					left: null,
+					right: null
+				} 				
+			},
+			right: {
+				val: 3,
+				left: {
+					val: 6,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 7,
+					left: null,
+					right: null
+				} 				
+			}
+
+		};
+
+		const tree4 = {
+			val: 4,
+			left: {
+				val: 8,
+				left:null,
+				right: null
+			},
+			right: {
+				val: 9,
+				left:null,
+				right: null
+			}
+		};
+
+
+		const tree5 = {
+			val: 10,
+			left: {
+				val: 12,
+				left: {
+					val: 8,
+					left: null,
+					right: null
+				},
+				right: {
+					val: 3,
+					left: null,
+					right: null
+				} 				
+			},
+			right: {
+				val: 6,
+				left: {
+					val: 11,
+					left: null,
+					right: null
+				},
+				right: null			
+			}
+		};
+
+		const tree6 = {
+			val: 10,
+			left: {
+				val: 12,
+				left: {
+					val: 8,
+					left: null,
+					right: null
+				},
+				right: null				
+			},
+			right: {
+				val: 6,
+				left: null,
+				right: null			
+			}
+		};
+
+
+		const preorderTravesal = function(root) {
+			if(!root) return null;
+			let res = [];
+
+			const dfs = function(node) {
+				if(!node) return;
+
+				res.push(node.val);
+				dfs(node.left);
+				dfs(node.right);
+			}
+
+			dfs(root);
+			return res;
+		};
+
+		//special case:
+		// A or B is null
+		// [4,2,3,4,5,6,7,8,9],[4,8,9] A has one more element that equals the first element of B. 
+		const isSubStructure = function(A, B) {
+			// A 或者B 为空节点
+            if(!A || !B) return false;
+
+			let treeA = preorderTravesal(A);
+			let treeB = preorderTravesal(B);
+
+			console.log(treeA,treeB);
+
+			const equals = (a, b) =>
+				  a.length === b.length &&
+				  a.every((v, i) => v === b[i]);
+
+			for(let i=0; i<treeA.length;i++){
+				if(treeA[i] === treeB[0]) {
+					console.log(i);
+					let subA = treeA.slice(i, i+treeB.length)
+					if(equals(subA, treeB)) {return true}
+				}
+			};
+
+			return false;
+		}
+
+		//isSubStructure(tree1,tree2);
+
 	</script>
 
 </body>
