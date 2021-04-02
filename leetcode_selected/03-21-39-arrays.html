@@ -183,6 +183,9 @@
 	<script type="text/javascript">
 		//39. majority element 数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
 		//输入: [1, 2, 3, 2, 2, 2, 5, 4, 2], 输出：2
+		//1.哈希表统计法
+		//2.排序，数组中点为出现次数超过一半的数
+		//3.摩尔投票法：核心理念为 票数正负抵消 。此方法时间和空间复杂度分别为 O(N)O(N) 和 O(1)O(1) ，为本题的最佳解法。
 		const majorityElement1 = function(nums) {
 			if(nums.length===1) return nums;
 
@@ -206,16 +209,33 @@
 		//majorityElement([1, 2, 3, 2, 2, 2, 5, 4, 2]);
 
 		// 用object 构造hash table
-		var majorityElement = function(nums) {
+		var majorityElement2 = function(nums) {
 
-	    const max = nums.length/2, 
-	          hash = Object.create(null)
+		    const max = nums.length/2, 
+		          hash = Object.create(null)
 
-	    for (const num of nums) {
-	        hash[num] ? hash[num]++ : (hash[num] = 1)
-	        if (hash[num] >= max) return num
-	    }
-	};
+		    for (const num of nums) {
+		        hash[num] ? hash[num]++ : (hash[num] = 1)
+		        if (hash[num] >= max) return num
+		    }
+		};
+
+
+
+		//摩尔投票法
+		//时间复杂度 O(N)： N 为数组 nums 长度。
+		//空间复杂度 O(1)： votes 变量使用常数大小的额外空间。
+		const majorityElement = function(nums) {
+			let votes = 0, cur = 0;
+
+			nums.forEach(num => {
+				if(votes === 0) cur = num; // cur start from the first element in array 
+				num === cur? votes +=1 : votes -=1;
+			})
+
+			return cur;
+		}
+
 
 
 
