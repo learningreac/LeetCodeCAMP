@@ -256,8 +256,10 @@
 
 
 		//quick sort
-		const quicksort = function(arr) {
-				let l=0,r=arr.length-1,i=l,j=r;
+		const quicksort = function(arr,l,r) {
+				//let l=0,r=arr.length-1;
+				if (l >= r) return;
+				let i=l,j=r;
 
 				while(i<j) {
 					if(i<j && arr[j]>=arr[l])
@@ -273,10 +275,15 @@
 				};
 
 				[arr[l],arr[i]] = [arr[i],arr[l]];
+
+				quicksort(arr,0,i-1);
+				quicksort(arr,i+1,r)
+
+
 				return arr;
 		};
 
-		//quicksort([2,4,1,0,3,5]); 
+		//quicksort([2,4,1,0,3,5],0,5); 
 
 
 		const getLeastNumbers = function(arr, k) {
