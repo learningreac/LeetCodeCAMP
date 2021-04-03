@@ -18,6 +18,9 @@
 	<p><b>剑指 Offer 39. 数组中出现次数超过一半的数字</b></p>
 	<p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。</p>
 
+	<p><b>剑指 Offer 40. 最小的k个数</b></p>
+	<p>TOP K问题</p>
+
 </body>
 	<script type="text/javascript">
 	/**
@@ -234,9 +237,54 @@
 			})
 
 			return cur;
+		};
+
+	</script>
+
+	<script type="text/javascript">
+		//40.剑指 Offer 40. 最小的k个数
+		//输入：arr = [0,1,2,1], k = 1; 输出：[0]
+		//0 <= k <= arr.length <= 10000 ;0 <= arr[i] <= 10000
+
+		const getLeastNumbers1 = function(arr, k) {
+
+			arr.sort((a,b) => a-b);
+
+			return arr.slice(0,k);
+
+		};
+
+
+		//quick sort
+		const quicksort = function(arr) {
+				let l=0,r=arr.length-1,i=l,j=r;
+
+				while(i<j) {
+					if(i<j && arr[j]>=arr[l])
+						j--;
+					else if(i<j && arr[i]<=arr[l])
+						i++;
+					else
+					{
+						[arr[i],arr[j]] = [arr[j],arr[i]];
+						console.log(arr);
+					}
+	
+				};
+
+				[arr[l],arr[i]] = [arr[i],arr[l]];
+				return arr;
+		};
+
+		//quicksort([2,4,1,0,3,5]); 
+
+
+		const getLeastNumbers = function(arr, k) {
+
 		}
 
 
+		//getLeastNumbers([3,2,1],2)
 
 
 	</script>
