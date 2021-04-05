@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Binary Search Tree</title>
+</head>
+<body>
+	<p>剑指 Offer 33. 二叉搜索树的后序遍历序列</p>
+
+	<script type="text/javascript">
+		//剑指 Offer 33. 二叉搜索树的后序遍历序列
+		//postorder最后一位为root, 根据postorder中第一位大于root的值的位置，划分出左右子树。
+		//左子树中每个值都小于root，右子树中每个值都大于root.
+
+
+		const verifyPostorder = function(postorder) {
+
+			let root = postorder.pop();
+
+			let i=0;
+			for(i; i<postorder.length;i++){
+				if(postorder[i] > root)	break;
+			};
+
+			let lefttree = postorder.slice(0,i);
+			let righttree = postorder.slice(i); 
+
+			const rightResult = righttree.every(item => item>root);
+
+
+			return rightResult && verifyPostorder(lefttree)&&verifyPostorder(righttree);
+
+		};
+
+		//verifyPostorder([1,3,2,6,5])
+		
+	</script>
+
+</body>
+</html>
