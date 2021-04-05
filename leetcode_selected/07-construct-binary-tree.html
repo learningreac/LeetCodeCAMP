@@ -6,6 +6,7 @@
 <body>
 	<p>剑指 Offer 07. 重建二叉树：前序遍历和中序遍历</p>
 	<p>889. 根据前序和后序遍历构造二叉树</p>
+	<p>106. 从中序与后序遍历序列构造二叉树</p>
 	<P>剑指 Offer 26. 树的子结构</P>
 	<p>剑指 Offer 33. 二叉搜索树的后序遍历序列</p>
 	<p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。</p>
@@ -301,8 +302,9 @@
 				let preleft = pre.slice(1,lefttreelength+1);
 				let preright = pre.slice(lefttreelength+1);
 
-				console.log(preleft,postleft);
-				console.log('***',preright,postright);
+				//or
+				//let preleft = pre.slice(1,idx+2);
+				//let preright = pre.slice(idx+2);
 
 				root.left = constructFromPrePost(preleft,postleft);
 				root.right = constructFromPrePost(preright,postright);
@@ -316,6 +318,36 @@
 
 		//constructFromPrePost([1,2,4,5,3,6,7],[4,5,2,6,7,3,1])
 		//constructFromPrePost([1,2],[2,1])
+
+	</script>
+
+	<script type="text/javascript">
+		//106. 从中序与后序遍历序列构造二叉树
+		const buildTreeinpost = function(inorder, postorder) {
+			if(!inorder.length || !postorder.length) return null;
+
+			let root = new TreeNode(postorder[postorder.length-1]);
+
+			let idx = inorder.indexOf(root.val); // 根节点在中序遍历中的位置；也是左子树的length。
+
+			let inleft = inorder.slice(0,idx);
+			let inright = inorder.slice(idx+1);
+
+			let postleft = postorder.slice(0,idx);
+			let postright= postorder.slice(idx,postorder.length-1);
+
+			console.log(inleft,postleft);
+			console.log(inright,postright);
+
+			root.left = buildTreeinpost(inleft,postleft);
+			root.right = buildTreeinpost(inright,postright)
+
+			return root;
+
+
+		};
+
+		//buildTreeinpost([9,3,15,20,7],[9,15,7,20,3]);
 	</script>
 
 </body>
