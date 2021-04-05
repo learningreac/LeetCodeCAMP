@@ -327,6 +327,7 @@
 			if(!inorder.length || !postorder.length) return null;
 
 			let root = new TreeNode(postorder[postorder.length-1]);
+			// 直接从postorder 中pop()出来最后一个值
 
 			let idx = inorder.indexOf(root.val); // 根节点在中序遍历中的位置；也是左子树的length。
 
@@ -335,6 +336,7 @@
 
 			let postleft = postorder.slice(0,idx);
 			let postright= postorder.slice(idx,postorder.length-1);
+			// 因为最后的一个值，即根节点被pop出来，改变了之前的数组，这里postright tree slice的第二个参数可以直接省略掉。
 
 			console.log(inleft,postleft);
 			console.log(inright,postright);
