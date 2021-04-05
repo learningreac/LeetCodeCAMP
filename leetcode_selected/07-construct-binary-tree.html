@@ -4,8 +4,11 @@
 	<title></title>
 </head>
 <body>
-	<p>剑指 Offer 07. 重建二叉树</p>
+	<p>剑指 Offer 07. 重建二叉树：前序遍历和中序遍历</p>
+	<p>889. 根据前序和后序遍历构造二叉树</p>
 	<P>剑指 Offer 26. 树的子结构</P>
+	<p>剑指 Offer 33. 二叉搜索树的后序遍历序列</p>
+	<p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。</p>
 
 	<script type="text/javascript">
 
@@ -262,6 +265,57 @@
 		}
 
 
+	</script>
+
+
+	<script type="text/javascript">
+		//33 
+		const verifyPostorder = function(postorder) {
+
+		};
+	</script>
+
+
+	<script type="text/javascript">
+		const constructFromPrePost = function(pre, post) {
+
+			// 终止条件是什么呢？
+			if(!pre.length || !post.length) return null
+
+			let root = new TreeNode(pre[0]);
+			if(pre.length===1) return root;
+			//if(pre[1]!== post[post.length -2]) {// Pre中root的下一位与post中root的前一位不相等，说明该节点root同时有左右孩子
+				idx = post.indexOf(pre[1]);// 获取左孩子节点在后序遍历中的index, index+1也是左孩子的length
+
+				let postleft = post.slice(0,idx+1);
+				let postright = post.slice(idx+1, post.length-1);
+
+				
+
+				let lefttreelength = postleft.length;
+				let righttreelength = postright.length;
+
+				//console.log(idx,lefttreelength,righttreelength);
+
+
+				let preleft = pre.slice(1,lefttreelength+1);
+				let preright = pre.slice(lefttreelength+1);
+
+				console.log(preleft,postleft);
+				console.log('***',preright,postright);
+
+				root.left = constructFromPrePost(preleft,postleft);
+				root.right = constructFromPrePost(preright,postright);
+
+			//} ;
+
+			return root;
+
+
+		};
+
+		//constructFromPrePost([1,2,4,5,3,6,7],[4,5,2,6,7,3,1])
+		//constructFromPrePost([1,2],[2,1])
 	</script>
 
 </body>

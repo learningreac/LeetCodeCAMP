@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>剑指 Offer 31. 栈的压入、弹出序列</p>
+	<script type="text/javascript">
+		/**
+		 * @param {number[]} pushed
+		 * @param {number[]} popped
+		 * @return {boolean}O
+		 */
+		const validateStackSequences = function(pushed, popped) {
+			let stack = [];
+
+			for(let i=0;i<pushed.length;i++) {
+
+				stack.push(pushed[i]);
+
+				//if(stack.slice(-1) === popped[0]) { // stack.slice return an array; array.pop() return a number
+				while(stack[stack.length-1] === popped[0]) {
+					stack.pop();
+					popped.shift();	
+
+					console.log(stack,popped);
+				};
+
+			};
+			//console.log(stack,popped);
+			//return stack.length===0;
+
+		};
+
+		//validateStackSequences([1,2,3,4,5],[4,5,3,2,1]);
+	</script>
+
+</body>
+</html>
