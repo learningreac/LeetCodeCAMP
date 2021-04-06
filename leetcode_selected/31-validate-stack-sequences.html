@@ -24,7 +24,7 @@
 					stack.pop();
 					popped.shift();	
 
-					if(stack.length===0 && pushed.length >0) stack.push(pushed.shift());
+					if(stack.length===0 && pushed.length >0) stack.push(pushed.shift()); // 有可能执行完毕之后stack空了，所以
 				} else {
 					if(pushed.length >0) {
 						stack.push(pushed.shift());
@@ -45,7 +45,7 @@
 		//validateStackSequences([1,2,3,4,5],[4,5,3,2,1]);
 		validateStackSequences([1,0],[1,0]);
 
-		const validateStackSequences1 = function(pushed, popped) {
+		const validateStackSequences = function(pushed, popped) {
 			let stack = [];
 
 			for(const item of pushed){

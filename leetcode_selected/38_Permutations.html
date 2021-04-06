@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>剑指 Offer 38. 字符串的排列</p>
+	<script type="text/javascript">
+		//剑指 Offer 38. 字符串的排列
+		//输入：s = "abc"
+		//输出：["abc","acb","bac","bca","cab","cba"]
+
+		const permutation = function(s) {
+			let letters = s.split(''), res = [];
+
+			const dfs = function(x) {
+				if (x === letters.length -1) {
+					res.push(letters.join(''));
+					return 
+				};
+
+				let dic = new Set();
+
+				for(let i=x; i< letters.length;i++){
+					if(dic.has(letters[i])) continue;
+					dic.add(letters[i]);
+					[letters[i],letters[x]] = [letters[x], letters[i]];
+
+					dfs(x+1);
+					[letters[x],letters[i]] = [letters[i], letters[x]];
+				} 
+
+				
+
+				
+			}
+
+			dfs(0);
+			return res;
+
+		};
+
+		//permutation('abc');
+
+		
+	</script>
+
+</body>
+</html>
