@@ -11,28 +11,54 @@
 		 * @param {number[]} popped
 		 * @return {boolean}O
 		 */
-		const validateStackSequences = function(pushed, popped) {
+		const validateStackSequences1 = function(pushed, popped) {
 			let stack = [];
+			if(pushed.length) stack.push(pushed.shift());
 
-			for(let i=0;i<pushed.length;i++) {
 
-				stack.push(pushed[i]);
+			while(stack.length>0) {
 
-				//if(stack.slice(-1) === popped[0]) { // stack.slice return an array; array.pop() return a number
-				while(stack[stack.length-1] === popped[0]) {
+				if(popped.length === 0) return false;
+
+				if(stack[stack.length-1] === popped[0]) {
 					stack.pop();
 					popped.shift();	
 
-					console.log(stack,popped);
+					if(stack.length===0 && pushed.length >0) stack.push(pushed.shift());
+				} else {
+					if(pushed.length >0) {
+						stack.push(pushed.shift());
+					} else {
+						return false;
+					}
 				};
 
+
+				//console.log(stack,popped);
+				
 			};
-			//console.log(stack,popped);
-			//return stack.length===0;
+
+			return popped.length ===0;
 
 		};
 
 		//validateStackSequences([1,2,3,4,5],[4,5,3,2,1]);
+		validateStackSequences([1,0],[1,0]);
+
+		const validateStackSequences1 = function(pushed, popped) {
+			let stack = [];
+
+			for(const item of pushed){
+				stack.push(item);
+				while(stack.length && stack[stack.length-1] === popped[0]){
+					stack.pop();
+					popped.shift();	
+				}
+			};
+
+			return stack.length === 0;
+		}
+
 	</script>
 
 </body>
