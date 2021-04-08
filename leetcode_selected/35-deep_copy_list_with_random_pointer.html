@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>剑指 Offer 35. 复杂链表的复制</p>
+	<script type="text/javascript">
+		//剑指 Offer 35. 复杂链表的复制
+		/**
+		 * // Definition for a Node.
+		 * function Node(val, next, random) {
+		 *    this.val = val;
+		 *    this.next = next;
+		 *    this.random = random;
+		 * };
+		 */
+
+		/**
+		 * @param {Node} head
+		 * @return {Node}
+		 */
+		 //输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+		//输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+		//用一个哈希表表示映射关系：键是原节点，值是复制的节点。
+
+		//整体算法流程是：
+		//第一次遍历，复制每个节点和 next 指针，并且保存“原节点-复制节点”的映射关系
+		//第二次遍历，通过哈希表获得节点对应的复制节点，更新 random 指针
+
+		const copyRandomList = function(head) {
+			
+		    if (!head) {
+		        return null;
+		    }
+		    const map = new Map();
+		    let node = head; // 当前节点
+		    const newHead = new Node(node.val);
+		    let newNode = newHead; // 当前节点的copy
+		    map.set(node, newNode);
+
+		    while (node.next) {
+		        newNode.next = new Node(node.next.val);
+		        node = node.next;
+		        newNode = newNode.next;
+		        map.set(node, newNode);
+		    }
+
+		    newNode = newHead;
+		    node = head;
+		    while (newNode) {
+		        newNode.random = map.get(node.random);
+		        newNode = newNode.next;
+		        node = node.next;
+		    }
+
+		    return newHead;
+		};
+
+
+		//对于遍历过的结点，用哈希表记录：旧结点 => 新结点这个映射。
+		var copyRandomList = function (head) {
+		  const mapping = new Map();
+
+		  // 递归函数
+		  // 有点Top-down DP那味儿！（其实就是）
+		  function copy(node) {
+		    if (!node) return node; // 空结点
+		    if (mapping.has(node)) return mapping.get(node); // 取缓存
+
+		    const res = new Node();
+		    mapping.set(node, res); // 先放缓存
+		    res.val = node.val;
+		    res.next = copy(node.next); // 结点，要递归
+		    res.random = copy(node.random); // 结点，要递归
+		    return res;
+		  }
+
+		  return copy(head);
+		};
+		    
+		
+		
+	</script>
+
+</body>
+</html>
