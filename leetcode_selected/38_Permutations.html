@@ -5,6 +5,7 @@
 </head>
 <body>
 	<p>剑指 Offer 38. 字符串的排列</p>
+	<p>46. 全排列.   给定一个 没有重复 数字的序列，返回其所有可能的全排列。</p>
 	<script type="text/javascript">
 		//剑指 Offer 38. 字符串的排列
 		//输入：s = "abc"
@@ -28,11 +29,8 @@
 
 					dfs(x+1);
 					[letters[x],letters[i]] = [letters[i], letters[x]];
-				} 
-
-				
-
-				
+				} ;
+		
 			}
 
 			dfs(0);
@@ -40,9 +38,85 @@
 
 		};
 
-		//permutation('abc');
+		//permutation('abc'); //(6) ["abc", "acb", "bac", "bca", "cba", "cab"]
+
+
+		/*作者：panzuki
+		链接：https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/solution/javascript-hui-su-fa-by-menteceso/
+		*/
+		var permutation1 = function(s) {
+		    const res = new Set()
+		    const visit = {}
+		    function dfs(path) {
+		        if(path.length === s.length) return res.add(path)
+		        for (let i = 0; i < s.length; i++) {
+		            if (visit[i]) continue
+		            visit[i] = true
+		            dfs(path + s[i])
+		            visit[i] = false
+		        }
+		    }
+		    dfs('')
+		    return [...res]
+		};
 
 		
+	</script>
+
+	<script type="text/javascript">
+		//46. 全排列
+		//给定一个 没有重复 数字的序列，返回其所有可能的全排列。
+		const permute = function(nums) {;
+			const res = new Set();
+			const visit = {};
+			function dfs(path) {
+		        if(path.length === nums.length) return res.add(path);
+
+		        for (let i = 0; i < nums.length; i++) {
+		            if (visit[i]) continue;
+		            visit[i] = true;
+		            //visit: {i: true}
+		            dfs([...path, nums[i]])
+		            visit[i] = false
+		        }
+		    }
+
+		  dfs([])
+		  return [...res]  
+
+		};
+
+
+		const permute1 = (nums) => {
+		  const res = [];
+		  const used = {};// HashMap
+
+		  function dfs(path) {
+		    if (path.length == nums.length) { // 个数选够了
+		      res.push(path.slice()); // 拷贝一份path，加入解集res
+		      return;                 // 结束当前递归分支
+		    }
+		    for (const num of nums) { // for枚举出每个可选的选项
+		      // if (path.includes(num)) continue; // 别这么写！查找的时间是O(n)，增加时间复杂度
+		      if (used[num]) continue; // 使用过的，跳过
+		      path.push(num);         // 选择当前的数，加入path
+		      used[num] = true;       // 记录一下 使用了
+		      dfs(path);              // 基于选了当前的数，递归
+		      path.pop();             // 上一句的递归结束，回溯，将最后选的数pop出来
+		      used[num] = false;      // 撤销这个记录
+		    }
+		  }
+
+		  dfs([]); // 递归的入口，空path传进去
+		  return res;
+		};
+
+/*作者：xiao_ben_zhu
+链接：https://leetcode-cn.com/problems/permutations/solution/chou-xiang-cheng-jue-ce-shu-yi-ge-pai-lie-jiu-xian/
+*/
+
+
+		//permute([1,2,3])
 	</script>
 
 </body>
