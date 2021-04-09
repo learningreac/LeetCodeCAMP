@@ -4,15 +4,25 @@
 	<title></title>
 </head>
 <body>
+	<b>12-矩阵中的路径</b>
 	<p>请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一格开始，每一步可以在矩阵中向左、右、上、下移动一格。如果一条路径经过了矩阵的某一格，那么该路径不能再次进入该格子。</p>
 	<p>输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
 输出：true </p>
+
+	<b>13.机器人的运动范围</b>
+	<p>地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+		链接：https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof</p>
+
+	<b>剑指 Offer 47. 礼物的最大价值</b>
+
+
 	<script type="text/javascript">
 		/**
 		 * @param {character[][]} board
 		 * @param {string} word
 		 * @return {boolean}
 		 */
+		 //12-矩阵中的路径
 		let myboard =  [["A","B","C","E"],
 						["S","F","C","S"],
 						["A","D","E","E"]];
@@ -89,6 +99,210 @@
 	//作者：user3502je
 	//链接：https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/solution/dfssuan-fa-by-user3502je/
 	*/
+	</script>
+
+	<script type="text/javascript">
+		//13.机器人的运动范围
+		const movingCount = function(m, n, k) {
+
+			//define the board
+			let board = new Array(m).fill(-1).map(item => new Array(n));
+
+			//define a function to compute the sum
+			function sum(x){
+				let sum = 0;
+				let d = Math.floor(x/10);
+				if(d > 9 ){
+					sum = Math.floor(d/10) + d%10 + x%10;
+				} else {
+					sum = d + x%10;
+				};
+
+				return sum;
+			}
+
+			let count=0;
+
+			//define dfs function
+			function dfs(i,j,k){
+				if(i<0 || i>=m || j<0 || j>=n || sum(i)+sum(j) > k || board[i][j] === -1) return false;
+				board[i][j] = -1;
+
+				dfs(i-1,j,k);
+				dfs(i+1,j,k);
+				dfs(i,j-1,k);
+				dfs(i,j+1,k);
+
+				count++;
+			};
+
+			dfs(0,0,k);
+			return count;
+
+		};
+
+		//movingCount(3,2,1);
+		
+	</script>
+
+	<script type="text/javascript">
+		/**
+		 * @param {number[][]} grid
+		 * @return {number}
+		 */
+
+		 /*
+			输入: 
+			[
+			  [1,3,1],
+			  [1,5,1],
+			  [4,2,1]
+			]
+			输出: 12
+			解释: 路径 1→3→5→2→1 可以拿到最多价值的礼物
+		 */
+
+		 //解法1：递归，超时。（这个跟我最初想的很像，看来我是把递归跟DP混在一起了）
+		const maxValue1 = function(grid) {
+			let row = grid.length;
+			if(!row) return 0;
+			let column = grid[0].length;
+
+			function recur(i,j) {
+				if(i >= row || j >= column) return 0;
+
+				return grid[i][j] + Math.max(recur(i+1,j), recur(i,j+1));
+			}
+
+
+			return recur(0,0);
+
+		};
+		//问题是很多格子会被重复计算。
+
+
+		// 解法2： 递归 + 缓存
+		// 用一个map计算出每个格子计算的结果，下次需要时直接调用，不用重复计算。
+		const maxValue2 = function(grid) {
+			let row = grid.length;
+			let column = grid[0].length;
+			if(!row) return 0;
+			let max = 0;
+			let map = new Map();
+
+			function recur(i,j) {
+				if(i >= row || j >= column) return 0;
+				if (map.has(i*column + j)) return map.get(i*column + j);
+
+				let down = recur(i+1,j);
+				let right = recur(i,j+1);
+
+				max = grid[i][j] + Math.max(down, right);
+				map.set(i*column + j, max);//key value
+				//console.log(i,j,max);
+
+				return max
+			};
+
+			return recur(0,0);
+
+		};
+
+
+		//二维DP
+		const maxValue3 = function(grid) { 
+			let row = grid.length;
+			let col = grid[0].length;
+			if(!row) return 0;
+			let dp = new Array(row)
+						.fill(0)
+						.map(i => new Array(col).fill(0));
+
+			 for(let i = row-1; i>=0; i--) {
+		        for(let j = col-1; j>=0; j--) {
+
+		            let a = i+1 >= row ? 0 : dp[i+1][j]
+		            let b = j+1 >= col ? 0 : dp[i][j+1]
+
+		            dp[i][j] = grid[i][j] + Math.max(a, b)
+		        }
+			};
+
+    		return dp[0][0];
+
+   		};
+
+
+		
+   		//一维DP 滚动数组！！
+		var maxValue4 = function(grid) {
+		    let rows = grid.length
+		    if (!rows) return 0
+		    let cols = grid[0].length
+		    let dp = Array(cols).fill(0);
+
+		    for(let i = rows-1; i>=0; i--) {
+		        for(let j = cols-1; j>=0; j--) {
+		            let a = i+1 >= rows ? 0 : dp[j]
+		            let b = j+1 >= cols ? 0 : dp[j+1]
+
+		            dp[j] = grid[i][j] + Math.max(a, b)
+		            console.log(j,dp[j]);
+		        }
+		    }
+		    return dp[0]
+		};
+
+
+		//由于 dp[i][j]dp[i][j] 只与 dp[i-1][j]dp[i−1][j] , dp[i][j-1]dp[i][j−1] , grid[i][j]grid[i][j] 有关系，因此可以将原矩阵 gridgrid 用作 dpdp 矩阵，即直接在 gridgrid 上修改即可。 空间复杂度降至O(1)
+		const maxValue5 = function(grid) {
+		    let rows = grid.length
+		    if (!rows) return 0
+		    let cols = grid[0].length;
+
+			for(let i=0; i<rows; i++) { 
+				for(let j=0; j<cols; j++){
+					if(i===0 && j===0) continue;
+					if(i===0) grid[i][j] += grid[i][j-1];
+					else if(j===0) grid[i][j] += grid[i-1][j];
+					else grid[i][j] += Math.max(grid[i][j-1],grid[i-1][j]);
+				};
+			};
+
+			return grid[rows-1][cols-1];
+
+		};
+
+
+		//以上代码逻辑清晰，和转移方程直接对应，但仍可提升效率：当 gridgrid 矩阵很大时， i = 0i=0 或 j = 0j=0 的情况仅占极少数，相当循环每轮都冗余了一次判断。因此，可先初始化矩阵第一行和第一列，再开始遍历递推
+
+		const maxValue = function(grid) {
+		    let rows = grid.length
+		    if (!rows) return 0
+		    let cols = grid[0].length;
+
+			// 初始化第一行
+			for(let j=1; j<cols;j++) grid[0][j] += grid[0][j-1];
+			//初始化第一列
+			for(let i=1; i<rows;i++) grid[i][0] += grid[i-1][0];
+
+			for(let i=1; i<rows; i++) { 
+				for(let j=1; j<cols; j++){
+					 grid[i][j] += Math.max(grid[i][j-1],grid[i-1][j]);
+				};
+			};
+
+			return grid[rows-1][cols-1];
+
+		};
+
+
+
+		maxValue([
+			  [1,3,1],
+			  [1,5,1],
+			  [4,2,1]
+			]);
 	</script>
 
 </body>
