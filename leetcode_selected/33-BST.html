@@ -5,7 +5,27 @@
 </head>
 <body>
 	<p>剑指 Offer 33. 二叉搜索树的后序遍历序列</p>
+	<p>剑指 Offer 54. 二叉搜索树的第k大节点</p>
 	<p>96. 不同的二叉搜索树</p>
+
+	<script type="text/javascript">
+		let mybst = {
+			val:3,
+			left:{
+				val:1,
+				left:null,
+				right:{val:2,
+					  left:null,
+					  right:null
+					 }
+			},
+			right:{
+				val:4,
+				left:null,
+				right:null
+			}
+		};
+	</script>
 
 	<script type="text/javascript">
 		//剑指 Offer 33. 二叉搜索树的后序遍历序列
@@ -69,6 +89,63 @@
 
 		};
 
+	</script>
+
+	<script type="text/javascript">
+		//剑指 Offer 54. 二叉搜索树的第k大节点
+		// 思路： BST的中序遍历为递增序列，转换为查找递增序列的第K大的值。 
+
+		function inorder(root){
+			let res = [];
+
+			function dfs(node){
+				if(!node) return;
+
+				dfs(node.left);
+				res.push(node.val);
+				dfs(node.right);
+			}
+
+			dfs(root);
+
+			return res;		
+
+		}
+
+		const kthLargest1 = function(root, k) {
+
+			let arr = inorder(root);
+
+			return arr[arr.length-k];
+
+		}; // 通过
+
+
+
+		// 改进版本：找到第K大之后，后序的中序遍历就可以停止了。
+		//反向中序遍历
+		function kthLargest(root,k) {
+			let stack = [], res = [], cur = root;
+			let count = 0;
+
+			while(stack.length>0 || cur){
+				while(cur){
+					stack.push(cur);
+					cur=cur.right;
+
+				}
+				
+				let node = stack.pop();
+				if(++count === k) return node.val;
+				res.push(node.val);
+				console.log(count,res);
+				if(node.left) stack.push(node.left);
+			}
+
+			return 0;
+		}
+
+		//kthLargest(mybst,1);
 	</script>
 
 </body>
