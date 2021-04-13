@@ -436,30 +436,39 @@
 		// 解法3 二分查找 出现的次数等于 = 右边界-左边界-1；
 		const search = function(nums, target) {
 
-			const bisearch = function(left,right){
-				
-				while(left <= right){
-					let middle = Math.floor((left+right)/2);
+			const searchRange = function(nums, target) {
+			let left = 0;
+			let right = nums.length-1;
+			let leftrange, rightrange;
 
-					if(nums[middle] > target) { // target在左
-						right = middle -1;
-					} else if(nums[middle] < target) { // target在右
-						left = middle + 1;
-					} else {// middle = target
-						bisearch(left,middle-1);
-						bisearch(middle +1 , right);
-					};
-
-					console.log(left,right)
-				
-				} ;
-
-				return left, right;
-
+			// 找右边界；
+			while(left<=right) {
+				let middle = Math.floor((left+right)/2);
+				if(nums[middle] > target) right = middle -1;
+				else if(nums[middle] <= target) left = middle +1; // 向右找
 			};
+
+			rightrange = (right < 0 || nums[right] != target)? -1 : right;
+
+		
+			//重置指针 找左边界
+			left = 0;
+			right = nums.length-1;
+			while(left<=right) {
+				let middle = Math.floor((left+right)/2);
+				if(nums[middle] >= target) right = middle -1; //向左找
+				else if(nums[middle] < target) left = middle +1; 
+			};
+
+			leftrange = (left >= nums.length || nums[left] != target) ?  -1:left;
 			
 
-			bisearch(0, nums.length-1);
+			return [leftrange,rightrange];
+
+			};
+
+			let [left, right] = searchRange(nums,target);
+			return left<0? 0:right - left + 1;
 
 		};
 
