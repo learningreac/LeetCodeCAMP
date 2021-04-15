@@ -4,6 +4,9 @@
 	<title></title>
 </head>
 <body>
+	<p><b>21. merge two sorted list</b></p>
+	<p><b>237. delete node in a linked list</b></p>
+	<p><b>141. linked list circle</b></p>
 	<script type="text/javascript">
 		/**
 		 * Definition for singly-linked list.
@@ -99,6 +102,29 @@
 
 		// mergeTwoLists(l1,l2);
 
+	</script>
+
+	<script type="text/javascript">
+		//141. linked list circle 环形链表
+
+		/// Solution: two pointers: fast and slow. fast move 2 while slow move 1 at a time. 
+		// if fast and slow meet, that means there is a circle.
+
+		const hasCycle = function(head) {
+			let fast = slow = head;
+			while(head!= null){
+				if(fast.next === null ||fast.next.next===null) return false;
+				slow = slow.next;
+				fast = fast.next.next;
+				//console.log(slow,fast);
+				if (fast===slow) return true;
+			};
+
+			return false;
+    
+		};
+
+		//hasCycle(l1);
 	</script>
 
 </body>
