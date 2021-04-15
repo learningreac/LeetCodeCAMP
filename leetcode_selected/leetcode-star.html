@@ -4,6 +4,7 @@
 	<title></title>
 </head>
 <body>
+	<b>剑指 Offer 57. 和为s的两个数字 two sum</b>
 	<script type="text/javascript">
 		//704. 二分查找
 		//给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
@@ -70,6 +71,55 @@
 		//searchRange([5,7,7,8,8,10],6);
 
 	</script>
+
+	<script type="text/javascript">
+		//剑指 Offer 57. 和为s的两个数字 two sum
+		//思路: 可以转换为，从nums[0]开始，在nums[1,n]中找target - nums[0]。
+		//输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+
+
+		// 这么写时间会超出
+		const twoSum1 = function(nums, target) {
+
+			for(let i=0; i< nums.length-1; i++){
+				let cur = nums[i];
+				let newtarget = target - cur;
+				let range = nums.slice(i+1);
+				
+
+				//console.log(range, newtarget);
+
+				let result = search(range, newtarget); // return the index within range				
+				if(result != -1) return ([nums[i],nums[result + i+1]]) 
+			};
+
+		};
+
+
+		// 如果不划分出来新的片段，直接在原来的数组里面找呢？
+		//52 ms, 在所有 JavaScript 提交中击败了29.31%
+
+		const twoSum = function(nums, target) {
+
+			for(let i=0; i< nums.length; i++){
+
+			// if use forEach here，the return works within this function;
+			// the outer function 's return would be "undefined."就会返回到该函数本身，不算外函数的return.
+			//nums.forEach(item => {
+				let result = search(nums, target-nums[i]);
+				//console.log(target-nums[i], result);
+				if(result != -1) return [nums[i], nums[result]];
+					//console.log([item, nums[result]]) ;
+			}
+			
+
+		};
+
+		//twoSum([2,7,11,15],9);
+
+	</script>
+
+
 
 </body>
 </html>
