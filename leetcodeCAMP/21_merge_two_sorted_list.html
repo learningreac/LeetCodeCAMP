@@ -6,7 +6,9 @@
 <body>
 	<p><b>21. merge two sorted list</b></p>
 	<p><b>237. delete node in a linked list</b></p>
-	<p><b>141. linked list circle</b></p>
+	<p><b>141. linked list circle I</b></p>
+	<p><b>142. linked list circle II</b></p>
+
 	<script type="text/javascript">
 		/**
 		 * Definition for singly-linked list.
@@ -111,20 +113,47 @@
 		// if fast and slow meet, that means there is a circle.
 
 		const hasCycle = function(head) {
+			let rtn = hasCycleImpl(head);
+			return rtn!==null;
+		};
+
+
+		const hasCycleImpl = function(head) {
 			let fast = slow = head;
 			while(head!= null){
-				if(fast.next === null ||fast.next.next===null) return false;
+				if(fast.next === null ||fast.next.next===null) return null;
 				slow = slow.next;
 				fast = fast.next.next;
 				//console.log(slow,fast);
-				if (fast===slow) return true;
+				if (fast===slow) return fast;
 			};
 
-			return false;
-    
+			return null;
 		};
 
 		//hasCycle(l1);
+
+		// how to use O(1) memory to solve this one?
+
+
+		// HOW CAN YOU RETURN THE POSTION OF first node in the CYCLE? 
+		function cyclefindpos(fast, slow) {
+			while(fast != slow){
+				fast = fast.next;
+				slow = slow.next;
+			}
+			return fast;
+		};
+
+		var detectCycle = function(head) {
+			let fast = hasCycleImpl(head);
+			if (null===fast)
+				return null;
+
+			return cyclefindpos(fast, head);
+			};
+    
+
 	</script>
 
 </body>
