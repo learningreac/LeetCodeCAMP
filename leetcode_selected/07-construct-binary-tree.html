@@ -10,6 +10,7 @@
 	<P>剑指 Offer 26. 树的子结构</P>
 	<p>剑指 Offer 33. 二叉搜索树的后序遍历序列</p>
 	<p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。</p>
+	<p>剑指 Offer 34. 二叉树中和为某一值的路径</p>
 
 	<script type="text/javascript">
 
@@ -351,6 +352,73 @@
 		};
 
 		//buildTreeinpost([9,3,15,20,7],[9,15,7,20,3]);
+	</script>
+
+
+	<script type="text/javascript">
+		//剑指 Offer 34. 二叉树中和为某一值的路径
+		/**
+		 * @param {TreeNode} root
+		 * @param {number} target
+		 * @return {number[][]}
+		 */
+
+		 //思路：先序遍历
+		// 退出条件：达到叶子节点； 当前的和大于target；
+		// 如果当前的和===target 说明找到了。
+
+		// 递归参数？
+		const pathSum = function(root, target) {
+			let path = [];
+			let res = [];
+
+			const dfs = function(node, sum){
+				if(!node) return;
+				path.push(node.val);
+				sum -= node.val;
+				if(node.left===null && node.right===null && sum===0) res.push([...path]);
+				dfs(node.left,sum);
+				dfs(node.right,sum);
+				path.pop(); 
+			};
+
+
+			dfs(root,target);
+			return res;
+
+
+		};
+
+
+		const pathSum1 = function(root, target) {
+			let cursum=0;
+			let path = [];
+			let res = [];
+
+			const dfs = function(node){
+				if(!node)
+					return;
+
+				if (cursum > target){
+					return;
+				}
+
+				path.push(node.val);
+				cursum += node.val;
+                //console.log(path);
+				if(node.left===null && node.right===null && cursum===target) res.push([...path]);
+				dfs(node.left);
+				dfs(node.right);
+				cursum-=path.pop(); 
+			};
+
+
+			dfs(root);
+			return res;
+
+
+		};
+
 	</script>
 
 </body>

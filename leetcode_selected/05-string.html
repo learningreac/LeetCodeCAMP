@@ -5,11 +5,30 @@
 </head>
 <body>
 	<p>剑指 Offer 05. 替换空格</p>
+	<p>剑指 Offer 16. 数值的整数次方</p>
 	<p>剑指 Offer 17. 打印从1到最大的n位数</p>
 	<script type="text/javascript">
 		//剑指 Offer 05. 替换空格
 		var replaceSpace = function(s) {
 			return s.replace(/\s/g, '%20')
+
+		};
+
+		//剑指 Offer 16. 数值的整数次方
+		var myPow = function(x, n) {
+			let pow = 1
+
+				for(let i=1; i<=Math.abs(n);i++){
+					if(n>0) {
+						pow = pow*x;
+					} else {
+						pow = pow/x;
+					}
+					
+				};
+
+			
+			return pow;
 
 		};
 
