@@ -390,6 +390,7 @@
 		};
 
 
+		// solution 2:
 		const pathSum1 = function(root, target) {
 			let cursum=0;
 			let path = [];
@@ -400,7 +401,8 @@
 
 				//if (cursum > target){
 				//	return;
-				//}
+				//} // you don not need to check if cursum is bigger than target or not; 
+				//you just push the path to res when cursum===target;
 
 				path.push(node.val);
 				cursum += node.val;
@@ -410,12 +412,46 @@
 
 				if (node.right!==null)
 					dfs(node.right);
-				
+
 				cursum-=path.pop(); 
 			};
 
 			if(null===root)
 				return [];
+
+			dfs(root);
+			return res;
+
+
+		};
+
+
+		//solution 3
+		// this solution not working.
+		// Math.abs() can deal with negative cases. but it need all the numbers be negative or positive;
+		//[1,0,1,1,2,0,-1,0,1,-1,0,-1,0,1,0] it can not pass this case,as it contains both negative and positive number.
+		const pathSum2 = function(root, target) {
+			let cursum=0;
+			let path = [];
+			let res = [];
+
+
+			const dfs = function(node){
+				if(!node)
+					return;
+
+				if (Math.abs(cursum) > Math.abs(target)){
+					return; // the tree node might be negative value
+				}
+
+				path.push(node.val);
+				cursum += node.val;
+                //console.log(path);
+				if(node.left===null && node.right===null && cursum===target) res.push([...path]);
+				dfs(node.left);
+				dfs(node.right);
+				cursum-=path.pop(); 
+			};
 
 			dfs(root);
 			return res;
