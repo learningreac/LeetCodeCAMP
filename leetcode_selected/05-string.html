@@ -7,6 +7,7 @@
 	<p>剑指 Offer 05. 替换空格</p>
 	<p>剑指 Offer 16. 数值的整数次方</p>
 	<p>剑指 Offer 17. 打印从1到最大的n位数</p>
+	<p>剑指 Offer 50. 第一个只出现一次的字符</p>
 	<script type="text/javascript">
 		//剑指 Offer 05. 替换空格
 		var replaceSpace = function(s) {
@@ -15,6 +16,9 @@
 		};
 
 		//剑指 Offer 16. 数值的整数次方
+
+		// this solution run out of time.!!!
+		// another hint: binary search.
 		var myPow = function(x, n) {
 			let pow = 1
 
@@ -43,6 +47,40 @@
 			return res;
 
 		};
+
+
+		//剑指 Offer 50. 第一个只出现一次的字符
+		//在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+
+		// 思路：两次遍历，第一次先把s逐一存入maP中； 第二次遍历map，找到值为1的key.
+		var firstUniqChar = function(s) {
+			let dic = new Map();
+			let value = 1;
+
+			//if(!s.length) return ' ';
+
+			for(let i=0; i<s.length; i++){
+				if(dic.has(s[i])){
+					let count = dic.get(s[i]);
+					dic.set(s[i], ++count);
+				} else {
+					dic.set(s[i],value);
+				}
+			};
+
+			console.log(dic);
+
+			for(let [key,value] of dic){
+				if(value===1) return key
+			};
+
+			return ' ';
+
+
+
+		};
+
+		//firstUniqChar("abaccdeff");// {"a" => 2, "b" => 1, "c" => 3, "d" => 3, "e" => 3, …}
 		
 	</script>
 
