@@ -4,7 +4,86 @@
 	<title></title>
 </head>
 <body>
+	<p><b>剑指 Offer 40. 最小的k个数</b></p> 	<p>TOP K问题</p>
+	<p>剑指 Offer 41. 数据流中的中位数</p>
+
 	<script type="text/javascript">
+		//40.剑指 Offer 40. 最小的k个数
+		//输入：arr = [0,1,2,1], k = 1; 输出：[0]
+		//0 <= k <= arr.length <= 10000 ;0 <= arr[i] <= 10000
+
+		const getLeastNumbers1 = function(arr, k) {
+
+			arr.sort((a,b) => a-b);
+
+			return arr.slice(0,k);
+
+		};
+
+
+		//quick sort
+		const quicksort = function(arr,l,r) {
+				//let l=0,r=arr.length-1;
+				if (l >= r) return; // 停止Push新的任务入栈，不然就会超出栈的容量
+				let i=l,j=r;
+
+				while(i<j) {
+					if(i<j && arr[j]>=arr[l]) // 从右边找出第一个小于基准数arr[l]的数字
+						j--;
+					else if(i<j && arr[i]<=arr[l])  // 从左边找到第一个大于基准数的数字
+						i++;
+					else
+					{
+						[arr[i],arr[j]] = [arr[j],arr[i]]; // 左右交换，左边都是小于基准数的数，右边都是大于基准数的数字
+						console.log(arr);
+					}
+	
+				};
+
+				[arr[l],arr[i]] = [arr[i],arr[l]];// 基准数归位
+
+				quicksort(arr,0,i-1);
+				quicksort(arr,i+1,r)
+
+
+				return arr;
+		};
+
+		//quicksort([2,4,1,0,3,5],0,5); 
+
+		//基于快排
+		const getLeastNumbers = function(arr, k) {
+			if (k>= arr.length) return arr;
+
+			const quicksortK = function(l,r) {
+				let i = l, j=r;
+				while(i<j) {
+					if(arr[j] >= arr[l]) j--;
+					else if(arr[i] <= arr[l]) i++;
+					else [arr[i],arr[j]] = [arr[j],arr[i]];
+				};
+
+				[arr[l],arr[i]] = [arr[i],arr[l]];
+				if(i<k) quicksortK(i+1,r);
+				if(i>k) quicksortK(0,i-1);
+
+				return arr.slice(0,k);
+			};
+
+			return quicksortK(0, arr.length-1);
+
+		}
+
+
+		//getLeastNumbers([3,2,1],2)
+
+		//Heap   minheap
+	</script>
+
+
+	<script type="text/javascript">
+		//剑指 Offer 41. 数据流中的中位数
+		//solution 1: sort the numbers everytime when need to compute the median.
 		/**
 		 * initialize your data structure here.
 		 */
@@ -46,6 +125,10 @@
 		 * obj.addNum(num)
 		 * var param_2 = obj.findMedian()
 		 */
+
+
+		 // solution 2:heap (keep the numbers sorted when you first add them)
+
 	</script>
 
 </body>
