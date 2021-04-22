@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		/**
+		 * initialize your data structure here.
+		 */
+		var MedianFinder = function() {
+			this.numbers = [];
+
+		};
+
+		/** 
+		 * @param {number} num
+		 * @return {void}
+		 */
+		MedianFinder.prototype.addNum = function(num) {
+			this.numbers.push(num);
+
+		};
+
+		/**
+		 * @return {number}
+		 */
+		MedianFinder.prototype.findMedian = function() {
+			this.numbers.sort((a,b) => a-b);
+			let length = this.numbers.length;
+
+			if(length%2 != 0) {
+				let idx = Math.floor(length/2); 
+				return this.numbers[idx];
+			} else {
+				let right = Math.floor(length/2);
+				let left = right -1;
+				return (this.numbers[left] + this.numbers[right])/2;
+			}
+
+		};
+
+		/**
+		 * Your MedianFinder object will be instantiated and called as such:
+		 * var obj = new MedianFinder()
+		 * obj.addNum(num)
+		 * var param_2 = obj.findMedian()
+		 */
+	</script>
+
+</body>
+</html>
