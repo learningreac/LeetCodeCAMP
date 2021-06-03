@@ -76,9 +76,7 @@
 		};
 
 
-		var mergeTwoLists = function(l1, l2) {
-			//1. set up a new list, then insert the nodes(from L1 and L2) one by one into the new list;
-			//2. while inserting, compare the nodes value between l1 and l2, then choose the smaller one.
+		const mergeTwoLists1 = function(l1, l2) {
 
 			let tempListNode = new ListNode();
 			const dummh = tempListNode;
@@ -102,7 +100,22 @@
 			return dummh.next;	    
 		};
 
-		// mergeTwoLists(l1,l2);
+		mergeTwoLists(l1,l2);
+
+
+		// recursion version
+		const mergeTwoLists = function(l1, l2) {
+			if(!l1) return l2;
+			if(!l2) return l1;
+
+			if(l1.val <= l2.val) {
+				l1.next = mergeTwoLists(l1.next, l2);
+				return l1;
+			} else {
+				l2.next = mergeTwoLists(l1, l2.next);
+				return l2
+			}
+		}
 
 	</script>
 

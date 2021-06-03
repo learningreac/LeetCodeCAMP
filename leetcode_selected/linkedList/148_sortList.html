@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 148. sortList
+		//  !! nlogn !! 
+		/**
+		 * @param {ListNode} head
+		 * @return {ListNode}
+		 */
+		const mylist = {
+		 	val:4,
+		 	next:{
+		 		val:2,
+		 		next:{
+		 			val:1,
+		 			next:{
+				 		val:2,
+				 		next:null
+		 		}
+		 	}
+		 }
+		}
+
+
+
+		//21
+		const mergeTwoLists = function(l1, l2) {
+			if(!l1) return l2;
+			if(!l2) return l1;
+
+			if(l1.val <= l2.val) {
+				l1.next = mergeTwoLists(l1.next, l2);
+				return l1;
+			} else {
+				l2.next = mergeTwoLists(l1, l2.next);
+				return l2
+			}
+		}
+
+
+		const sortList = function(head) {
+			// base case
+			if(!head || !head.next) return head;
+
+			// recursion case: for Dividing
+			let slow = head; 
+			let fast = head;
+			let preSlow=null;
+
+			while(fast && fast.next) {
+				preSlow = slow;
+				slow = slow.next;
+				fast = fast.next.next;
+			}
+
+			preSlow.next=null;
+			
+
+			let left = sortList(head);
+			let right = sortList(slow);
+
+			// Merging Part
+			return mergeTwoLists(left,right);
+
+		};
+
+	</script>
+	
+
+</body>
+</html>

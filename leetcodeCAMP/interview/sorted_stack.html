@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        //sort to make sure the minimum element is at the top of the stack
+        var SortedStack = function () {
+            this.stackA = [];
+            this.stackB = [];
+
+        };
+
+        /** 
+         * @param {number} val
+         * @return {void}
+         */
+        SortedStack.prototype.push = function (val) {
+            while(this.stackA.length){
+                if(this.stackA[this.stackA.length -1] < val) {
+                    this.stackB.push(this.stackA.pop());
+                };
+            };
+
+            this.stackA.push(val);
+            
+
+            while(this.stackB.length){
+                this.stackA.push(this.stackB.pop())
+            };
+
+        };
+
+        /**
+         * @return {void}
+         */
+        SortedStack.prototype.pop = function () {
+            this.stackA.pop();
+
+        };
+
+        /**
+         * @return {number}
+         */
+        SortedStack.prototype.peek = function () {
+
+            if(this.stackA.length === 0) {
+                return -1;
+            } 
+            return this.stackA[this.stackA.length -1]
+
+        };
+
+        /**
+         * @return {boolean}
+         */
+        SortedStack.prototype.isEmpty = function () {
+            return this.stackA.length === 0;
+
+        };
+
+        /**
+         * Your SortedStack object will be instantiated and called as such:
+         * var obj = new SortedStack()
+         * obj.push(val)
+         * obj.pop()
+         * var param_3 = obj.peek()
+         * var param_4 = obj.isEmpty()
+         */
+    </script>
+
+</body>
+
+</html>
