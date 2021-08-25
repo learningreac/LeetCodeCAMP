@@ -29,12 +29,10 @@
 
 
 		//迭代
-		const reverseList = function(head) {
+		const reverseList1 = function(head) {
 			let pre = null; // 这里修改一下，pre只是一个值，不是一个node.
-
 			
 			let cur = head;
-
 
 			// 当cur不是空节点时，这么写可以指到最后一个节点；
 			// 如果写成while(cur.next);当cur.next不为空，这么写只能指到倒数第2个节点。
@@ -48,9 +46,12 @@
 
 			//console.log(cur);
 			return pre;
-
-
 		};
+
+		const reverseList = function(head){
+			if(!head) return ;
+			
+		} 
 
 		//reverseList(mylist);
 	</script>

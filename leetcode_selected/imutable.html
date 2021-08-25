@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>immutable</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	let a = {name:'Dan'};
+	let b = a;
+	a.name='Yuzhi'; // now a update the orginal obj
+	a===b; //return true
+</script>
+
+<script type="text/javascript">
+	let a = {name:'Dan'};
+	let b = a;
+	a = {name:'Yuzhi'}; // now a point to another obj
+	a===b; //return false
+</script>
+
+
+<script type="text/javascript">
+function sayHi(person) {
+  const name = person.name;
+  setTimeout(() => {
+    alert('Hello, ' + name);
+  }, 3000);
+}
+
+let someone = { name: 'Dan' };
+sayHi(someone);
+
+someone = { name: 'Yuzhi' };
+sayHi(someone);
+
+someone = { name: 'Dominic' };
+sayHi(someone);	
+
+// dan-yuzhi-dominic
+</script>
+
+
+<script type="text/javascript">
+function sayHi(person) {
+  // const name = person.name;
+  setTimeout(() => {
+    alert('Hello, ' + person.name);
+  }, 3000);
+}
+
+let someone = { name: 'Dan' };
+sayHi(someone);
+
+someone = { name: 'Yuzhi' };
+sayHi(someone);
+
+someone = { name: 'Dominic' };
+sayHi(someone);	
+
+// dan-yuzhi-dominic
+</script>
+
+
+<script type="text/javascript">
+function sayHi(person) {
+  const name = person.name;
+  setTimeout(() => {
+    alert('Hello, ' + name);
+  }, 3000);
+}
+
+let someone = { name: 'Dan' };
+sayHi(someone);
+
+// someone = { name: 'Yuzhi' };
+someone.name = 'Yuzhi';
+sayHi(someone);
+
+// someone = { name: 'Dominic' };
+someone.name = 'Dominic';
+sayHi(someone);	
+
+
+// dan-yuzhi-dominic
+</script>
+
+<script type="text/javascript">
+function sayHi(person) {
+  //const name = person.name;
+  setTimeout(() => {
+    alert('Hello, ' + person.name);
+  }, 3000);
+}
+
+let someone = { name: 'Dan' };
+sayHi(someone);
+
+// someone = { name: 'Yuzhi' };
+someone.name = 'Yuzhi';
+sayHi(someone);
+
+// someone = { name: 'Dominic' };
+someone.name = 'Dominic';
+sayHi(someone);	
+
+//Dominic-Dominic-Dominic
+</script>
+
+<script type="text/javascript">
+function sayHi(person) {
+  const personref = person;
+  setTimeout(() => {
+    alert('Hello, ' + personref.name);
+  }, 3000);
+}
+
+let someone = { name: 'Dan' };
+sayHi(someone);
+
+someone.name = 'Yuzhi';
+sayHi(someone);
+
+someone.name = 'Dominic';
+sayHi(someone);	
+
+//Dominic-Dominic-Dominic
+</script>
+
+
+<script type="text/javascript">
+function sayHi(person) {
+  const personref = person;
+  setTimeout(() => {
+    alert('Hello, ' + personref.name);
+  }, 3000);
+}
+
+let someone = { name: 'Dan' };
+sayHi(someone);
+
+someone = { name: 'Yuzhi' };
+sayHi(someone);
+
+someone = { name: 'Dominic' };
+sayHi(someone);	
+// dan-yuzhi-dominic
+</script>
+
+
+</body>
+</html>

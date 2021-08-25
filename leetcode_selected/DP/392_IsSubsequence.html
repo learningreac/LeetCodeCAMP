@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>392.Is Subsequence</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// if s[i] in t, value++
+		// if the final value equals the length of S, return True;
+		// if s[i-1] === t[j], and s[i]===t[m], but m<j, which means that t contains that letter, but the order of S is not correct, it should return False.
+
+		/**
+		 * @param {string} s
+		 * @param {string} t
+		 * @return {boolean}
+		 */
+		const s = "abc", t = "ahbgdc";
+
+		const isSubsequence = function(s, t) {
+			// create the dp matrix.
+			let dp = new Array(s.length).fill(0).map(i => new Array(t.length));
+			
+			let value = 0;
+			let left=0,top=0;
+			let right = t.length;
+			let bottom = s.length;
+			console.log(left,top);
+
+			// set grid value for dp matrix
+			// as i-1 is negative.
+			
+			for(let i=0; i<s.length; i++){
+				for(let j=0; j<t.length; j++){
+					if(s[i]===t[j])
+						dp[i][j]=dp[i-1][j-1] + 1;
+					else 
+						dp[i][j]= Math.max(dp[i-1][j],dp[i][j-1]); 
+				};
+			};
+			
+			
+
+
+
+		};  
+	</script>
+</body>
+</html>
