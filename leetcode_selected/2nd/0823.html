@@ -51,7 +51,7 @@
 
 
 			//35. Search Insert Position
-			var searchInsert = function (nums, target) {
+			const searchInsert = function (nums, target) {
 				let left = 0
 				let right = nums.length - 1
 
@@ -68,6 +68,39 @@
 				return left
 
 			};
+
+			//977.  Squares of a Sorted Array
+
+			const sortedSquares1 = function(nums) {
+
+				return nums
+						.map(item => item*item)
+						.sort((a,b) => a-b)
+			};
+
+
+			const sortedSquares = function(nums) {
+				let res = [];
+				let stack = []
+
+				for(let i = 0; i<nums.length; i++) {
+					let tmp = nums[i] *nums[i]
+
+					nums[i]<0
+                    ?
+						stack.unshift(tmp)
+					:
+						res.push(stack && tmp > stack[0] 
+                                 ? (i--,stack.shift() )    // i-- 因为当前这位没有被放入结果集，结果集放了栈里面的小元素，所以当前这位要重新比较一下，跟栈里面第二小再比较一轮 
+                                 : tmp
+                                 );
+				}
+
+				return res.concat(stack) // 避免了栈里只有一个元素的情况
+			}
+
+
+			//189. Rotate Array
 
 		</script>
 
