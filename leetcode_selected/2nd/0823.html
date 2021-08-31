@@ -71,29 +71,29 @@
 
 			//977.  Squares of a Sorted Array
 
-			const sortedSquares1 = function(nums) {
+			const sortedSquares1 = function (nums) {
 
 				return nums
-						.map(item => item*item)
-						.sort((a,b) => a-b)
+					.map(item => item * item)
+					.sort((a, b) => a - b)
 			};
 
 
-			const sortedSquares = function(nums) {
+			const sortedSquares = function (nums) {
 				let res = [];
 				let stack = []
 
-				for(let i = 0; i<nums.length; i++) {
-					let tmp = nums[i] *nums[i]
+				for (let i = 0; i < nums.length; i++) {
+					let tmp = nums[i] * nums[i]
 
-					nums[i]<0
-                    ?
+					nums[i] < 0
+						?
 						stack.unshift(tmp)
-					:
-						res.push(stack && tmp > stack[0] 
-                                 ? (i--,stack.shift() )    // i-- 因为当前这位没有被放入结果集，结果集放了栈里面的小元素，所以当前这位要重新比较一下，跟栈里面第二小再比较一轮 
-                                 : tmp
-                                 );
+						:
+						res.push(stack && tmp > stack[0]
+							? (i--, stack.shift())    // i-- 因为当前这位没有被放入结果集，结果集放了栈里面的小元素，所以当前这位要重新比较一下，跟栈里面第二小再比较一轮 
+							: tmp
+						);
 				}
 
 				return res.concat(stack) // 避免了栈里只有一个元素的情况
@@ -101,7 +101,223 @@
 
 
 			//189. Rotate Array
+			//Given an array, rotate the array to the right by k steps, where k is non-negative.
 
+			const rotate1 = function (nums, k) {
+				while (k > 0) {
+					nums.unshift(nums.pop())
+					k--
+				}
+			};// 超出时间限制
+
+			// reverse方法
+
+			const rotate = function (nums, k) {
+				nums.reverse();
+
+			}
+
+
+			//283. Move Zeroes
+			//Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+			const moveZeroes = function (nums) {
+				let slow = 0;
+				let fast = slow + 1;
+
+				while (fast < nums.length) {
+					if (nums[slow] != 0) {
+						slow++;
+						fast++;
+					} else {
+						if (nums[fast] != 0) {
+							[nums[slow], nums[fast]] = [nums[fast], nums[slow]];
+							slow++;
+							fast++
+						}
+						else {
+							fast++
+						}// fast also points to zero
+
+					}
+
+				}
+
+			};
+
+
+			const binarySearch2 = function (nums, t) {
+				let left = 0;
+				let right = nums.length - 1;
+
+				while (left <= right) {
+					let mid = Math.floor((left + right) / 2)
+					if (nums[mid] < t) {
+						left = mid + 1
+					} else if (nums[mid] > t) {
+						right = mid - 1
+					} else if (nums[mid] === t) {
+						return mid;
+					}
+				}
+			}
+
+			//167. Two Sum II - Input array is sorted
+			const twoSum1 = function (numbers, target) {
+				let index;
+				let i = 0;
+
+				for (i; i < numbers.length; i++) {
+
+					let newTarget = target - numbers[i];
+					index = binarySearch2(numbers.slice(i + 1), newTarget);
+					if (index !== undefined) {
+						return [i + 1, index + i + 2]
+					}
+				}
+			}
+
+			//twoSum([5,25,75],100)
+
+			// case:[0,0,3,4]
+			// case [5,25,75]
+
+			//167. Two Sum II - Input array is sorted
+			// array.indexOf
+			const twoSum = function (numbers, target) {
+
+				// two pointers
+				// indexOf()
+
+			}
+
+
+			//344. Reverse String
+			const reverseString = function (s) {
+				let left = 0;
+				let right = s.length - 1
+
+				while (left <= right) {
+					[s[left], s[right]] = [s[right], s[left]];
+					left++;
+					right--
+				}
+
+				return s // if or not retun matters // swap change the original array
+			};
+
+			//557. Reverse Words in a String III
+			const reverseWords1 = function (s) {
+				let splited = s.split('');
+				let reveresed = [];
+
+				let slow = 0; let fast = 0;
+				while (splited.length > 0) {
+
+
+					if (splited[fast] !== ' ' && fast <= splited.length) {
+						fast++
+					} else {
+						let tempt = splited.splice(slow, fast);
+						reverseString(tempt);
+						reveresed = reveresed.concat(tempt);
+						if (splited.length) {
+							reveresed = reveresed.concat(splited.shift())
+						};
+						slow = 0;
+						fast = 0;
+					}
+				}
+
+				return reveresed.join('');
+
+			};
+
+
+
+			const reverseWords2 = function (s) {
+				// js array.split(' ') seperate the words by white space
+				let words = s.split(' ');
+				let res = []
+				words.forEach(word => {
+					let reversed = reverseString(word.split(''));
+					res.push(reversed.join(''))
+				});
+
+				return res.join(' ')
+
+			}
+
+
+			var reverseWords = function (s) {
+				let arr = s.split("").reverse().join("")
+				return arr.split(" ").reverse().join(" ")
+			};
+			//reverseWords("Let's take LeetCode contest")
+
+
+			function ListNode(val, next) {
+				this.val = (val === undefined ? 0 : val)
+				this.next = (next === undefined ? null : next)
+			}
+
+			//19. Remove Nth Node From End of List
+			const removeNthFromEnd = function (head, n) {
+				let dumpy = new ListNode(null);  // for the case you need delete the first element of head
+				dumpy.next = head;
+
+				let fast = dumpy;
+				let slow = dumpy;
+
+
+				while (n > 0) {
+					fast = fast.next;
+					if (fast.next === null) {
+						//fast.next = slow   ===> this will cause the list be endless
+					}
+					n--
+				};
+
+				while (fast.next) { // if fast.next === null, the Boolean value is false, won't go inside while
+					fast = fast.next;
+					slow = slow.next;
+				};
+
+				slow.next = slow.next.next;
+
+				console.log(dumpy.next)
+				return dumpy.next;
+
+			};
+
+			const mylist = {
+				val: 4,
+				next: {
+					val: 5,
+					next: {
+						val: 1,
+						next: {
+							val: 9,
+							next: null
+						}
+					}
+				}
+			}
+
+			const tc2 = {
+				val: 1,
+				next: {
+					val: 2,
+					next: null
+				}
+			};
+
+			const tc1 = {
+				val: 1,
+				next: null
+			};
+
+			//removeNthFromEnd(tc2, 2)
+			//removeNthFromEnd(tc1, 1)
 		</script>
 
 	</body>

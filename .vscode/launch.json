@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+
 
         {
             "type": "pwa-msedge",
@@ -17,6 +19,13 @@
             "request": "launch",
             "name": "merge two sorted list",
             "file": "D:/learning/vb/leetcodeCAMP/21_merge_two_sorted_list.html"
+        },
+
+        {
+            "type": "pwa-msedge",
+            "request": "launch",
+            "name": "0823",
+            "file": "D:/learning/vb/leetcode_selected/2nd/0823.html"
         }
     ]
 }
