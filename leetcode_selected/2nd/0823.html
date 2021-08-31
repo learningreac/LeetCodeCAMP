@@ -318,6 +318,58 @@
 
 			//removeNthFromEnd(tc2, 2)
 			//removeNthFromEnd(tc1, 1)
+
+
+			// 滑动窗口
+			//3. Longest Substring Without Repeating Characters
+			const lengthOfLongestSubstring1 = function (s) {
+
+				let maxLength = 0;
+
+				if (s.length <= 1) return s.length;
+
+				for (let slow = 0, fast = 1; fast < s.length;) {
+					//between the slow and fast 在快慢指针之间，如果当前fast的指向的字母在这个区间出现过
+					for (let i = slow; i < fast; i++) {
+						if (s[i] === s[fast]) {
+							slow = i + 1;  //slow 指向重复字母的下一个；
+						};
+					}
+
+					//console.log(slow,fast);
+					maxLength = Math.max(maxLength, fast - slow + 1);
+					fast++; // move one to the right
+
+				}
+
+				return maxLength;
+
+			};
+
+
+			function lengthOfLongestSubstring(s) {
+				let len = s.length;
+				let result = 0;
+
+				for (let i = 0; i < len; i++) {
+					let set = new Set();
+					let maxLen = 0;
+					// 从i的位置遍历得到最长子串的长度
+					let j = i;
+					while (j < len && !set.has(s[j])) { //如果出现已出现的值，就不再进入while
+						set.add(s[j]);
+						maxLen++;
+						j++;
+					}
+					// 取历史最大值 此时说明发现重复值了，计算当前的长度，然后更新i
+					result = Math.max(result, maxLen);
+				}
+				return result;
+			}
+
+
+
+			lengthOfLongestSubstring('abcafe')
 		</script>
 
 	</body>
