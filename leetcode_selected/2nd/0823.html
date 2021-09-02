@@ -367,9 +367,103 @@
 				return result;
 			}
 
+			//lengthOfLongestSubstring('abcafe')
 
+			//567. Permutation in String
+			const checkInclusion1 = function (s1, s2) {
+				let s1Set = new Set();
+				for (let i = 0; i < s1.length; i++) {
+					s1Set.add(s1[i])
+				};
 
-			lengthOfLongestSubstring('abcafe')
+				for (let i = 0; i < s2.length; i++) {
+					let set2 = new Set(s1Set);
+					for (let j = i; j < i + s1.length; j++) {
+						if (!set2.has(s2[j])) break;
+						if (set2.has(s2[j])) {
+							set2.delete(s2[j])
+						};
+						if (set2.size === 0) return true
+					}
+				}
+
+				return false
+
+			};
+
+			//checkInclusion( "ab", "eidbaooo")
+			//checkInclusion("hello","ooolleoooleh")  // couln't pass this one, as A value in the Set may only occur once; 
+
+			const checkInclusion = function (s1, s2) {
+				let set1 = new Map();
+				for (let i = 0; i < s1.length; i++) {
+					if (set1.has(s1[i])) {
+						let val = set1.get(s1[i]);
+						set1.set(s1[i], ++val)
+					} else {
+						set1.set(s1[i], 1)
+					}
+
+				};
+
+				for (let i = 0; i < s2.length; i++) {
+					let set2 = new Map(set1);
+					let resArr = [];
+					for (let j = i; j < i + s1.length; j++) {
+						if (!set2.has(s2[j])) break;
+						if (set2.has(s2[j])) {
+							let val = set2.get(s2[j]);
+							set2.set(s2[j], --val)
+						};
+						//if(set2.size === 0 ) return true
+						for (const value of set2.values()) {
+							resArr.push(value);
+						}
+						if (resArr.every(value => value === 0)) {
+							return true
+						}
+						resArr = [];
+					}
+				}
+
+				return false
+
+			};
+
+			//checkInclusion("hello","ooolleoooleh")   /// 
+
+			//733. Flood Fill DFS
+			const floodFill = function (image, sr, sc, newColor) {
+				if (image[sr][sc] === newColor) {
+					return image;
+				}
+
+				const oldColor = image[sr][sc];
+
+				const dfs = (sr, sc) => {
+					if (
+						sr < 0 ||
+						sc < 0 ||
+						sr >= image.length ||
+						sc >= image[0].length ||
+						image[sr][sc] !== oldColor
+					) {
+						return;
+					}
+
+					image[sr][sc] = newColor;
+
+					dfs(sr - 1, sc);
+					dfs(sr + 1, sc);
+					dfs(sr, sc - 1);
+					dfs(sr, sc + 1);
+				}
+
+				dfs(sr, sc);
+				return image
+
+			};
+
 		</script>
 
 	</body>
