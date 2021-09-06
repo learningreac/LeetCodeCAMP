@@ -536,18 +536,18 @@
 					}
 				};
 
-			return root
+				return root
 
 			};
 
 
 			//DFS
-			const connect2 = function(root) {
-				if(root == null || root.left==null) {
+			const connect2 = function (root) {
+				if (root == null || root.left == null) {
 					return root;
-				}  
+				}
 				root.left.next = root.right;//(修改当前的下一层)
-				root.right.next = root.next === null? null:root.next.left //(修改当前的下下层)
+				root.right.next = root.next === null ? null : root.next.left //(修改当前的下下层)
 				root.left = connect(root.left);
 				root.right = connect(root.right);
 
@@ -555,14 +555,14 @@
 			}
 
 			//不需要修改每层最后一个节点的Next,因为它本来就定义为null
-			const connect = function(root) {
-				if(root===null) return root;
+			const connect = function (root) {
+				if (root === null) return root;
 
 				const dfs = (node) => {
-					if (node.left === null && node.right ===null) return ; // leaf node
+					if (node.left === null && node.right === null) return; // leaf node
 
 					node.left.next = node.right;
-					if(node.next) node.right.next = node.next.left; // node.next在上一层已经被修改
+					if (node.next) node.right.next = node.next.left; // node.next在上一层已经被修改
 
 					dfs(node.left); // depth first 左枝一直前进到叶子节点
 					dfs(node.right);
@@ -573,6 +573,45 @@
 				return root;
 
 			}
+
+			//542. 01 Matrix
+			const updateMatrix = function (mat) {
+				const m = mat.length;
+				const n = mat[0].length;
+				let dp = new Array(m).fill(0).map(i => new Array(n));  // empty two-D array
+
+				for (let i = 0; i < m; i++) {
+					for (let j = 0; j < n; j++) {
+						dp[i][j] = mat[i][j] === 0 ? 0 : 8888
+					}
+				} // 如果matrix是零，那么该格子值就是0
+
+				for (let i = 0; i < m; i++) {
+					for (let j = 0; j < n; j++) {
+						if (i >= 1) {
+							dp[i][j] = Math.min(dp[i][j], dp[i - 1][j] + 1)
+						}
+						if (j >= 1) {
+							dp[i][j] = Math.min(dp[i][j], dp[i][j - 1] + 1)
+						}
+					}
+				}
+
+				for (let i = m - 1; i >= 0; i--) {
+					for(let j = n - 1; j >= 0; j--) {
+						if (i + 1 < m) {
+							dp[i][j] = Math.min(dp[i][j], dp[i + 1][j] + 1);
+						}
+						if (j + 1 < n) {
+							dp[i][j] = Math.min(dp[i][j], dp[i][j + 1] + 1);
+						}
+					}
+				}
+
+				return dp
+
+			}
+
 
 
 		</script>
