@@ -513,7 +513,7 @@
 			 * @return {Node}
 			 */
 			//BFS
-			const connect = function (root) {
+			const connect1 = function (root) {
 				let queue = [];
 
 				if (root) queue.push(root);
@@ -582,7 +582,7 @@
 
 				for (let i = 0; i < m; i++) {
 					for (let j = 0; j < n; j++) {
-						dp[i][j] = mat[i][j] === 0 ? 0 : 8888
+						dp[i][j] = mat[i][j] === 0 ? 0 : 10000
 					}
 				} // 如果matrix是零，那么该格子值就是0
 
@@ -598,7 +598,7 @@
 				}
 
 				for (let i = m - 1; i >= 0; i--) {
-					for(let j = n - 1; j >= 0; j--) {
+					for (let j = n - 1; j >= 0; j--) {
 						if (i + 1 < m) {
 							dp[i][j] = Math.min(dp[i][j], dp[i + 1][j] + 1);
 						}
@@ -613,7 +613,72 @@
 			}
 
 
+			// 994. Rotting Oranges
+			const orangesRotting = function (grid) {
+				const m = grid.length;
+				const n = grid[0].length;
+				let queue = [];
+				let sum = 0;
+				let res = 0;
 
+				for (let i = 0; i < m; i++) {
+					for (let j = 0; j < n; j++) {
+						if (grid[i][j] === 2) {
+							queue.push([i, j])
+						} else if (grid[i][j] === 1) {
+							sum++
+						}
+					}
+				}
+
+				if (sum === 0) return res;
+
+				while (sum > 0 && queue.length) {
+					let levelSize = queue.length;
+					res++;
+
+					while (levelSize > 0) {
+						let node = queue.shift();
+						let row = node[0];
+						let col = node[1];
+
+						//left
+						if (row - 1 >= 0 && grid[row - 1][col] === 1) {
+							grid[row - 1][col] = 2;
+							queue.push([row - 1, col]);
+							sum--;
+						};
+						//right
+						if (row + 1 < m && grid[row + 1][col] === 1) {
+							grid[row + 1][col] = 2;
+							queue.push([row + 1, col]);
+							sum--;
+						};
+						//up
+						if (col - 1 >= 0 && grid[row][col - 1] === 1) {
+							grid[row][col - 1] = 2;
+							queue.push([row, col - 1]);
+							sum--
+						};
+						//bottom
+						if (col + 1 < n && grid[row][col + 1] === 1) {
+							grid[row][col + 1] = 2;
+							queue.push([row, col + 1]);
+							sum--
+						}
+						levelSize--;
+					}
+				};// end while
+
+				if (sum > 0) {
+					return -1
+				} else {
+					return res
+				}
+			};
+
+			//orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]])
+			orangesRotting([[1,2]])
 		</script>
 
 	</body>
