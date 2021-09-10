@@ -670,15 +670,74 @@
 					}
 				};// end while
 
-				if (sum > 0) {
+			/*	if (sum > 0) {
 					return -1
 				} else {
 					return res
 				}
+			*/
+
+				return sum >0 ? -1 : res
 			};
 
 			//orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]])
-			orangesRotting([[1,2]])
+			//orangesRotting([[1,2]])
+
+			//24. Swap Nodes in Pairs
+			const swapPairs = function(head) {
+				let dumpH = new ListNode(null);
+				dumpH.next = head;
+
+				while(head.next) {
+					let tmp = head.next;
+
+
+				}
+
+
+				//08.06 hanota
+				const hanota = function(A, B, C) {
+					let source;
+					source = source===A? B:A
+					let tmp;
+					tmp = tmp === B? A:B
+
+					let toBeMoved = source.splice(1);
+					hanota(toBeMoved, tmp, C);
+					C.push(source.pop())
+					
+					return C
+					
+				};
+
+				//217
+				const containsDuplicate1 = function(nums) {
+					for(let i=0; i<nums.length; i++) {
+						for (let j=i+1; j< nums.length; j++) {
+							if(nums[i] === nums[j]) return true
+						}
+					}
+					return false
+				};
+
+				const containsDuplicate = function(nums) {
+						let numSet = new Set();
+						for (let i=0; i<nums.length;i++){
+							if(!numSet.has(nums[i])) {
+								numSet.add(nums[i])
+							} else {
+								return true
+							}
+						};
+
+						return false
+				} 
+
+				// another solution : sort the array first
+
+				//26. 删除有序数组中的重复项 26. Remove Duplicates from Sorted Array
+				
+
 		</script>
 
 	</body>
