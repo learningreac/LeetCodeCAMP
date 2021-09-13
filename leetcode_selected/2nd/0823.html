@@ -761,7 +761,7 @@
 			};
 
 			//88. Merge Sorted Array
-			const merge = function (nums1, m, nums2, n) {
+			const merge1 = function (nums1, m, nums2, n) {
 				let i = 0, j = 0;
 
 				while (j < n && m <= nums1.length) {
@@ -769,8 +769,8 @@
 						i++
 					} else {    // nums1[i] > nums2[j]  insert nums2[j]
 						// 先把需要插入的数 放入nums1中
-						nums1[m] = nums2[j]; 
-						
+						nums1[m] = nums2[j];
+
 						// 把该数交换到 i 的位置 需要交换 m - i 次
 						let cur = m;
 						while (cur > i) {  // between i and current m
@@ -781,12 +781,175 @@
 							}
 						}
 						m++; // m 指向下一个空 0
-						i++; 
-						j++; 
+						i++;
+						j++;
 					}
 				}
 			};
 
+			// use array.sort() directly
+			const merge2 = function (nums1, m, nums2, n) {
+				// put nums2 at the tail of nums1
+				for (let i = 0; i < n; i++) {
+					nums1[m + i] = nums2[i]
+				}
+
+				//  nums1.splice(m, nums1.length - m, ...nums2);
+
+				nums1.sort((a, b) => a - b)
+			}
+			//merge([1,2,3,0,0,0],3,[2,5,6],3)
+
+			// quick sort nums1 [1, 2, 3, 2, 5, 6], the pilot start from m-1
+			const quickSort = function (nums, i, j) {
+				// 需要再增加一个限制条件，否则会无限循环  j=-1 ...
+				if (i < j) {   // ?
+					let index = i;
+					let pilot = nums[index];
+
+					while (i <= j) {
+						if (nums[i] <= pilot) {
+							i++;
+							continue;
+						};
+						if (nums[j] > pilot) {
+							j--;
+							continue;
+						};
+
+						[nums[i], nums[j]] = [nums[j], nums[i]];
+					}
+					[nums[index], nums[j]] = [nums[j], nums[index]]; // pilot 归位
+
+					quickSort(nums, 0, j - 1);
+					quickSort(nums, j, nums.length - 1)
+				}
+
+
+			};
+
+			//quickSort(nums, 0, nums.length-1)
+			//quickSort([7, 5, 8, 1, 6, 3, 9], 0, 6)
+
+
+			// 349  Intersection of Two Arrays (unique)
+			// if two for loop, the time is O(m*n)
+			// if use two set, the time is O(m+n)
+
+			const intersection = function (nums1, nums2) {
+				let set1 = new Set();
+				let set2 = new Set();
+				nums1.forEach(num => set1.add(num));
+				nums2.forEach(num => set2.add(num));
+
+				const getIntersection = function (set1, set2) { //set1 is shorter
+					let res = [];
+					for (const num of set1) {
+						if (set2.has(num)) {
+							res.push(num);
+						}
+					}
+					return res;
+				}
+
+				return set1.size < set2.size       // size matters
+					? getIntersection(set1, set2)
+					: getIntersection(set2, set1)
+			}
+
+
+			//350. Intersection of Two Arrays II   the solution is not completely correct 09/12/2021
+
+			const getIntersection = function (arr1, arr2) {   // arr1 is shorter
+				let res = new Map();
+				for (let i = 0; i < arr1.length; i++) {
+					for (let j = 0; j < arr2.length; j++) {
+						if (arr1[i] === arr2[j]) {
+							res.set(i, arr1[i]);
+						}
+					}
+				}
+				console.log(res);
+				return Array.from(res.values());
+			}
+
+			const intersect = function (nums1, nums2) {
+				return nums1.length <= nums2.length
+					? getIntersection(nums1, nums2)
+					: getIntersection(nums2, nums1)
+			};
+
+			//intersect([4,9,5],[9,4,9,8,4])
+
+
+			//121. Best Time to Buy and Sell Stock
+			// run out of time 暴力解法
+			const maxProfit1 = function (prices) {
+				let profit = 0;
+				for (let i = 0; i < prices.length;) {
+					if (prices[i] > prices[i + 1]) {
+						i++
+					}
+					for (let j = i + 1; j < prices.length; j++) {
+						profit = Math.max(profit, prices[j] - prices[i])
+					}
+					i++
+				}
+
+				return profit
+			};
+
+			//单调栈   minstack
+			const maxProfit2 = function (prices) {
+				let minStack = [];
+				let max = 0;
+				prices.push(0);
+
+				for (const price of prices) {
+
+					while (minStack.length > 0 && price <= minStack[minStack.length - 1]) { // 弹出直到当前栈底为最小元素
+						max = Math.max(max, minStack[minStack.length - 1] - minStack[0]);
+						minStack.pop(); // 弹出栈顶元素 5;
+					}
+
+					minStack.push(price);
+				}
+
+				return max;
+			};
+
+			//Greedy  Time O(n)  Space O(1);
+			const maxProfit3 = function (prices) {
+				let low = prices[0]; // low need to have a value to make sure Math.min() works
+				let res = 0;
+				for (const price of prices) {
+					low = Math.min(low, price);
+					res = Math.max(res, price-low)
+				}
+				return res;
+			}
+
+			//DP
+			const maxProfit = function (prices) {
+				let pre = 0;
+				let res = 0;
+
+				for(let i=1; i<prices.length;i++) {
+					let diff = prices[i] - prices[i-1];
+
+					// maxProfit(i) = maxprofit(i-1) + diff
+					pre = Math.max(pre + diff, 0);
+					res = Math.max(res, pre)
+				}
+
+				return res
+
+			}
+
+
+			//maxProfit([7,1,5,3,6,4])
+			//maxProfit([2,1,2,1,0,1,2]);
+			maxProfit([3, 3, 5, 0, 0, 3, 1, 4])
 
 		</script>
 
