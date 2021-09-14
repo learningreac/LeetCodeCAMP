@@ -987,19 +987,29 @@
 				let m = mat.length; //row 
 				let n = mat[0].length; //column
 
-				//if(m*n !== r*c) return mat;
-				//let res = new Array(r).fill(0).map(item => new Array(c));
-				let res = new Array(r).fill(0);
+				if(m*n !== r*c) return mat;
+				let res = new Array(r).fill(0).map(item => new Array(c));
+				console.log(res);
+				let row = 0;
 
-				for (let i = 0, j = 0; i < m, j < r;) {
+				for(let i=0; i<r; i++) {
+					for(let j=0; j<c;j++) {
 
-					if (c >= n) {             //新的数组宽
-						res[j] = [...mat[i]]
+						if(mat[row].length > 0) {
+							let tmp = mat[row].shift();
+							res[i][j] = tmp
+						} else {
+							row ++;
+							j--;
+						}
+						
 					}
+				};
 
-				}
-
+				return res;
 			};
+
+			matrixReshape([[1,2],[3,4]],2,2)
 
 			//118. Pascal's Triangle
 			const generate = function (numRows) {
@@ -1025,8 +1035,8 @@
 			// onther solution : mark row and column index seperately as true, if matrix[i][j] meet one of them, then that grid should be zero.
 			const setZeroes = function (matrix) {
 				let queue = [];
-				let m =  matrix.length;
-				let n =  matrix[0].length;
+				let m = matrix.length;
+				let n = matrix[0].length;
 
 				for (let i = 0; i < m; i++) {
 					for (let j = 0; j < n; j++) {
@@ -1042,7 +1052,7 @@
 					let col = temp[1];
 					matrix.map((item, i) => i === row ? item.fill(0) : item);
 
-					for(let i=0; i<m; i++) {
+					for (let i = 0; i < m; i++) {
 						matrix[i][col] = 0
 					}
 				}
@@ -1050,9 +1060,71 @@
 				return matrix
 
 			};
-			
 
 
+			//36. Valid Sudoku
+			const isValidSudoku = function (board) {
+				let len = board.length;
+
+				// test row
+				for (let i = 0; i < len; i++) {
+					let rowSet = new Set()
+					for (let j = 0; j < len; j++) {
+						if (board[i][j] === '.') continue;
+						if (rowSet.has(board[i][j])) {
+							return false
+						} else {
+							rowSet.add(board[i][j])
+						}
+					};
+					console.log(rowSet);
+				}
+
+				// test column 
+				for (let j = 0; j < len; j++) {
+					let colSet = new Set()
+					for (let i = 0; i < len; i++) {
+						if (board[i][j] === '.') continue;
+						if (colSet.has(board[i][j])) {
+							return false
+						} else {
+							colSet.add(board[i][j])
+						}
+					};
+					console.log('--', colSet);
+				};
+
+				// test square
+				for (let i = 0; i < len; i += 3) {
+					let squareSet = new Set()
+					for (let j = 0; j < len; j += 3) {
+
+
+						if (board[i][j] === '.') continue;
+						if (squareSet.has(board[i][j])) {
+							return false
+						} else {
+							squareSet.add(board[i][j])
+						}
+
+					};
+					console.log(squareSet);
+				}
+
+				return true
+			};
+
+		/*	isValidSudoku([["5", "3", ".", ".", "7", ".", ".", ".", "."]
+				, ["6", ".", ".", "1", "9", "5", ".", ".", "."]
+				, [".", "9", "8", ".", ".", ".", ".", "6", "."]
+				, ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
+				, ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
+				, ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
+				, [".", "6", ".", ".", ".", ".", "2", "8", "."]
+				, [".", ".", ".", "4", "1", "9", ".", ".", "5"]
+				, [".", ".", ".", ".", "8", ".", ".", "7", "9"]])
+
+		*/
 		</script>
 
 	</body>
