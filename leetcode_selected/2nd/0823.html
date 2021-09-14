@@ -924,7 +924,7 @@
 				let res = 0;
 				for (const price of prices) {
 					low = Math.min(low, price);
-					res = Math.max(res, price-low)
+					res = Math.max(res, price - low)
 				}
 				return res;
 			}
@@ -934,8 +934,8 @@
 				let pre = 0;
 				let res = 0;
 
-				for(let i=1; i<prices.length;i++) {
-					let diff = prices[i] - prices[i-1];
+				for (let i = 1; i < prices.length; i++) {
+					let diff = prices[i] - prices[i - 1];
 
 					// maxProfit(i) = maxprofit(i-1) + diff
 					pre = Math.max(pre + diff, 0);
@@ -949,7 +949,58 @@
 
 			//maxProfit([7,1,5,3,6,4])
 			//maxProfit([2,1,2,1,0,1,2]);
-			maxProfit([3, 3, 5, 0, 0, 3, 1, 4])
+			//maxProfit([3, 3, 5, 0, 0, 3, 1, 4])
+
+			//dp
+			const maxProfitII2 = function (prices) {
+				let len = prices.length;
+				let dp = new Array(len).fill(0).map(item => new Array(len));
+				//dp[0][0] = 0;
+
+				for (let i = 0; i < len; i++) {
+					for (let j = i + 1; j < len; j++) {
+						dp[i][i] = 0;
+						dp[i][j] = Math.max(dp[i][j - 1], prices[j] - prices[i])
+					}
+				};
+
+				console.log(dp)
+
+			};
+
+			//greedy
+			const maxProfitII = function (prices) {
+				// 在所有上涨交易日都做买卖，在所有下跌交易日都不做买卖
+				let temp;
+				let profit = 0;
+				for (let i = 1; i < prices.length; i++) {
+					temp = prices[i] - prices[i - 1];
+					if (temp > 0) {
+						profit += temp;
+					}
+				};
+				return profit;
+			}
+
+			//566. Reshape the Matrix
+			const matrixReshape = function (mat, r, c) {
+				let m = mat.length; //row 
+				let n = mat[0].length; //column
+
+				//if(m*n !== r*c) return mat;
+				//let res = new Array(r).fill(0).map(item => new Array(c));
+				let res = new Array(r).fill(0);
+
+				for (let i = 0,j=0; i < m, j<r;) {
+
+					if (c >= n) {             //新的数组宽
+						res[j] = [...mat[i]]
+					}
+
+				}
+
+			};
+
 
 		</script>
 
