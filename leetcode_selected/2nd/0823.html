@@ -991,7 +991,7 @@
 				//let res = new Array(r).fill(0).map(item => new Array(c));
 				let res = new Array(r).fill(0);
 
-				for (let i = 0,j=0; i < m, j<r;) {
+				for (let i = 0, j = 0; i < m, j < r;) {
 
 					if (c >= n) {             //新的数组宽
 						res[j] = [...mat[i]]
@@ -999,6 +999,25 @@
 
 				}
 
+			};
+
+			//118. Pascal's Triangle
+			const generate = function (numRows) {
+				let res = new Array(numRows)
+					.fill(0)
+					.map((item, i) => new Array(i + 1));
+
+				for (let i = 0; i < numRows; i++) {
+					for (let j = 0; j <i+1; j++) {
+						if (j === 0 || j === res[i].length - 1) {
+							res[i][j] = 1;
+						} else {
+							res[i][j] = res[i - 1][j - 1] + res[i - 1][j]
+						}
+					}
+				}
+				//console.log(res)
+				return res;
 			};
 
 
