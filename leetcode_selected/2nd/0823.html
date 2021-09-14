@@ -983,33 +983,58 @@
 			}
 
 			//566. Reshape the Matrix
-			const matrixReshape = function (mat, r, c) {
+			const matrixReshape1 = function (mat, r, c) {
 				let m = mat.length; //row 
 				let n = mat[0].length; //column
 
-				if(m*n !== r*c) return mat;
+				if (m * n !== r * c) return mat;
 				let res = new Array(r).fill(0).map(item => new Array(c));
-				console.log(res);
 				let row = 0;
 
-				for(let i=0; i<r; i++) {
-					for(let j=0; j<c;j++) {
-
-						if(mat[row].length > 0) {
+				for (let i = 0; i < r; i++) {
+					for (let j = 0; j < c; j++) {
+						if (mat[row].length > 0) {
 							let tmp = mat[row].shift();
 							res[i][j] = tmp
 						} else {
-							row ++;
+							row++;
 							j--;
 						}
-						
 					}
 				};
 
 				return res;
 			};
 
-			matrixReshape([[1,2],[3,4]],2,2)
+			const matrixReshape = function (mat, r, c) {
+				let m = mat.length; //row 
+				let n = mat[0].length; //column
+				if (m * n !== r * c) return mat;
+
+				for (let i = 0; i < r; i++) {
+					if (c >= n) {
+						if (mat[i + 1]) {
+							mat[i] = mat[i].concat(mat[i + 1].splice(0, c - mat[i].length))
+						}
+
+					};
+
+					if (c < n) {
+						let tmp = mat[i].splice(c);
+						mat[i + 1] = tmp.concat(mat[i + 1]);
+					}
+				}
+
+				console.log('mat now', mat);
+				return n >= 1 ? mat.splice(0, r) : mat
+
+			}
+
+			//matrixReshape([[1, 2], [3, 4]], 2, 2)
+			//matrixReshape([[1, 2], [3, 4], [5, 6]], 2, 3)
+			//matrixReshape([[1, 2,3], [4,5, 6]], 3, 2)
+			//matrixReshape([1,2,3,4],1,4)
+			// matrixReshape([[1],[2],[3],[4]],2,2)   this case cannot pass need to be fixed
 
 			//118. Pascal's Triangle
 			const generate = function (numRows) {
@@ -1114,17 +1139,39 @@
 				return true
 			};
 
-		/*	isValidSudoku([["5", "3", ".", ".", "7", ".", ".", ".", "."]
-				, ["6", ".", ".", "1", "9", "5", ".", ".", "."]
-				, [".", "9", "8", ".", ".", ".", ".", "6", "."]
-				, ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
-				, ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
-				, ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
-				, [".", "6", ".", ".", ".", ".", "2", "8", "."]
-				, [".", ".", ".", "4", "1", "9", ".", ".", "5"]
-				, [".", ".", ".", ".", "8", ".", ".", "7", "9"]])
+			/*	isValidSudoku([["5", "3", ".", ".", "7", ".", ".", ".", "."]
+					, ["6", ".", ".", "1", "9", "5", ".", ".", "."]
+					, [".", "9", "8", ".", ".", ".", ".", "6", "."]
+					, ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
+					, ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
+					, ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
+					, [".", "6", ".", ".", ".", ".", "2", "8", "."]
+					, [".", ".", ".", "4", "1", "9", ".", ".", "5"]
+					, [".", ".", ".", ".", "8", ".", ".", "7", "9"]])
 
-		*/
+			*/
+
+
+			//387. First Unique Character in a String
+			const firstUniqChar = function (s) {
+				let charMap = new Map();
+				let repeteSet = new Set();
+
+				for (let i = 0; i < s.length; i++) {
+					if (!charMap.has(s[i])) {
+						charMap.set(s[i], i);
+					} else {
+						repeteSet.add(s[i]);
+					}
+				};
+
+				repeteSet.forEach(item => charMap.delete(item));
+
+				return charMap.size>0? charMap.values().next().value : -1
+			};
+
+			firstUniqChar("leetcode")
+			//firstUniqChar("loveleetcode")
 		</script>
 
 	</body>
