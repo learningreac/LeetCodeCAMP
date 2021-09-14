@@ -1008,7 +1008,7 @@
 					.map((item, i) => new Array(i + 1));
 
 				for (let i = 0; i < numRows; i++) {
-					for (let j = 0; j <i+1; j++) {
+					for (let j = 0; j < i + 1; j++) {
 						if (j === 0 || j === res[i].length - 1) {
 							res[i][j] = 1;
 						} else {
@@ -1019,6 +1019,38 @@
 				//console.log(res)
 				return res;
 			};
+
+
+			//73. Set Matrix Zeroes
+			// onther solution : mark row and column index seperately as true, if matrix[i][j] meet one of them, then that grid should be zero.
+			const setZeroes = function (matrix) {
+				let queue = [];
+				let m =  matrix.length;
+				let n =  matrix[0].length;
+
+				for (let i = 0; i < m; i++) {
+					for (let j = 0; j < n; j++) {
+						if (matrix[i][j] === 0) {
+							queue.push([i, j]);
+						};
+					};
+				}
+
+				while (queue.length > 0) {
+					let temp = queue.shift();
+					let row = temp[0];
+					let col = temp[1];
+					matrix.map((item, i) => i === row ? item.fill(0) : item);
+
+					for(let i=0; i<m; i++) {
+						matrix[i][col] = 0
+					}
+				}
+
+				return matrix
+
+			};
+			
 
 
 		</script>
