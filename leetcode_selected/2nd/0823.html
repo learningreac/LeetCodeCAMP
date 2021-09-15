@@ -756,8 +756,20 @@
 			//removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4])
 
 			//53. Maximum Subarray
-			var maxSubArray = function (nums) {
 
+			const maxSubArray = function (nums) {
+				let dp = new Array(nums.length);
+				dp[0] = nums[0];
+				let max = nums[0]; // max should not be zero as the num might be negative
+                
+				if(nums.length===1) return max; // special case
+
+				for(let i=1; i< dp.length;i++) {
+						dp[i] = Math.max(dp[i-1]+nums[i], nums[i]);
+						max = Math.max(dp[i], max);
+				}
+
+				return max;
 			};
 
 			//88. Merge Sorted Array
@@ -1153,6 +1165,11 @@
 
 
 			//387. First Unique Character in a String
+			// map: record all char and their index
+			// set: record the char apprears once more
+
+			// delete the items in map that set has
+			//
 			const firstUniqChar = function (s) {
 				let charMap = new Map();
 				let repeteSet = new Set();
@@ -1167,11 +1184,95 @@
 
 				repeteSet.forEach(item => charMap.delete(item));
 
-				return charMap.size>0? charMap.values().next().value : -1
+				return charMap.size > 0 ? charMap.values().next().value : -1
 			};
 
-			firstUniqChar("leetcode")
+			//firstUniqChar("leetcode")
 			//firstUniqChar("loveleetcode")
+
+
+			//383. Ransom Note
+			const canConstruct = function (ransomNote, magazine) {
+
+				// harshmap for magazine record char and show times
+				let magMap = new Map();
+				for (let i = 0; i < magazine.length; i++) {
+					if (!magMap.has(magazine[i])) {
+						magMap.set(magazine[i], 1);
+					} else {
+						let key = magMap.get(magazine[i]);
+						magMap.set(magazine[i], ++key);
+					}
+				};
+				console.log(magMap)
+
+				for (let j = 0; j < ransomNote.length; j++) {
+					if (magMap.has(ransomNote[j])) {
+						let key = magMap.get(ransomNote[j]);
+						magMap.set(ransomNote[j], --key);
+						if (key < 0) return false
+					} else {
+						return false
+					}
+				}
+
+				return true;
+
+			};
+
+			//canConstruct('aa', 'aab');
+
+
+			const scanToMap = function (string) {
+				let temMap = new Map();
+				for (let i = 0; i < string.length; i++) {
+					if (!temMap.has(string[i])) {
+						temMap.set(string[i], 1)
+					} else {
+						let value = temMap.get(string[i]);
+						temMap.set(string[i], ++value)
+					}
+				}
+				return temMap
+			}
+
+			//242. Valid Anagram
+
+			// sort first then join,then compare 
+			const isAnagram = function (s, t) {
+				let sMap = scanToMap(s);
+				let tMap = scanToMap(t);
+
+				/*sMap.forEach((value, key) => {      // ***arguments order matters here
+					if (!tMap.has(key)) {               // forEach accept a callback function, the return inside is not for the whole function,
+						return false                    // but only for the inner function
+					} else if (value !== tMap.get(key)) {
+						return false
+					} else 
+				})
+				*/
+
+				for(const [key, value] of sMap.entries()){
+					if(!tMap.has(key) || value !== tMap.get(key)) {
+						return false
+					} else {
+						tMap.delete(key);
+						sMap.delete(key);
+					} 
+
+				}
+
+				return tMap.size===0 && sMap.size===0? true : false
+			};
+
+			// another solution:
+			//harshmap S, then irrelate T,
+			// if Smap.has(t[i]) --value  return false when key is negative or delete that key when value is zero
+			// if !Smap.has(t[i])  return false
+			// after irrelation for t, return false is Smap.size >0
+
+			//isAnagram("rat", "car")
+			//isAnagram('a', 'ab')
 		</script>
 
 	</body>
