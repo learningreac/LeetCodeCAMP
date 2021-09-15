@@ -761,12 +761,12 @@
 				let dp = new Array(nums.length);
 				dp[0] = nums[0];
 				let max = nums[0]; // max should not be zero as the num might be negative
-                
-				if(nums.length===1) return max; // special case
 
-				for(let i=1; i< dp.length;i++) {
-						dp[i] = Math.max(dp[i-1]+nums[i], nums[i]);
-						max = Math.max(dp[i], max);
+				if (nums.length === 1) return max; // special case
+
+				for (let i = 1; i < dp.length; i++) {
+					dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+					max = Math.max(dp[i], max);
 				}
 
 				return max;
@@ -1252,17 +1252,17 @@
 				})
 				*/
 
-				for(const [key, value] of sMap.entries()){
-					if(!tMap.has(key) || value !== tMap.get(key)) {
+				for (const [key, value] of sMap.entries()) {
+					if (!tMap.has(key) || value !== tMap.get(key)) {
 						return false
 					} else {
 						tMap.delete(key);
 						sMap.delete(key);
-					} 
+					}
 
 				}
 
-				return tMap.size===0 && sMap.size===0? true : false
+				return tMap.size === 0 && sMap.size === 0 ? true : false
 			};
 
 			// another solution:
@@ -1273,6 +1273,55 @@
 
 			//isAnagram("rat", "car")
 			//isAnagram('a', 'ab')
+
+
+			//203. Remove Linked List Elements
+
+			const mylist2 = {
+				val: 1,
+				next: {
+					val: 2,
+					next: {
+						val: 6,
+						next: {
+							val: 3,
+							next: null
+						}
+					}
+				}
+			};
+
+			function ListNode(val, next) {
+				this.val = (val === undefined ? 0 : val)
+				this.next = (next === undefined ? null : next)
+			};
+
+			const removeElements1 = function (head, val) {
+				let dumpH = new ListNode();
+				dumpH.next = head;
+				let pre = dumpH;
+
+				while (dumpH.next) {
+					if (dumpH.next.val === val) {
+						dumpH.next = dumpH.next.next
+					} else {
+						dumpH = dumpH.next;
+					}
+				}
+				return pre.next
+
+			};
+
+			// recursion
+			const removeElements = function (head, val) {
+				if(head===null) return null;
+				head.next = removeElements(head.next, val);
+
+				return head.val === val? head.next : head
+
+			}			
+
+			//removeElements(mylist2, 6)
 		</script>
 
 	</body>
