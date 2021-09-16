@@ -814,32 +814,28 @@
 
 			// quick sort nums1 [1, 2, 3, 2, 5, 6], the pilot start from m-1
 			const quickSort = function (nums, i, j) {
-				// 需要再增加一个限制条件，否则会无限循环  j=-1 ...
-				if (i < j) {   // ?
-					let index = i;
-					let pilot = nums[index];
+				quickSort(nums, 0, j - 1);
+				quickSort(nums, j + 1, nums.length - 1)
 
-					while (i <= j) {
-						if (nums[i] <= pilot) {
-							i++;
-							continue;
-						};
-						if (nums[j] > pilot) {
-							j--;
-							continue;
-						};
+			}
 
-						[nums[i], nums[j]] = [nums[j], nums[i]];
-					}
-					[nums[index], nums[j]] = [nums[j], nums[index]]; // pilot 归位
+			const partition = function (nums, i, j) {
+				let index = i;
+				let pivot = nums[index];
 
-					quickSort(nums, 0, j - 1);
-					quickSort(nums, j, nums.length - 1)
+				while (i <= j) {
+					while (nums[i] <= pivot) {
+						i++;
+					};
+					while (nums[j] > pivot) {
+						j--;
+					};
+
+					[nums[i], nums[j]] = [nums[j], nums[i]];
+					i++; j--;
 				}
-
-
-			};
-
+				[nums[index], nums[j]] = [nums[j], nums[index]]; // pivot 归位
+			}
 			//quickSort(nums, 0, nums.length-1)
 			//quickSort([7, 5, 8, 1, 6, 3, 9], 0, 6)
 
@@ -848,7 +844,7 @@
 			// if two for loop, the time is O(m*n)
 			// if use two set, the time is O(m+n)
 
-			const intersection = function (nums1, nums2) {
+			const intersection1 = function (nums1, nums2) {
 				let set1 = new Set();
 				let set2 = new Set();
 				nums1.forEach(num => set1.add(num));
@@ -869,6 +865,38 @@
 					: getIntersection(set2, set1)
 			}
 
+			// Sort array first -------  Intersection of Two Sorted Arrays
+			const intersection = function (nums1, nums2) {
+				nums1.sort((a, b) => a - b);
+				nums2.sort((a, b) => a - b);
+				let res = [];
+				let i = 0, j = 0;
+
+				while (i < nums1.length && j < nums2.length) {
+					if (nums1[i] < nums2[j]) {
+						i++;
+						continue;
+					};
+					if (nums1[i] > nums2[j]) {
+						j++;
+
+						continue;
+					};
+					if (nums1[i] === nums2[j]) {
+						if (res.indexOf(nums1[i]) === -1) {
+							res.push(nums1[i]);
+						};
+						i++;
+						j++;
+					};
+				}
+
+				return res;
+
+			}
+
+			//intersection([4,9,5],[9,4,9,8,4]);
+			//intersection([1, 2], [1, 1])
 
 			//350. Intersection of Two Arrays II   the solution is not completely correct 09/12/2021
 
@@ -885,11 +913,36 @@
 				return Array.from(res.values());
 			}
 
-			const intersect = function (nums1, nums2) {
+			const intersect1 = function (nums1, nums2) {
 				return nums1.length <= nums2.length
 					? getIntersection(nums1, nums2)
 					: getIntersection(nums2, nums1)
 			};
+			//---------------------------------------------------------------------
+			const intersect = function (nums1, nums2) {
+				nums1.sort((a, b) => a - b);
+				nums2.sort((a, b) => a - b);
+				let res = [];
+				let i = 0, j = 0;
+
+				while (i < nums1.length && j < nums2.length) {
+					if (nums1[i] < nums2[j]) {
+						i++;
+						continue;
+					};
+					if (nums1[i] > nums2[j]) {
+						j++;
+
+						continue;
+					};
+					if (nums1[i] === nums2[j]) {
+						res.push(nums1[i]);
+						i++;
+						j++;
+					};
+				}
+				return res;
+			}
 
 			//intersect([4,9,5],[9,4,9,8,4])
 
@@ -1314,14 +1367,134 @@
 
 			// recursion
 			const removeElements = function (head, val) {
-				if(head===null) return null;
+				if (head === null) return null;
 				head.next = removeElements(head.next, val);
 
-				return head.val === val? head.next : head
+				return head.val === val ? head.next : head
 
-			}			
+			}
 
 			//removeElements(mylist2, 6)
+
+			//695. Max Area of Island
+			const maxAreaOfIsland = function (grid) {
+				//let max = 0;  
+				let res = 0;
+				let queue = [];
+
+				const dfs = function (r, c) {
+					if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] !== 1) return 0;
+					grid[r][c] = 0; // mark as read 
+					let area = 1;
+
+					area += dfs(r - 1, c) + dfs(r + 1, c) + dfs(r, c - 1) + dfs(r, c + 1);
+					console.log(area);
+					return area;
+				};
+
+				for (let i = 0; i < grid.length; i++) {
+					for (let j = 0; j < grid[0].length; j++) {
+						if (grid[i][j] === 1) {
+							queue.push([i, j])
+						}
+					};
+				};
+
+				while (queue.length > 0) {
+					let tmp = queue.shift();
+					res = Math.max(res, dfs(tmp[0], tmp[1]))
+				}
+
+				return res;
+			};
+			//
+			var maxAreaOfIsland2 = function (grid) {
+				let ans = 0;
+				let m = grid.length;
+				let n = grid[0].length;
+				let count = 0;
+				const dfs = function (i, j) {
+					if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == '0') {
+						//终止条件
+						return;
+					}
+					//把陆地改为海洋，防止多次记录
+					grid[i][j] = "0";
+					//记录陆地
+					count++;
+					dfs(i - 1, j);
+					dfs(i + 1, j);
+					dfs(i, j - 1);
+					dfs(i, j + 1);
+				}
+
+				for (let i = 0; i < m; i++) {
+					for (let j = 0; j < n; j++) {
+						if (grid[i][j] == '1') {
+							dfs(i, j);
+							//判断最大值
+							ans = ans > count ? ans : count;
+							//重置计数
+							count = 0;
+						}
+					}
+				}
+				return ans;
+			};
+			//maxAreaOfIsland([[0, 0, 1], [0, 0, 0], [0, 1, 1], [0, 1, 0]])
+
+			//83. Remove Duplicates from Sorted List
+			const deleteDuplicates = function (head) {
+				let slow = head;
+				let fast = head;
+
+				while (fast) {
+					while (slow.val === fast.val) {
+						fast = fast.next;
+						if (fast === null) break;
+					};
+					// fast now is diff from slow;
+					slow.next = fast;
+					slow = slow.next;
+					if (fast) { fast = fast.next; }
+				}
+
+				return head;
+			};
+
+			const mylist3 = {
+				val: 1,
+				next: {
+					val: 1,
+					next: {
+						val: 2,
+						next: {
+							val: 2,
+							next: null
+						}
+					}
+				}
+			};
+
+			//deleteDuplicates(mylist3);
+
+			//206. Reverse Linked List
+			const reverseList = function(head) {
+				let pre = null;
+				
+				while(head) {
+					let cur = head;
+					let tmp = head.next;
+					head.next = pre;
+					pre = cur;
+					head = tmp;	// 最后一步操作时，tmp为null，所以head 就被擦除为null 了，所以下面返回时，返回pre
+				};
+				return pre;
+			};
+
+			reverseList(mylist2);
+
+			
 		</script>
 
 	</body>
