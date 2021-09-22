@@ -1479,10 +1479,10 @@
 			//deleteDuplicates(mylist3);
 
 			//206. Reverse Linked List
-			const reverseList = function(head) {
+			const reverseList = function (head) {
 				let pre = null;
-				
-				while(head) {
+
+				while (head) {
 					let cur = head;
 					let tmp = head.next;
 					head.next = pre;
@@ -1492,9 +1492,124 @@
 				return pre;
 			};
 
-			reverseList(mylist2);
+			//reverseList(mylist2);
+
+			//77. Combination
+			// [[1,2],[1,3],[1,4],[2,1],[2,3],[2,4],[3,1],[3,2],[3,4],[4,1],[4,2],[4,3]] 
+			// 这种写法 是全排列！ 不是组合，[1,2] [2,1] 对于组合来说是一样的
+			//预期结果[[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+			const combine = function (n, k) {
+				const res = [];
+				//setup queue
+				let queue = [];
+				for (let i = 1; i <= n; i++) { queue.push(i) };
+				if (k === 1) {
+					for (const item of queue) {
+						res.push([item])
+					}
+					return res;
+				};
+				let path = [];
+
+				while (queue.length >= k) {
+					for (let i = 0; i < queue.length; i++) {
+						path.push(queue[i]);
+						if (path.length === k) {
+							res.push(path.slice());
+							path.pop();
+						}
+					}
+					path = [];
+					queue.shift(); // 
+
+				};
+				return res;
+			};
+
+			//	combine(1, 1)
+
+			//46. Permutations
+			const permute = (nums) => {
+				const res = [];
+				const used = {};// HashMap
+
+				function dfs(path) {
+					if (path.length == nums.length) { // 个数选够了
+						res.push(path.slice()); // 拷贝一份path，加入解集res
+						return;                 // 结束当前递归分支
+					}
+					for (const num of nums) { // for枚举出每个可选的选项
+						// if (path.includes(num)) continue; // 别这么写！查找的时间是O(n)，增加时间复杂度
+						if (used[num]) continue; // 使用过的，跳过
+						path.push(num);         // 选择当前的数，加入path
+						used[num] = true;       // 记录一下 使用了  {num: true} 变成这样了
+						dfs(path);              // 基于选了当前的数，递归
+						path.pop();             // 上一句的递归结束，回溯，将最后选的数pop出来
+						used[num] = false;      // 撤销这个记录
+					}
+				}
+
+				dfs([]); // 递归的入口，空path传进去
+				return res;
+			};
+
+			//20. Valid Parentheses
+			const isValid = function (s) {
+				if (s.length % 2) return false;  // length is odd 
+				let dic = new Map([[')', '('], [']', '['], ['}', '{']]);
+				let stack = [];
+
+				for (const item of s) {
+					// 遇到右括号，看下跟它相邻的是不是左括号，是的话，两者都抛出；
+				}
+
+
+			};
+
+			function TreeNode(val, left, right) {
+				this.val = (val === undefined ? 0 : val)
+				this.left = (left === undefined ? null : left)
+				this.right = (right === undefined ? null : right)
+			}
+
+			const mytree = new TreeNode(1, 2, 3);
+			//101. 对称二叉树
+			const isSymmetric = function (root) {
+				if (!root) return true;
+
+				const isMirror = function (left, right) {
+					if (left === null && right === null) { return true }
+					if (left && right) {
+						return left.value === right.value && isMirror(left.left, right.right) && isMirror(left.right, right.left)
+					}
+
+					return false
+				}
+				return isMirror(root.left, root.right)
+			};
 
 			
+
+			const isSymmetric2 = (root) => {
+
+				const check = (left, right) => {
+					if (left == null && right == null) { // 两个子树都为null，是对称的
+						return true;
+					}
+					if (left && right) { // 两个子树都存在，则需要：root值相同，且他们的子树也满足镜像
+						return left.val == right.val && check(left.left, right.right) && check(left.right, right.left);
+					}
+					return false;        // 一个子树存在一个不存在，肯定不对称
+				};
+
+				if (root == null) {     // 如果传入的root就是null，对称
+					return true;
+				}
+				return check(root.left, root.right); // 否则，判断它的左右子树是否满足对称
+			};
+
+			isSymmetric2(mytree);
+
 		</script>
 
 	</body>
