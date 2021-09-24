@@ -1581,14 +1581,14 @@
 					if (left === null && right === null) { return true }
 					if (left && right) {
 						return left.value === right.value && isMirror(left.left, right.right) && isMirror(left.right, right.left)
-					}
+					}  // should be left.val   not value
 
 					return false
 				}
 				return isMirror(root.left, root.right)
 			};
 
-			
+
 
 			const isSymmetric2 = (root) => {
 
@@ -1608,7 +1608,95 @@
 				return check(root.left, root.right); // 否则，判断它的左右子树是否满足对称
 			};
 
-			isSymmetric2(mytree);
+			//	isSymmetric2(mytree);
+
+			//700. Search in a Binary Search Tree
+			const searchBST = function (root, val) {
+				if (!root || root.val === val) return root;
+
+				return root.val > val ? searchBST(root.left, val) : searchBST(root.right, val)
+			}
+
+			// 226  Invert Binary Tree
+			const invertTree = function (root) {
+				if (!root) return null;
+				let tmp = root.left;
+				root.left = root.right;
+				root.right = tmp;
+
+				invertTree(root.left);
+				invertTree(root.right);
+
+				return root
+
+			};
+			//112. Path Sum
+		/*	const hasPathSum = function (root, targetSum) {
+				let sum = 0;
+
+				const dfs = function (node) {
+					if (!node) return;
+					sum += node.val;
+					if (sum === targetSum) {
+						return true;
+					} else if (sum < targetSum) {
+						dfs(node.left)
+					} else {
+						sum -= node.val;
+						dfs(node.right)
+					};
+				}
+
+				dfs(root);
+				return false;
+			};
+			*/
+
+
+			const hasPathSum1 = function (root, sum) {
+				// 遍历到叶子节点下一个节点-终止递归
+				if (root === null) return false
+
+				// 遍历到叶子节点 判断剩余节点是否与和差值未0
+				if (root.left === null && root.right === null) {
+					return (sum - root.val) === 0;
+				}
+
+				// sum一次减去该节点左节点、右节点 是否等于最后叶子节点
+				let left = hasPathSum(root.left, sum - root.val),
+					right = hasPathSum(root.right, sum - root.val);
+
+				// 存在一侧满足就满足
+				return left || right
+			};
+
+			// 回溯 Backtrack
+			const hasPathSum = function (root, targetSum) {
+
+				const traversal = function(node, sum) {
+					if(!node.left && !node.right && sum===0) return true; // leaf node && count is 0
+					if(!node.left && !node.right) return false; // leaf node
+					
+					if(node.left) {
+						sum -= node.left.val;
+						if(traversal(node.left, sum)) return true;
+						sum += node.left.val;
+					}
+
+					if(node.right) {
+						sum -= node.right.val;
+						if(traversal(node.right, sum)) return true;
+						sum += node.right.val;
+					}
+
+					return false;
+				}
+
+				if(!root) return false;
+				return traversal(root, targetSum - root.val)
+			}
+
+
 
 		</script>
 
