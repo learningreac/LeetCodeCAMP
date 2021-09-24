@@ -1631,26 +1631,26 @@
 
 			};
 			//112. Path Sum
-		/*	const hasPathSum = function (root, targetSum) {
-				let sum = 0;
-
-				const dfs = function (node) {
-					if (!node) return;
-					sum += node.val;
-					if (sum === targetSum) {
-						return true;
-					} else if (sum < targetSum) {
-						dfs(node.left)
-					} else {
-						sum -= node.val;
-						dfs(node.right)
-					};
-				}
-
-				dfs(root);
-				return false;
-			};
-			*/
+			/*	const hasPathSum = function (root, targetSum) {
+					let sum = 0;
+	
+					const dfs = function (node) {
+						if (!node) return;
+						sum += node.val;
+						if (sum === targetSum) {
+							return true;
+						} else if (sum < targetSum) {
+							dfs(node.left)
+						} else {
+							sum -= node.val;
+							dfs(node.right)
+						};
+					}
+	
+					dfs(root);
+					return false;
+				};
+				*/
 
 
 			const hasPathSum1 = function (root, sum) {
@@ -1671,32 +1671,50 @@
 			};
 
 			// 回溯 Backtrack
-			const hasPathSum = function (root, targetSum) {
+			const hasPathSum2 = function (root, targetSum) {
 
-				const traversal = function(node, sum) {
-					if(!node.left && !node.right && sum===0) return true; // leaf node && count is 0
-					if(!node.left && !node.right) return false; // leaf node
-					
-					if(node.left) {
+				const traversal = function (node, sum) {
+					if (!node.left && !node.right && sum === 0) return true; // leaf node && count is 0
+					if (!node.left && !node.right) return false; // leaf node
+
+					if (node.left) {
 						sum -= node.left.val;
-						if(traversal(node.left, sum)) return true;
+						if (traversal(node.left, sum)) return true;
 						sum += node.left.val;
 					}
 
-					if(node.right) {
+					if (node.right) {
 						sum -= node.right.val;
-						if(traversal(node.right, sum)) return true;
+						if (traversal(node.right, sum)) return true;
 						sum += node.right.val;
 					}
 
 					return false;
 				}
 
-				if(!root) return false;
+				if (!root) return false;
 				return traversal(root, targetSum - root.val)
 			}
 
+			//bfs
+			const hasPathSum = function (root, targetSum) {
+				if(!root) return false;
+				let queue = [];
+				queue.push([root, root.val]); // push to the end of the queue
 
+				while(queue.length) {
+					[node, sum] = queue.shift(); // get the first element from the queue
+
+					if(!node.left && !node.right && sum === targetSum) return true;
+					if(node.left) {
+						queue.push([node.left, sum + node.left.val])
+					};
+					if(node.right) {
+						queue.push([node.right, sum + node.right.val])
+					};
+				}
+				return false;
+			}
 
 		</script>
 
