@@ -1696,25 +1696,146 @@
 				return traversal(root, targetSum - root.val)
 			}
 
-			//bfs
+			//bfs   sum记录每个节点当前的总和。  前序遍历一遍二叉树，如果有节点和满足 返回true,否则遍历完毕返回false
 			const hasPathSum = function (root, targetSum) {
-				if(!root) return false;
+				if (!root) return false;
 				let queue = [];
 				queue.push([root, root.val]); // push to the end of the queue
 
-				while(queue.length) {
+				while (queue.length) {
 					[node, sum] = queue.shift(); // get the first element from the queue
 
-					if(!node.left && !node.right && sum === targetSum) return true;
-					if(node.left) {
+					if (!node.left && !node.right && sum === targetSum) return true;
+					if (node.left) {
 						queue.push([node.left, sum + node.left.val])
 					};
-					if(node.right) {
+					if (node.right) {
 						queue.push([node.right, sum + node.right.val])
 					};
 				}
+				// 循环走完都没有返回true就说明没有符合要求的路径总和
 				return false;
 			}
+
+			//113. Path Sum II
+			const pathSum = function (root, targetSum) {
+				let res = [], path = [];
+				if (!root) return res;
+				path.push(root.val);
+
+				const traversal = function (node, sum) {
+					if (!node.left && !node.right && sum === 0) {
+						res.push(path.slice()); // 如果不slice复制，那么穿进去的就是引用，当path之后修改时，res里的值也相应被修改
+						return;
+					} // leaf node && count is 0
+					if (!node.left && !node.right) return; // leaf node
+
+					if (node.left) {
+						path.push(node.left.val);
+						sum -= node.left.val;
+						traversal(node.left, sum);
+						sum += node.left.val;
+						path.pop();
+					}
+
+					if (node.right) {
+						path.push(node.right.val);
+						sum -= node.right.val;
+						traversal(node.right, sum);
+						sum += node.right.val;
+						path.pop();
+					}
+					return;
+				}
+
+
+				traversal(root, targetSum - root.val);
+				return res;
+
+			};
+
+			const root = {
+				val: 5,
+				left: {
+					val: 4,
+					left: {
+						val: 11,
+						left: { val: 7, left: null, right: null },
+						right: { val: 2, left: null, right: null },
+					},
+					right: null,
+				},
+				right: {
+					val: 8,
+					left: { val: 13, left: null, right: null },
+					right: {
+						val: 4,
+						left: { val: 5, left: null, right: null },
+						right: { val: 1, left: null, right: null },
+					},
+				},
+			};
+
+			//pathSum(root,22)
+
+			//66.plus one
+			const plusOne = function (digits) {
+
+				const recursion = function (cur) {
+					let addOn = digits[cur] + 1;
+					if (cur === 0 && addOn % 10 === 0) { // 进位 + 补位
+						digits[cur] = 0;
+						digits.unshift(1);
+					} else if (addOn % 10 === 0) { // 进位
+						digits[cur] = 0;
+						recursion(cur - 1)
+					} else {  // 不进位加1
+						digits[cur] = addOn;
+					}
+				}
+
+				recursion(digits.length - 1);
+				return digits;
+			};
+
+			// failed: [9] ==> [1,0]
+
+			//48. Rotate Image
+			const rotateImg = function (matrix) {
+
+			};
+
+			//70. Climbing Stairs
+			const climbStairs1 = function (n) {
+
+				let dp = new Array(n-1);
+				dp[0] = 1; // 1 stair
+				dp[1] = 2; // 2 stairs;
+
+				for(let i=2; i<n;i++) {
+					dp[i]= dp[i-1] + dp[i-2];
+				}
+
+				return dp[n-1];
+
+			};//  如果不建dp数组，直接调用原函数，会有很多重复计算，栈也会超出超时
+
+			// 压缩空间 当前状态只有过去两项有关
+			const climbStairs = n => {
+				let prepre = 1;
+				let pre = 2;
+				let cur;
+				
+				if(n<3) return n; // !!important
+				for(let i=3; i<=n;i++) {
+					cur = prepre + pre;
+					prepre = pre;
+					pre = cur;
+				};
+				return cur
+			}
+
+			climbStairs(5)
 
 		</script>
 
