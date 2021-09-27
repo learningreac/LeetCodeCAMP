@@ -110,10 +110,7 @@
 				}
 			};// 超出时间限制
 
-			// reverse方法
-
-
-			//189. Rotate Array
+			//189. Rotate Array   // reverse方法
 			const rotate = function (nums, k) {
 				let len = nums.length;
 				if(k%len === 0) return;
@@ -124,19 +121,19 @@
 						i++; j--;
 					}
 				};
-				/*
-				if (k <= nums.length) {
-					reverse(nums, 0, k - 1);
-					reverse(nums, k, nums.length - 1);
-				};
+								/*
+								if (k <= nums.length) {
+									reverse(nums, 0, k - 1);
+									reverse(nums, k, nums.length - 1);
+								};
 
-				if(k > nums.length) {
-					k = k%nums.length;
-					reverse(nums, 0, k - 1);
-					reverse(nums, k, nums.length - 1);
-				}
-				console.log(nums)
-				*/
+								if(k > nums.length) {
+									k = k%nums.length;
+									reverse(nums, 0, k - 1);
+									reverse(nums, k, nums.length - 1);
+								}
+								console.log(nums)
+								*/
 
 				k = k <= len ? k : k % len;
 				//nums.reverse();
@@ -150,6 +147,7 @@
 			//rotate([1], 2);
 			//rotate([1,2],5)
 
+			//数学方法 先复制数组，计算坐标逐次更改数组每项的值
 
 
 			//283. Move Zeroes
@@ -1960,6 +1958,21 @@
 			};
 
 			//singleNumber([4,1,2,1,2])
+
+			//142. Linked List Cycle II
+			const detectCycle = function(head) {
+				let nodeSet = new Set();
+
+				while(head) {
+					if(nodeSet.has(head)) {
+						return head;
+					} else {
+						nodeSet.add(head);
+						head = head.next
+					}
+				}
+
+			}
 
 		</script>
 
