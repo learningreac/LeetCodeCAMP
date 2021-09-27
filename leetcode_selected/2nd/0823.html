@@ -112,10 +112,44 @@
 
 			// reverse方法
 
-			const rotate = function (nums, k) {
-				nums.reverse();
 
-			}
+			//189. Rotate Array
+			const rotate = function (nums, k) {
+				let len = nums.length;
+				if(k%len === 0) return;
+
+				const reverse = function (nums, i, j) {
+					while (i < j) {
+						[nums[i], nums[j]] = [nums[j], nums[i]];
+						i++; j--;
+					}
+				};
+				/*
+				if (k <= nums.length) {
+					reverse(nums, 0, k - 1);
+					reverse(nums, k, nums.length - 1);
+				};
+
+				if(k > nums.length) {
+					k = k%nums.length;
+					reverse(nums, 0, k - 1);
+					reverse(nums, k, nums.length - 1);
+				}
+				console.log(nums)
+				*/
+
+				k = k <= len ? k : k % len;
+				//nums.reverse();
+				reverse(nums, 0, len-1);
+				reverse(nums, 0, k - 1);
+				reverse(nums, k, len - 1);
+			};
+
+			//rotate([1, 2, 3, 4, 5], 2)
+			//rotate([1,2,3], 4);
+			//rotate([1], 2);
+			//rotate([1,2],5)
+
 
 
 			//283. Move Zeroes
@@ -1849,26 +1883,26 @@
 					dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
 				}
 
-				if(len===1){
+				if (len === 1) {
 					return dp[0]
-				} else if(len ===2) {
+				} else if (len === 2) {
 					return dp[1]
 				} else {
-					return Math.max(dp[len - 2], dp[len -1]);
+					return Math.max(dp[len - 2], dp[len - 1]);
 				}
-				
+
 			};
 
 			//压缩空间
 			const rob = function (nums) {
-				if(nums.length===1) return nums[0];
-				if(nums.length === 2) return Math.max(nums[0],nums[1]);
+				if (nums.length === 1) return nums[0];
+				if (nums.length === 2) return Math.max(nums[0], nums[1]);
 
 				let prepre = nums[0];
-				let pre = Math.max(nums[0],nums[1]);
+				let pre = Math.max(nums[0], nums[1]);
 				let cur;
 
-				for(let i=2; i<nums.length;i++) {
+				for (let i = 2; i < nums.length; i++) {
 					cur = Math.max(pre, prepre + nums[i]);
 					prepre = pre;
 					pre = cur
@@ -1876,9 +1910,56 @@
 
 				return Math.max(prepre, pre);
 			}
-			
+
 			//rob([2,7,9,3,1])
-			rob([2,1,1,2])
+			//rob([2,1,1,2])
+			//213. 打家劫舍 II
+
+
+			//120. Triangle 有问题待修改 0926
+			const minimumTotal = function (triangle) {
+				let len = triangle.length;
+				let dp = new Array(len).fill(0).map(item => new Array(2));;
+
+
+				dp[0][0] = triangle[0][0]; //min
+				dp[0][1] = triangle[0][0]; //max
+
+				if (len === 1) return dp[0][0];
+
+				for (let i = 1; i < len; i++) {
+					let curmin = Math.min(...triangle[i]);
+					let curmax = Math.max(...triangle[i]);
+
+					if (curmin >= 0) {
+						dp[i][0] = dp[i - 1][0] + curmin
+						dp[i][1] = dp[i - 1][0] + curmax  // 上一层最小值 + 本层最大值
+					} else {
+						dp[i][0] = dp[i - 1][1] + curmin;  // 上一层最大值 + 本层最小值
+						dp[i][1] = dp[i - 1][1] + curmax;
+					};
+
+					console.log(dp);
+				}
+
+				return dp[len - 1][0]
+
+			};
+
+			//[[-1],[2,3],[1,-1,-3]] 存在负数的话，上一层值最大最好
+
+			// 136. Single Number 异或
+			const singleNumber = function (nums) {
+				let res = 0;
+				for (const num of nums) {
+					res ^= num
+				};
+
+				return res
+
+			};
+
+			//singleNumber([4,1,2,1,2])
 
 		</script>
 
