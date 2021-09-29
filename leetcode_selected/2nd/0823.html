@@ -2068,7 +2068,7 @@
 				return true;
 			};
 
-			const isValidBST = function (root) {
+			const isValidBST2 = function (root) {
 				let pre = null;
 				const inOrder = node => {
 					if (node === null) return true;
@@ -2110,6 +2110,28 @@
 				return res;
 
 			};
+
+
+			//108. Convert Sorted Array to Binary Search Tree
+
+			const sortedArrayToBST = function(nums) {
+
+				const LocateRoot = function (nums, left, right) {
+					if(left > right) return null; // ！！！！退出条件
+					
+					let mid = Math.floor((left + right)/2);
+					let root = new TreeNode(nums[mid]);
+					root.val = nums[mid];
+					root.left = LocateRoot(nums, left, mid-1);
+					root.right = LocateRoot(nums, mid+1, right);
+					return root
+				}
+
+				return LocateRoot(nums,0, nums.length-1);
+
+			};
+
+			sortedArrayToBST([-10,-3,0,5,9])
 
 		</script>
 
