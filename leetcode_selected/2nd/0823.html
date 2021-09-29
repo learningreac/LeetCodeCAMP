@@ -113,7 +113,7 @@
 			//189. Rotate Array   // reverse方法
 			const rotate = function (nums, k) {
 				let len = nums.length;
-				if(k%len === 0) return;
+				if (k % len === 0) return;
 
 				const reverse = function (nums, i, j) {
 					while (i < j) {
@@ -121,23 +121,23 @@
 						i++; j--;
 					}
 				};
-								/*
-								if (k <= nums.length) {
-									reverse(nums, 0, k - 1);
-									reverse(nums, k, nums.length - 1);
-								};
+				/*
+				if (k <= nums.length) {
+					reverse(nums, 0, k - 1);
+					reverse(nums, k, nums.length - 1);
+				};
 
-								if(k > nums.length) {
-									k = k%nums.length;
-									reverse(nums, 0, k - 1);
-									reverse(nums, k, nums.length - 1);
-								}
-								console.log(nums)
-								*/
+				if(k > nums.length) {
+					k = k%nums.length;
+					reverse(nums, 0, k - 1);
+					reverse(nums, k, nums.length - 1);
+				}
+				console.log(nums)
+				*/
 
 				k = k <= len ? k : k % len;
 				//nums.reverse();
-				reverse(nums, 0, len-1);
+				reverse(nums, 0, len - 1);
 				reverse(nums, 0, k - 1);
 				reverse(nums, k, len - 1);
 			};
@@ -1960,19 +1960,156 @@
 			//singleNumber([4,1,2,1,2])
 
 			//142. Linked List Cycle II
-			const detectCycle = function(head) {
+			const detectCycle = function (head) {
 				let nodeSet = new Set();
 
-				while(head) {
-					if(nodeSet.has(head)) {
+				while (head) {
+					if (nodeSet.has(head)) {
 						return head;
 					} else {
 						nodeSet.add(head);
 						head = head.next
 					}
 				}
+			};
 
+			//234. Palindrome Linked List
+			//stack  special case: short list only has 1-3 nodes
+			//failed case [1,0,0]
+			const isPalindrome = function (head) {
+				let stack = [];
+
+				while (head.next && head.val !== head.next.val) {
+					stack.push(head);
+					head = head.next; // now head points to the first repeat node;
+					if (head.next === null) return false;
+				};
+
+				stack.push(head); //  push the first repeat node in stack;
+				if (head.next) {
+					head = head.next; // now head points to the 2nd 'repeat' element
+				}
+
+				//	head = head.next.next; // now head points to the node after the 2 repeated nodes. //skiped those nodes
+				let k = stack.length;
+				while (head.next) {
+					if (head.val !== stack.pop().val) return false;
+					head = head.next;
+					k--;
+					if (k <= 0) return false;
+
+				};
+
+				return true;
+			};
+
+			//98. Validate Binary Search Tree
+			//!!!! the following code is not right;
+			// for BST 
+			//The left subtree of a node contains only nodes with keys less than the node's key.
+			//The right subtree of a node contains only nodes with keys greater than the node's key.
+
+			const isValidBSTFalse = function (root) {
+				if (!root) return false;
+
+				const dfs = node => {
+					if (!node.left && !node.right) return;
+					if (node.left) {
+						if (node.val > node.left.val) {
+							dfs(node.left);
+						} else {
+							return false;
+						}
+					};
+
+					if (node.right) {
+						if (node.val < node.right.val) {
+							dfs(node.right);
+						} else {
+							return false
+						}
+					};
+
+					return true;
+				};
+
+				return dfs(root);
+
+			};
+
+			// inorder traversal left - root - right;
+			const inorder = root => {
+				let res = [];
+				const dfs = node => {
+					if (!node) return;
+					dfs(node.left);
+					res.push(node.val);
+					dfs(node.right);
+				}
+				dfs(root);
+				return res;
 			}
+
+			const isValidBST = function (root) {
+				let res = [];
+				const inOrder = node => {
+					if (!node) return;
+					inOrder(node.left);
+					res.push(node.val);
+					inOrder(node.right);
+				};
+
+				inOrder(root);
+
+				for (let i = 1; i < res.length; i++) {
+					if (res[i - 1] >= res[i]) return false;
+				}
+
+				return true;
+			};
+
+			const isValidBST = function (root) {
+				let pre = null;
+				const inOrder = node => {
+					if (node === null) return true;
+
+					let left = inOrder(node.left);
+					if (pre !== null && pre.val >= node.val) return false;
+					pre = node;
+
+					let right = inOrder(node.right);
+					return left && right;
+				}
+				return inOrder(root);
+			};
+
+			//515. Find Largest Value in Each Tree Row
+			// level order traversal  update the max value within each level
+			const largestValues = function (root) {
+				let queue = [];
+				let res = [];
+				//let currentMax = root.val;
+				if(!root) return res;
+				queue.push(root);
+
+				while (queue.length) {
+					let levelSize = queue.length;
+					let currentMax = queue[0].val; // [0,-1] node.val might be negative
+					while (levelSize > 0) {
+						let node = queue.shift();
+						currentMax = Math.max(currentMax, node.val)
+						if (node.left) queue.push(node.left);
+						if (node.right) queue.push(node.right);
+						levelSize--;
+					};
+
+					res.push(currentMax)
+
+				};
+
+				return res;
+
+			};
 
 		</script>
 
