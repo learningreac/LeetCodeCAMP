@@ -844,6 +844,23 @@
 			}
 			//merge([1,2,3,0,0,0],3,[2,5,6],3)
 
+			const merge3 = function (nums1, m, nums2, n) {
+				nums1 = nums1.concat(new Array(n).fill(0))
+				let t = m + n - 1;
+				let i = m - 1;
+				let j = n - 1;
+
+				while (t >= 0) {
+					if (nums1[i] >= nums2[j]) {
+						nums1[t] = nums1[i];
+					}
+				}
+
+
+
+			}
+
+
 			// quick sort nums1 [1, 2, 3, 2, 5, 6], the pilot start from m-1
 			const quickSort = function (nums, i, j) {
 				quickSort(nums, 0, j - 1);
@@ -2089,7 +2106,7 @@
 				let queue = [];
 				let res = [];
 				//let currentMax = root.val;
-				if(!root) return res;
+				if (!root) return res;
 				queue.push(root);
 
 				while (queue.length) {
@@ -2114,25 +2131,86 @@
 
 			//108. Convert Sorted Array to Binary Search Tree
 
-			const sortedArrayToBST = function(nums) {
+			const sortedArrayToBST = function (nums) {
 
 				const LocateRoot = function (nums, left, right) {
-					if(left > right) return null; // ！！！！退出条件
-					
-					let mid = Math.floor((left + right)/2);
+					if (left > right) return null; // ！！！！退出条件
+
+					let mid = Math.floor((left + right) / 2);
 					let root = new TreeNode(nums[mid]);
 					root.val = nums[mid];
-					root.left = LocateRoot(nums, left, mid-1);
-					root.right = LocateRoot(nums, mid+1, right);
+					root.left = LocateRoot(nums, left, mid - 1);
+					root.right = LocateRoot(nums, mid + 1, right);
 					return root
 				}
 
-				return LocateRoot(nums,0, nums.length-1);
+				return LocateRoot(nums, 0, nums.length - 1);
 
 			};
 
-			sortedArrayToBST([-10,-3,0,5,9])
+			//sortedArrayToBST([-10, -3, 0, 5, 9])
 
+			//740. Delete and Earn
+			var deleteAndEarn = function (nums) {
+				let dp = new Map();
+				for (let i = 0; i < nums.length; i++) {
+
+					dp.set(nums[i],)
+				}
+
+			};
+
+			//1436. Destination City
+			var destCity = function (paths) {
+				let start = new Set();
+				let dest = new Set();
+
+				for (const path of paths) {
+					start.add(path[0]);
+					dest.add(path[1]);
+					//if(dest.has(path[0])) {
+					//	dest.delete(path[0])
+					//};
+				};
+				start.forEach(function (value) {
+					if (dest.has(value)) {
+						dest.delete(value)
+					}
+				})
+
+
+				console.log(dest.values().next().value)
+				return dest.values().next().value
+			};
+
+			//destCity([["London","New York"],["New York","Lima"],["Lima","Sao Paulo"]])
+			//destCity([["B","C"],["D","B"],["C","A"]])
+
+
+			//523. Continuous Subarray Sum
+			const checkSubarraySum = function (nums, k) {
+				const m = nums.length;
+				if (m < 2) return false;
+
+				let map = new Map();
+				map.set(0,-1); // 这句很重要，处理sum从数组第1个元素开始，本身是K的倍数
+				let sum = 0;
+
+				for (let i = 0; i < m; i++) {
+					sum += nums[i];
+					if (map.has(sum % k)) {
+						if (i - map.get(sum % k) >= 2) return true;
+					} else {
+						map.set(sum % k, i)
+					}
+				}
+
+				return false;
+
+			};
+
+			checkSubarraySum([23,2,4,6,6],7);
+		//	checkSubarraySum([2,4,3],6)
 		</script>
 
 	</body>
