@@ -1,4 +1,4 @@
-<!<!DOCTYPE html>
+"<!<!DOCTYPE html>
     <html>
 
     <head>
@@ -99,7 +99,7 @@
                 // reset node
                 node = head;
                 while (node) {  // reset node.next and node.random
-                    map.get(node).next = map.get(node.next) === undefined ? null : map.get(node.next);
+                    map.get(node).next = map.get(node.next) === undefined ? null : map.get(node.ext);
                     map.get(node).random = map.get(node.random);
                     node = node.next;
                 };
@@ -124,6 +124,9 @@
 
             //剑指 Offer 59 - II. 队列的最大值
             // 本来想用类似Minstack的方式 维护辅助栈，但是这样做在本题中行不通
+            [
+
+            ]
             // queue是会双头出队的，所以当最大值从队首出队后，maxQ中的最大值就错了。
             /*
             const MaxQueue = function() {
@@ -222,7 +225,7 @@
                         sum += r
                     }
                     if (sum > target) { // 左指针右移
-                        
+
                         sum -= l;
                         l++;
                     }
@@ -232,7 +235,7 @@
                             ans.push(k);
                         };
                         res.push(ans);
-                        sum -=l;
+                        sum -= l;
                         l++
 
                     }
@@ -240,7 +243,61 @@
                 return res;
             };
 
-            findContinuousSequence(9)
+            // findContinuousSequence(9)
+
+            //剑指 Offer 62. 圆圈中最后剩下的数字
+            const lastRemaining = function (n, m) {
+
+            };
+
+
+            //剑指 Offer 68 - I. 二叉搜索树的最近公共祖先
+            //迭代
+            const lowestCommonAncestor1 = function (root, p, q) {
+                while (root) {
+                    if (root.val < p.val && root.val < q.val) {
+                        root = root.right;
+                    } else if (root.val > p.val && root.val > q.val) {
+                        root = root.left;
+                    } else {
+                        break;
+                    }
+                }
+                return root;
+            };
+            //递归
+            const lowestCommonAncestor = function (root, p, q) {
+                if (root.val < p.val && root.val < q.val) {
+                    return lowestCommonAncestor(root.right, p, q);
+                };
+                if (root.val > p.val && root.val > q.val) {
+                    return lowestCommonAncestor(root.left, p, q)
+                }
+                return root
+            };
+
+
+            //剑指 Offer 14- I. 剪绳子
+            const cuttingRope = function (n) {
+                if (n === 2) return 1;
+                if (n === 3) return 2;
+                let dp = new Array();
+                dp[1] = 1;
+                dp[2] = 2;
+                dp[3] = 3;
+
+                for (let i = 4; i <= n; i++) {
+                    //let l = Math.floor(i / 2);
+                    //let r = i - l;
+                    //product1 = dp[l] * dp[r]
+                    dp[i] = Math.max(dp[3]*dp[i-3], dp[2] * dp[i - 2])
+                };
+
+                return dp[n];
+
+            };
+
+            cuttingRope(9);
 
         </script>
 
