@@ -1,4 +1,4 @@
-"<!<!DOCTYPE html>
+<!DOCTYPE html>
     <html>
 
     <head>
@@ -458,7 +458,24 @@
                 return a;
             };
 
+            const add = (a, b) => b? add(a^b, (a&b) <<1) : a; 
 
+            // 盛水最多的容器
+            // 头尾双指针 向内收窄 每次移动两板中的短板 update面积
+            const maxArea = function(height) {
+                let left=0, right=height.length-1, res = 0;
+
+                while(left<right) {
+                    area = Math.min(height[left], height[right]) * (right-left);
+                    height[left] < height[right]? left++ : right--; 
+                    res = Math.max(res, area)
+                };
+
+                return res;   
+
+            };
+
+            maxArea([1,8,6,2,5,4,8,3,7])
         </script>
 
     </body>
