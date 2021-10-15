@@ -473,7 +473,7 @@
             return a;
         };
 
-        const add = (a, b) => b ? add(a ^ b, (a & b) << 1) : a;
+       // const add = (a, b) => b ? add(a ^ b, (a & b) << 1) : a;
 
         // 盛水最多的容器
         // 头尾双指针 向内收窄 每次移动两板中的短板 update面积
@@ -490,7 +490,44 @@
 
         };
 
-        maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])
+        //maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])
+
+        //200. 岛屿数量
+        const numIslands = function (grid) {
+            let m = grid.length,
+                n = grid[0].length;
+            count = 0;
+
+            const dfs = function (r, c) {
+                if (r < 0 || r >= m || c < 0 || c >= n || parseInt(grid[r][c]) !== 1) return;
+                grid[r][c] = 2; // 避免重复访问
+
+                dfs(r - 1, c);
+                dfs(r + 1, c);
+                dfs(r, c - 1);
+                dfs(r, c + 1);
+            };
+
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (parseInt(grid[i][j]) === 1) {
+                        dfs(i, j);
+                        count++; // count++ 的位置 在这里
+                    }
+                   
+                }
+            }
+
+            return count;
+        };
+
+        numIslands([
+            ["1", "1", "1", "1", "0"],
+            ["1", "1", "0", "1", "0"],
+            ["1", "1", "0", "0", "0"],
+            ["0", "0", "0", "0", "0"]
+        ])
+
     </script>
 
 </body>
