@@ -1,483 +1,498 @@
 <!DOCTYPE html>
-    <html>
+<html>
 
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
 
-    <body>
-        <script type="text/javascript">
-            // 30: min stack
-            // helper stack,push min(currentmin, x); pop everytime.
+<body>
+    <script type="text/javascript">
+        // 30: min stack
+        // helper stack,push min(currentmin, x); pop everytime.
 
-            const MinStack = function () { // can't be defind with arrow function 
-                this.stack = [];
-                this.stackB = [];
-                this.tmp = [];
+        const MinStack = function () { // can't be defind with arrow function 
+            this.stack = [];
+            this.stackB = [];
+            this.tmp = [];
+        };
+
+        MinStack.prototype.push = x => {
+            this.stack.push(x);
+            if (x <= this.stackB[this.stackB.length - 1] || this.stackB.length === 0) {
+                this.stackB.push(x);
+            } else {
+                while (this.stackB.length >= 0) {
+                    this.tmp.push(this.stackB.pop());
+                };
+                this.stackB.push(x);
+                while (this.tmp.length >= 0) {
+                    this.stackB.push(this.tmp.pop())
+                }
+            }
+        };
+
+        MinStack.prototype.pop = () => {
+            let item = this.stackA[this.stack.length - 1];
+            if (item === this.stackB[this.stackB[this.stackB.length - 1]]) {
+                this.stackB.pop()
+            };
+            return this.stack.pop();
+
+        };
+
+        MinStack.prototype.top = () => {
+            return this.stack[this.stack.length - 1];
+        }
+
+        MinStack.prototype.min = () => {
+            return this.stackB[this.stackB.length - 1];
+
+        };
+
+        //从尾到头打印链表 -- 回溯递归
+        //内存消耗：40.4 MB , 在所有 JavaScript 提交中击败了10.58%的用户 ----栈桢空间
+        const reversePrint = function (head) {
+            let res = [];
+            const backpath = node => {
+                if (!node) return;
+                backpath(node.next);
+                res.push(node.val)
+            };
+            backpath(head);
+            return res;
+        };
+
+        //反转链表   ---递归
+        const reverseList = function (head) {
+
+            const recur = (cur, pre) => {
+                if (cur === null) return pre;
+                res = recur(cur.next, cur);
+                cur.next = pre;
+                return res;
+            }
+
+            return recur(head, null)
+        }
+
+            // coppy random list 
+
+            * // Definition for a Node.
+            function Node(val, next, random) {
+                this.val = val;
+                this.next = next;
+                this.random = random;
+            };
+        // the random node may not be created 
+
+        const copyRandomList = function (head) {
+            if (!head) return null;
+            let node = head;
+            let map = new Map();
+
+            while (node) {  // copy no
+                map.set(node, new Node(node.val));
+                node = node.next;
             };
 
-            MinStack.prototype.push = x => {
-                this.stack.push(x);
-                if (x <= this.stackB[this.stackB.length - 1] || this.stackB.length === 0) {
-                    this.stackB.push(x);
-                } else {
-                    while (this.stackB.length >= 0) {
-                        this.tmp.push(this.stackB.pop());
+            // reset node
+            node = head;
+            while (node) {  // reset node.next and node.random
+                map.get(node).next = map.get(node.next) === undefined ? null : map.get(node.ext);
+                map.get(node).random = map.get(node.random);
+                node = node.next;
+            };
+
+            return map.get(head);
+
+        }
+
+        //剑指 Offer 36. 二叉搜索树与双向链表
+        const treeToDoublyList = function (root) {
+            let res = new Map();
+            const dfs = function (node) {
+                if (!node) return;
+                dfs(node.left);
+                res.set(node);
+                dfs(node.right);
+
+            };
+            dfs(root);
+            return res;
+        };
+
+        //剑指 Offer 59 - II. 队列的最大值
+        // 本来想用类似Minstack的方式 维护辅助栈，但是这样做在本题中行不通
+        [
+
+        ]
+        // queue是会双头出队的，所以当最大值从队首出队后，maxQ中的最大值就错了。
+        /*
+        const MaxQueue = function() {
+            this.queue = [];
+            this.maxQ = []; 
+        };
+        */
+        /**
+         * @return {number}
+         * 若队列为空 pop_front 和 max_value 需要返回 -1
+         */
+        /**
+        MaxQueue.prototype.max_value = function() {
+            if (!this.queue.length) {
+                return -1
+            } else {
+                return this.maxQ[this.maxQ.length -1] 
+            }
+           
+        };
+        */
+        /** 
+         * @param {number} value
+         * @return {void}
+         */
+        /**
+        MaxQueue.prototype.push_back = function(value) {
+            this.queue.push(value);
+            if(this.maxQ.length===0){
+                this.maxQ.push(value)
+            } else {
+                this.maxQ.push( Math.max(value, this.maxQ[this.maxQ.length-1]))
+            };
+        
+        };
+        */
+        /**
+         * @return {number}
+         */
+        /**
+        MaxQueue.prototype.pop_front = function() {
+            if(this.queue.length === 0) {
+                return -1
+            } else {
+                this.maxQ.shift();
+                return this.queue.shift();
+            }
+        };
+        */
+
+        const MaxQueue = function () {
+            this.queue = [];
+            this.dequeue = [];
+        };
+
+        MaxQueue.prototype.max_value = function () {
+            if (!this.queue.length) {
+                return -1
+            } else {
+                return this.dequeue[0]
+            }
+        };
+
+        MaxQueue.prototype.push_back = function (value) {
+            this.queue.push(value);
+            if (this.dequeue.length === 0 || this.dequeue[this.dequeue.length - 1] > value) {
+                this.dequeue.push(value)
+            } else {
+                while (this.dequeue[this.dequeue.length - 1] < value) {
+                    this.dequeue.pop()
+                };
+                this.dequeue.push(value)
+            }
+        };
+
+        MaxQueue.prototype.pop_front = function () {
+            if (this.queue.length === 0) {
+                return -1
+            } else {
+                let front = this.queue.shift();
+                if (front === this.dequeue[0]) {
+                    this.dequeue.shift()
+                }
+                return front
+            }
+        };
+
+        //剑指 Offer 57 - II. 和为s的连续正数序列
+        //滑动窗口 双指针
+        const findContinuousSequence = function (target) {
+            let l = 1, r = 1, sum = 1; // 正整数序列
+            let res = [];
+            while (l < target / 2) {
+                if (sum < target) { // 右指针右移
+                    r++;
+                    sum += r
+                }
+                if (sum > target) { // 左指针右移
+
+                    sum -= l;
+                    l++;
+                }
+                if (sum === target) {
+                    let ans = [];
+                    for (let k = l; k <= r; k++) {
+                        ans.push(k);
                     };
-                    this.stackB.push(x);
-                    while (this.tmp.length >= 0) {
-                        this.stackB.push(this.tmp.pop())
-                    }
+                    res.push(ans);
+                    sum -= l;
+                    l++
+
                 }
-            };
-
-            MinStack.prototype.pop = () => {
-                let item = this.stackA[this.stack.length - 1];
-                if (item === this.stackB[this.stackB[this.stackB.length - 1]]) {
-                    this.stackB.pop()
-                };
-                return this.stack.pop();
-
-            };
-
-            MinStack.prototype.top = () => {
-                return this.stack[this.stack.length - 1];
             }
+            return res;
+        };
 
-            MinStack.prototype.min = () => {
-                return this.stackB[this.stackB.length - 1];
+        // findContinuousSequence(9)
 
-            };
+        //剑指 Offer 62. 圆圈中最后剩下的数字
+        const lastRemaining = function (n, m) {
 
-            //从尾到头打印链表 -- 回溯递归
-            //内存消耗：40.4 MB , 在所有 JavaScript 提交中击败了10.58%的用户 ----栈桢空间
-            const reversePrint = function (head) {
-                let res = [];
-                const backpath = node => {
-                    if (!node) return;
-                    backpath(node.next);
-                    res.push(node.val)
-                };
-                backpath(head);
-                return res;
-            };
-
-            //反转链表   ---递归
-            const reverseList = function (head) {
-
-                const recur = (cur, pre) => {
-                    if (cur === null) return pre;
-                    res = recur(cur.next, cur);
-                    cur.next = pre;
-                    return res;
-                }
-
-                return recur(head, null)
-            }
-
-                // coppy random list 
-
-                * // Definition for a Node.
-                function Node(val, next, random) {
-                    this.val = val;
-                    this.next = next;
-                    this.random = random;
-                };
-            // the random node may not be created 
-
-            const copyRandomList = function (head) {
-                if (!head) return null;
-                let node = head;
-                let map = new Map();
-
-                while (node) {  // copy no
-                    map.set(node, new Node(node.val));
-                    node = node.next;
-                };
-
-                // reset node
-                node = head;
-                while (node) {  // reset node.next and node.random
-                    map.get(node).next = map.get(node.next) === undefined ? null : map.get(node.ext);
-                    map.get(node).random = map.get(node.random);
-                    node = node.next;
-                };
-
-                return map.get(head);
-
-            }
-
-            //剑指 Offer 36. 二叉搜索树与双向链表
-            const treeToDoublyList = function (root) {
-                let res = new Map();
-                const dfs = function (node) {
-                    if (!node) return;
-                    dfs(node.left);
-                    res.set(node);
-                    dfs(node.right);
-
-                };
-                dfs(root);
-                return res;
-            };
-
-            //剑指 Offer 59 - II. 队列的最大值
-            // 本来想用类似Minstack的方式 维护辅助栈，但是这样做在本题中行不通
-            [
-
-            ]
-            // queue是会双头出队的，所以当最大值从队首出队后，maxQ中的最大值就错了。
-            /*
-            const MaxQueue = function() {
-                this.queue = [];
-                this.maxQ = []; 
-            };
-            */
-            /**
-             * @return {number}
-             * 若队列为空 pop_front 和 max_value 需要返回 -1
-             */
-            /**
-            MaxQueue.prototype.max_value = function() {
-                if (!this.queue.length) {
-                    return -1
-                } else {
-                    return this.maxQ[this.maxQ.length -1] 
-                }
-               
-            };
-            */
-            /** 
-             * @param {number} value
-             * @return {void}
-             */
-            /**
-            MaxQueue.prototype.push_back = function(value) {
-                this.queue.push(value);
-                if(this.maxQ.length===0){
-                    this.maxQ.push(value)
-                } else {
-                    this.maxQ.push( Math.max(value, this.maxQ[this.maxQ.length-1]))
-                };
-            
-            };
-            */
-            /**
-             * @return {number}
-             */
-            /**
-            MaxQueue.prototype.pop_front = function() {
-                if(this.queue.length === 0) {
-                    return -1
-                } else {
-                    this.maxQ.shift();
-                    return this.queue.shift();
-                }
-            };
-            */
-
-            const MaxQueue = function () {
-                this.queue = [];
-                this.dequeue = [];
-            };
-
-            MaxQueue.prototype.max_value = function () {
-                if (!this.queue.length) {
-                    return -1
-                } else {
-                    return this.dequeue[0]
-                }
-            };
-
-            MaxQueue.prototype.push_back = function (value) {
-                this.queue.push(value);
-                if (this.dequeue.length === 0 || this.dequeue[this.dequeue.length - 1] > value) {
-                    this.dequeue.push(value)
-                } else {
-                    while (this.dequeue[this.dequeue.length - 1] < value) {
-                        this.dequeue.pop()
-                    };
-                    this.dequeue.push(value)
-                }
-            };
-
-            MaxQueue.prototype.pop_front = function () {
-                if (this.queue.length === 0) {
-                    return -1
-                } else {
-                    let front = this.queue.shift();
-                    if (front === this.dequeue[0]) {
-                        this.dequeue.shift()
-                    }
-                    return front
-                }
-            };
-
-            //剑指 Offer 57 - II. 和为s的连续正数序列
-            //滑动窗口 双指针
-            const findContinuousSequence = function (target) {
-                let l = 1, r = 1, sum = 1; // 正整数序列
-                let res = [];
-                while (l < target / 2) {
-                    if (sum < target) { // 右指针右移
-                        r++;
-                        sum += r
-                    }
-                    if (sum > target) { // 左指针右移
-
-                        sum -= l;
-                        l++;
-                    }
-                    if (sum === target) {
-                        let ans = [];
-                        for (let k = l; k <= r; k++) {
-                            ans.push(k);
-                        };
-                        res.push(ans);
-                        sum -= l;
-                        l++
-
-                    }
-                }
-                return res;
-            };
-
-            // findContinuousSequence(9)
-
-            //剑指 Offer 62. 圆圈中最后剩下的数字
-            const lastRemaining = function (n, m) {
-
-            };
+        };
 
 
-            //剑指 Offer 68 - I. 二叉搜索树的最近公共祖先
-            //迭代
-            const lowestCommonAncestor1 = function (root, p, q) {
-                while (root) {
-                    if (root.val < p.val && root.val < q.val) {
-                        root = root.right;
-                    } else if (root.val > p.val && root.val > q.val) {
-                        root = root.left;
-                    } else {
-                        break;
-                    }
-                }
-                return root;
-            };
-            //递归
-            const lowestCommonAncestor = function (root, p, q) {
+        //剑指 Offer 68 - I. 二叉搜索树的最近公共祖先
+        //迭代
+        const lowestCommonAncestor1 = function (root, p, q) {
+            while (root) {
                 if (root.val < p.val && root.val < q.val) {
-                    return lowestCommonAncestor(root.right, p, q);
-                };
-                if (root.val > p.val && root.val > q.val) {
-                    return lowestCommonAncestor(root.left, p, q)
+                    root = root.right;
+                } else if (root.val > p.val && root.val > q.val) {
+                    root = root.left;
+                } else {
+                    break;
                 }
-                return root
+            }
+            return root;
+        };
+        //递归
+        const lowestCommonAncestor2 = function (root, p, q) {
+            if (root.val < p.val && root.val < q.val) {
+                return lowestCommonAncestor(root.right, p, q);
+            };
+            if (root.val > p.val && root.val > q.val) {
+                return lowestCommonAncestor(root.left, p, q)
+            }
+            return root
+        };
+
+        //剑指 Offer 68 - II. 二叉树的最近公共祖先 LCOF
+        //先序遍历 
+        const lowestCommonAncestor = function (root, p, q) {
+            // 叶子节点 或者找到了p 或 q   //// 这里可以直接比较node，不需要比较node.val
+            if (root === null || root === p || root === q) return root;
+            //先序遍历
+            let left = lowestCommonAncestor(root.left, p, q);
+            let right = lowestCommonAncestor(root.right, p, q);
+
+            if (left === null) return right;
+            if (right === null) return left;
+
+            return root;
+        };
+
+
+        //剑指 Offer 14- I. 剪绳子
+        const cuttingRope = function (n) {
+            if (n === 2) return 1;
+            if (n === 3) return 2;
+            let dp = new Array();
+            dp[1] = 1;
+            dp[2] = 2;
+            dp[3] = 3;
+
+            for (let i = 4; i <= n; i++) {
+                //let l = Math.floor(i / 2);
+                //let r = i - l;
+                //product1 = dp[l] * dp[r]
+                dp[i] = Math.max(dp[3] * dp[i - 3], dp[2] * dp[i - 2])
             };
 
+            return dp[n];
 
-            //剑指 Offer 14- I. 剪绳子
-            const cuttingRope = function (n) {
-                if (n === 2) return 1;
-                if (n === 3) return 2;
-                let dp = new Array();
-                dp[1] = 1;
-                dp[2] = 2;
-                dp[3] = 3;
+        };
 
-                for (let i = 4; i <= n; i++) {
-                    //let l = Math.floor(i / 2);
-                    //let r = i - l;
-                    //product1 = dp[l] * dp[r]
-                    dp[i] = Math.max(dp[3] * dp[i - 3], dp[2] * dp[i - 2])
+        // cuttingRope(9);
+
+        //剑指 Offer 64. 求1+2+…+n
+        const sumNums = function (n) {
+            n > 1 && (n += sumNums(n - 1));   // 逻辑短路
+            return n;
+
+        };
+
+        //剑指 Offer 46. 把数字翻译成字符串
+        // 取余 取整   js 语言特性 浮点数
+        const translateNum1 = function (num) {   /// false
+            let res = 0;
+
+            while (Math.floor(num) != 0) {
+                let x = num % 10;
+                let y = num % 100;
+
+                if (y >= 10 && y <= 25) {
+                    res += 2
+                    num /= 100;
+                } else {
+                    res += 1;
+                    num /= 10;
+
                 };
+            }
 
-                return dp[n];
+            return res;
+        };
 
+        // translateNum(26);  // 这么写的话 给个两位数就直接报错了。
+
+        const translateNum = function (num) {
+            let a = 1, b = 1, x, y = num % 10;
+            while (num != 0) {
+                num = Math.floor(num / 10);
+                x = num % 10;
+                let tmp = 10 * x + y;
+                let c = (tmp >= 10 && tmp <= 25) ? a + b : a;
+                b = a;
+                a = c;
+                y = x;
             };
+            return a;
+        };
 
-            // cuttingRope(9);
+        // translateNum(26);
 
-            //剑指 Offer 64. 求1+2+…+n
-            const sumNums = function (n) {
-                n > 1 && (n += sumNums(n - 1));   // 逻辑短路
-                return n;
+        //剑指 Offer 61. 扑克牌中的顺子
+        const isStraight1 = function (nums) {
+            nums.sort((a, b) => a - b);
+            let count = 0; // how many zeros
+            let diff = 0;
 
-            };
-
-            //剑指 Offer 46. 把数字翻译成字符串
-            // 取余 取整   js 语言特性 浮点数
-            const translateNum1 = function (num) {   /// false
-                let res = 0;
-
-                while (Math.floor(num) != 0) {
-                    let x = num % 10;
-                    let y = num % 100;
-
-                    if (y >= 10 && y <= 25) {
-                        res += 2
-                        num /= 100;
-                    } else {
-                        res += 1;
-                        num /= 10;
-
-                    };
+            for (let i = 0; i <= 3; i++) {
+                if (nums[i] === 0) {
+                    count++;
+                } else {
+                    if (nums[i] === nums[i + 1]) return false;
+                    diff += nums[i] - nums[i + 1] + 1;
+                    if (Math.abs(diff) > count) return false;
                 }
-
-                return res;
             };
 
-            // translateNum(26);  // 这么写的话 给个两位数就直接报错了。
+            return count + diff >= 0 // count>diff 说明0多，可以当做任意牌
 
-            const translateNum = function (num) {
-                let a = 1, b = 1, x, y = num % 10;
-                while (num != 0) {
-                    num = Math.floor(num / 10);
-                    x = num % 10;
-                    let tmp = 10 * x + y;
-                    let c = (tmp >= 10 && tmp <= 25) ? a + b : a;
-                    b = a;
-                    a = c;
-                    y = x;
-                };
-                return a;
+        };
+
+        //isStraight([1,2,3,4,5]);
+        //isStraight([9,1,13,2,13]); //false
+        //isStraight([11,0,9,0,0]); //true
+        // isStraight([0, 0, 2, 2, 5]);//false 无重复
+
+        // 大佬思路 最大牌-最小牌 < 5   可构成顺子     
+        const isStraight = function (nums) {
+            // 大佬思路 max=0; min=14
+            let max = 0, min = 14; // min 不能是0 nums[0]不行
+            let set = new Set();
+
+            for (const num of nums) {
+                if (num === 0) continue;
+                max = Math.max(max, num);
+                min = Math.min(min, num);
+                if (set.has(num)) return false;
+                set.add(num);
+            }
+
+            return max - min < 5;
+
+        };
+
+        // isStraight([1,2,3,4,5])
+
+        //剑指 Offer 58 - I. 翻转单词顺序
+        const reverseWords = function (s) {
+            s = s.trim().split(' '); // trim white space  split by words;
+            s = s.filter(words => words !== ''); // delete extra white space;
+            return s.reverse().join(' ');
+        };
+
+        //剑指 Offer 45. 把数组排成最小的数
+        // 按照首位排序
+        // 计算首位的值，把值与之前的数字一一对应起来， 应该存在什么样的数据结构里呢
+        // 最开始想到是map, obj， 最后决定用 2-d array
+        const digits = function (num) {
+            let tmp = [];
+            while (Math.floor(num) !== 0) {
+                tmp.unshift(num % 10); // 8  ,7 , 5
+                num = Math.floor(num / 10); //57 ,5
             };
+            return tmp;
+        }; // digits 函数遇到0 会返回空。特殊情况
 
-            // translateNum(26);
 
-            //剑指 Offer 61. 扑克牌中的顺子
-            const isStraight1 = function (nums) {
-                nums.sort((a, b) => a - b);
-                let count = 0; // how many zeros
-                let diff = 0;
 
-                for (let i = 0; i <= 3; i++) {
-                    if (nums[i] === 0) {
-                        count++;
-                    } else {
-                        if (nums[i] === nums[i + 1]) return false;
-                        diff += nums[i] - nums[i + 1] + 1;
-                        if (Math.abs(diff) > count) return false;
-                    }
-                };
-
-                return count + diff >= 0 // count>diff 说明0多，可以当做任意牌
-
-            };
-
-            //isStraight([1,2,3,4,5]);
-            //isStraight([9,1,13,2,13]); //false
-            //isStraight([11,0,9,0,0]); //true
-            // isStraight([0, 0, 2, 2, 5]);//false 无重复
-
-            // 大佬思路 最大牌-最小牌 < 5   可构成顺子     
-            const isStraight = function (nums) {
-                // 大佬思路 max=0; min=14
-                let max = 0, min = 14; // min 不能是0 nums[0]不行
-                let set = new Set();
-
-                for (const num of nums) {
-                    if (num === 0) continue;
-                    max = Math.max(max, num);
-                    min = Math.min(min, num);
-                    if (set.has(num)) return false;
-                    set.add(num);
+        const minNumber = function (nums) {
+            let index = 0;
+            for (let i = 0; i < nums.length; i++) {
+                if (nums[i] === 0) {  // 先把0 移到最前面
+                    [nums[index], nums[i]] = [nums[i], nums[index]];
+                    index++;
+                } else {
+                    let digit = digits(nums[i])
+                    nums[i] = [nums[i], ...digit];
                 }
-
-                return max - min < 5;
-
             };
 
-            // isStraight([1,2,3,4,5])
+            // sort by first digit 
+            nums.sort((a, b) => a[1] - b[1]);
 
-            //剑指 Offer 58 - I. 翻转单词顺序
-            const reverseWords = function (s) {
-                s = s.trim().split(' '); // trim white space  split by words;
-                s = s.filter(words => words !== ''); // delete extra white space;
-                return s.reverse().join(' ');
-            };
+            let i = index > 0 ? index + 1 : 0;
 
-            //剑指 Offer 45. 把数组排成最小的数
-            // 按照首位排序
-            // 计算首位的值，把值与之前的数字一一对应起来， 应该存在什么样的数据结构里呢
-            // 最开始想到是map, obj， 最后决定用 2-d array
-            const digits = function (num) {
-                let tmp = [];
-                while (Math.floor(num) !== 0) {
-                    tmp.unshift(num % 10); // 8  ,7 , 5
-                    num = Math.floor(num / 10); //57 ,5
-                };
-                return tmp;
-            }; // digits 函数遇到0 会返回空。特殊情况
-
-
-
-            const minNumber = function (nums) {
-                let index = 0;
-                for (let i = 0; i < nums.length; i++) {
-                    if (nums[i] === 0) {  // 先把0 移到最前面
-                        [nums[index], nums[i]] = [nums[i], nums[index]];
-                        index++;
-                    } else {
-                        let digit = digits(nums[i])
-                        nums[i] = [nums[i], ...digit];
-                    }
+            for (i, j = i + 1, r = 1; j < nums.length;) {// row
+                if (nums[i][r] === nums[j][r]) {
+                    j++;
                 };
 
-                // sort by first digit 
-                nums.sort((a, b) => a[1] - b[1]);
-
-                let i = index > 0 ? index + 1 : 0;
-
-                for (i, j = i + 1, r = 1; j < nums.length;) {// row
-                    if (nums[i][r] === nums[j][r]) {
-                        j++;
-                    };
-
-                }
+            }
 
 
 
-                console.log(nums)
+            console.log(nums)
 
-            };
-            //   minNumber([5, 9,3, 0,30, 0, 34]);
+        };
+        //   minNumber([5, 9,3, 0,30, 0, 34]);
 
-            //剑指 Offer 65. 不用加减乘除做加法
-            const add = function (a, b) {
+        //剑指 Offer 65. 不用加减乘除做加法
+        const add = function (a, b) {
 
-                while (b) {
-                    // 进位
-                    const c = (a & b) << 1;
-                    // 不考虑进位的加法
-                    a ^= b;
-                    // 将进位赋值给b
-                    b = c;
-                }
-                return a;
-            };
+            while (b) {
+                // 进位
+                const c = (a & b) << 1;
+                // 不考虑进位的加法
+                a ^= b;
+                // 将进位赋值给b
+                b = c;
+            }
+            return a;
+        };
 
-            const add = (a, b) => b? add(a^b, (a&b) <<1) : a; 
+        const add = (a, b) => b ? add(a ^ b, (a & b) << 1) : a;
 
-            // 盛水最多的容器
-            // 头尾双指针 向内收窄 每次移动两板中的短板 update面积
-            const maxArea = function(height) {
-                let left=0, right=height.length-1, res = 0;
+        // 盛水最多的容器
+        // 头尾双指针 向内收窄 每次移动两板中的短板 update面积
+        const maxArea = function (height) {
+            let left = 0, right = height.length - 1, res = 0;
 
-                while(left<right) {
-                    area = Math.min(height[left], height[right]) * (right-left);
-                    height[left] < height[right]? left++ : right--; 
-                    res = Math.max(res, area)
-                };
-
-                return res;   
-
+            while (left < right) {
+                area = Math.min(height[left], height[right]) * (right - left);
+                height[left] < height[right] ? left++ : right--;
+                res = Math.max(res, area)
             };
 
-            maxArea([1,8,6,2,5,4,8,3,7])
-        </script>
+            return res;
 
-    </body>
+        };
 
-    </html>
+        maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])
+    </script>
+
+</body>
+
+</html>
