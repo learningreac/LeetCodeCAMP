@@ -201,3 +201,115 @@ MedianFinder.prototype.findMedian = function() {
 }
 ```
 
+# Grid
+## Island
+### 200. Number of Islands
+```js
+  const numIslands3 = function (grid) {
+            let m = grid.length,
+                n = grid[0].length;
+            count = 0;
+
+            const dfs = function (r, c) {
+                if (r < 0 || r >= m || c < 0 || c >= n || parseInt(grid[r][c]) !== 1) return;
+                grid[r][c] = 0; // 避免重复被计入， 依然会重复访问
+
+                dfs(r - 1, c);
+                dfs(r + 1, c);
+                dfs(r, c - 1);
+                dfs(r, c + 1);
+            };
+
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (parseInt(grid[i][j]) === 1) {  
+                        dfs(i, j);
+                        count++; // count++ 的位置 在这里
+                    }
+
+                }
+            }
+
+            return count;
+        };
+```
+
+```js
+  function getleft(m, row, col) {
+            if (col==0)
+                return [-1, -1];
+            
+            return [row, col-1];
+        }
+
+        function getright(m, row, col) {
+            if (col==m[0].length-1)
+                return [-1, -1];
+
+            return [row, col+1];
+        }
+
+        function getupper(m, row, col) {
+            if (row==0)
+                return[-1, -1];
+                
+            return [row-1, col];
+        }
+
+        function getdown(m, row, col) {
+            if (row==m.length-1)
+                return [-1, -1];
+
+            return [row+1, col];
+        }
+
+        let dir = [];
+        dir.push(getleft);
+        dir.push(getright);
+        dir.push(getupper);
+        dir.push(getdown);
+
+        function numIslands(m){
+            let islandcnt = 0;
+            let maxisland  =0;
+            for (let row=0; row<m.length; row++)
+            {
+                for (let col=0; col<m[row].length; col++)
+                {
+                    if ("2"==m[row][col]||"0"==m[row][col])
+                        continue;
+
+                    let newisland = [];
+                    newisland.push([row, col]);
+                    m[row][col] = "2";
+                    for(let k=0; k<newisland.length; k++)
+                    {
+                        const rowcol = newisland[k];
+
+                        for (let di=0; di<dir.length; di++)
+                        {
+                            const neighbor = dir[di](m, rowcol[0], rowcol[1]);
+                            if (-1!=neighbor[0]&&"1"==m[neighbor[0]][neighbor[1]]) {
+                                newisland.push([neighbor[0], neighbor[1]]);
+                                m[neighbor[0]][neighbor[1]]="2";
+                            }
+                        }
+                    }
+
+                    islandcnt++;
+                    if (maxisland<newisland.length)
+                        maxisland = newisland.length;
+                }
+            }
+
+            return islandcnt;
+        }
+
+        numIslands([
+             ["1", "1", "1", "1", "0"],
+             ["1", "1", "0", "1", "0"],
+             ["1", "1", "0", "0", "0"],
+             ["0", "0", "0", "0", "0"]
+         ])
+```
+

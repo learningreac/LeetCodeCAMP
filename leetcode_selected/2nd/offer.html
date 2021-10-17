@@ -520,34 +520,34 @@
 
             return count;
         };
-         
- // fcttttttttttt
+
+        // fcttttttttttt
         function getleft(m, row, col) {
-            if (col==0)
+            if (col == 0)
                 return [-1, -1];
-            
-            return [row, col-1];
+
+            return [row, col - 1];
         }
 
         function getright(m, row, col) {
-            if (col==m[0].length-1)
+            if (col == m[0].length - 1)
                 return [-1, -1];
 
-            return [row, col+1];
+            return [row, col + 1];
         }
 
         function getupper(m, row, col) {
-            if (row==0)
-                return[-1, -1];
-                
-            return [row-1, col];
+            if (row == 0)
+                return [-1, -1];
+
+            return [row - 1, col];
         }
 
         function getdown(m, row, col) {
-            if (row==m.length-1)
+            if (row == m.length - 1)
                 return [-1, -1];
 
-            return [row+1, col];
+            return [row + 1, col];
         }
 
         let dir = [];
@@ -556,35 +556,31 @@
         dir.push(getupper);
         dir.push(getdown);
 
-        function numIslands(m){
+        function numIslands(m) {
             let islandcnt = 0;
-            let maxisland  =0;
-            for (let row=0; row<m.length; row++)
-            {
-                for (let col=0; col<m[row].length; col++)
-                {
-                    if ("2"==m[row][col]||"0"==m[row][col])
+            let maxisland = 0; // 最大面积
+            for (let row = 0; row < m.length; row++) {
+                for (let col = 0; col < m[row].length; col++) {
+                    if ("2" == m[row][col] || "0" == m[row][col])
                         continue;
 
                     let newisland = [];
                     newisland.push([row, col]);
                     m[row][col] = "2";
-                    for(let k=0; k<newisland.length; k++)
-                    {
+                    for (let k = 0; k < newisland.length; k++) {
                         const rowcol = newisland[k];
 
-                        for (let di=0; di<dir.length; di++)
-                        {
+                        for (let di = 0; di < dir.length; di++) {
                             const neighbor = dir[di](m, rowcol[0], rowcol[1]);
-                            if (-1!=neighbor[0]&&"1"==m[neighbor[0]][neighbor[1]]) {
+                            if (-1 != neighbor[0] && "1" == m[neighbor[0]][neighbor[1]]) {
                                 newisland.push([neighbor[0], neighbor[1]]);
-                                m[neighbor[0]][neighbor[1]]="2";
+                                m[neighbor[0]][neighbor[1]] = "2";
                             }
                         }
                     }
 
                     islandcnt++;
-                    if (maxisland<newisland.length)
+                    if (maxisland < newisland.length)
                         maxisland = newisland.length;
                 }
             }
@@ -593,16 +589,50 @@
         }
 
         numIslands([
-             ["1", "1", "1", "1", "0"],
-             ["1", "1", "0", "1", "0"],
-             ["1", "1", "0", "0", "0"],
-             ["0", "0", "0", "0", "0"]
-         ])
+            ["1", "1", "1", "1", "0"],
+            ["1", "1", "0", "1", "0"],
+            ["1", "1", "0", "0", "0"],
+            ["0", "0", "0", "0", "0"]
+        ])
 
         //463. 岛屿的周长
-        var islandPerimeter = function(grid) {
+        const islandPerimeter = function (m) {
+            let perimeter = 0;
+             let newisland = [];
 
-        };
+            for (let row = 0; row < m.length; row++) {
+                for (let col = 0; col < m[row].length; col++) {
+                    if ("2" == m[row][col] || "0" == m[row][col])
+                        continue;
+
+                    newisland.push([row, col]);
+                    m[row][col] = "2";
+                    for (let k = 0; k < newisland.length; k++) {
+                        const rowcol = newisland[k];
+
+                        for (let di = 0; di < dir.length; di++) {
+                            const neighbor = dir[di](m, rowcol[0], rowcol[1]);
+                            if (-1 != neighbor[0] && "1" == m[neighbor[0]][neighbor[1]]) {
+                                newisland.push([neighbor[0], neighbor[1]]);
+                                m[neighbor[0]][neighbor[1]] = "2";
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (let k = 0; k < newisland.length; k++) {
+                const rowcol = newisland[k];
+                for (let di = 0; di < dir.length; di++) {
+                    const neighbor = dir[di](m, rowcol[0], rowcol[1]);
+                    if (-1 === neighbor[0] || "0" == m[neighbor[0]][neighbor[1]]) {
+                      perimeter++ 
+                    }
+                }
+            }
+
+            return perimeter;
+        }
 
         //230. 二叉搜索树中第K小的元素
         // bst 中序遍历是升序数组，数组的第k-1个元素
