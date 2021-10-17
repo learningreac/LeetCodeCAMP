@@ -521,12 +521,32 @@
             return count;
         };
 
-        numIslands([
+       /* numIslands([
             ["1", "1", "1", "1", "0"],
             ["1", "1", "0", "1", "0"],
             ["1", "1", "0", "0", "0"],
             ["0", "0", "0", "0", "0"]
         ])
+
+        */
+
+        //230. 二叉搜索树中第K小的元素
+        // bst 中序遍历是升序数组，数组的第k-1个元素
+        const kthSmallest = function(root, k) {
+            let inoderArr = [];
+
+            const dfs = (node) => {
+                if(!node) return;
+
+                dfs(node.left);
+                inoderArr.push(node.val);
+                dfs(node.right);
+            };
+
+            dfs(root);
+
+            return inoderArr[k-1]
+        };
 
     </script>
 
