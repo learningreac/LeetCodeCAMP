@@ -694,13 +694,11 @@
 
         //55. Jump Game
         const canJump = function (nums) {
-            let leftindex = 0;
             let rightindex = 0;
 
             for (let i = 0; i < nums.length - 1; i++) {
-                leftindex = i;
-                if (rightindex < i) return false;
-                rightindex = Math.max(rightindex, leftindex + nums[i])
+                if (rightindex < i) return false; // 0 跳不到2
+                rightindex = Math.max(rightindex, i + nums[i])
             };
 
             return rightindex >= nums.length - 1;
@@ -713,28 +711,70 @@
 
         //45. Jump Game II
         // reach the last index in the minimum number of jumps
-        const jump = function (nums) {
-            let minimumCount = 0;
+        const jump1111 = function (nums) {
+            let minimumCount = nums.length;
 
 
-            for (let i = 0; i < nums.length - 1; ) {
+            for (let i = 0; i < nums.length - 1; i++) {
                 let right = i;
                 let count = 0;
 
-                while(right < nums.length - 1) {
+                while (right < nums.length - 1) {
                     right = right + nums[right];
                     count++;
-                };    
-                minimumCount = Math.min(count, minimumCount) 
+                };
+                minimumCount = Math.min(count, minimumCount)
             };
 
             return minimumCount;
         };
 
-        // jump([2,3,1,1,4]);//2
-        // jump([3,2,1]);
-        // jump([1,2,1,1,1]); //3
-        jump([7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3]);
+        const jump = function (nums) {
+            let dp = [];
+            let right = 0;
+            let left = 1;
+
+            dp[0] = 0;
+            for (let i = 0; i < nums.length - 1; i++) {
+                right = i + nums[i];
+                if(right<left) continue;
+                let j = left;
+                for (j; j <= right; j++) {
+                    dp[j] = dp[i] + 1;
+                    if (j === nums.length - 1) return dp[nums.length - 1];
+                };
+                left = j;
+
+            };
+
+            return dp[nums.length - 1]
+        };
+
+
+        const jump222 = function (nums) {
+            if (nums.length==0)
+                return;
+            let jcnt = 1;
+            let jstep =nums[0];
+            for (let i=1; i<nums.length;i++)
+            {
+                if(jstep>nums.length-i)
+                    return jcnt;
+                else
+                {
+                    if (jstep-1>nums[i])
+                        jstep--;
+                    else
+                        
+                }  
+            }
+        }
+
+       // jump([2,3,1,1,4]);//2
+         //jump([3,2,1]);
+      //  jump([1,2,1,1,1]); //3
+        jump([7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3]); //2
+       //jump([2,1,1,1,1]);//3
 
 
     </script>
