@@ -596,9 +596,9 @@
         ])
 
         //463. 岛屿的周长
-        const islandPerimeter = function (m) {
+        const islandPerimeter1 = function (m) {
             let perimeter = 0;
-             let newisland = [];
+            let newisland = [];
 
             for (let row = 0; row < m.length; row++) {
                 for (let col = 0; col < m[row].length; col++) {
@@ -620,19 +620,57 @@
                     }
                 }
             }
-
+            // 岛屿都被push到newisland.
             for (let k = 0; k < newisland.length; k++) {
                 const rowcol = newisland[k];
                 for (let di = 0; di < dir.length; di++) {
                     const neighbor = dir[di](m, rowcol[0], rowcol[1]);
                     if (-1 === neighbor[0] || "0" == m[neighbor[0]][neighbor[1]]) {
-                      perimeter++ 
+                        perimeter++
                     }
                 }
             }
 
             return perimeter;
         }
+
+        //-------------------------------------------
+        const islandPerimeter = function (grid) {
+            let perimeter = 0, newisland = [];
+            let m = grid.length, n = grid[0].length;
+
+            function dfs(r, c) {
+                if (r < 0 || r >= m || c < 0 || c >= n || grid[r][c] === "0") return 1; // grid[r][c]===0;
+                return 0;
+            }
+
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (grid[i][j] === "1") {
+                        newisland.push([i, j]);
+                    }
+                }
+            };
+
+            for (let k = 0; k < newisland.length; k++) {
+                let row = newisland[k][0];
+                let col = newisland[k][1];
+                let neighbors = dfs(row, col - 1) + dfs(row, col + 1) + dfs(row - 1, col) + dfs(row + 1, col)
+
+                perimeter += neighbors
+            }
+
+            return perimeter;
+        };
+
+        /*   islandPerimeter([
+               ["1", "1", "1", "1", "0"],
+               ["1", "1", "0", "1", "0"],
+               ["1", "1", "0", "0", "0"],
+               ["0", "0", "0", "0", "0"]
+           ])
+   
+       */
 
         //230. 二叉搜索树中第K小的元素
         // bst 中序遍历是升序数组，数组的第k-1个元素
@@ -651,6 +689,52 @@
 
             return inoderArr[k - 1]
         };
+
+
+
+        //55. Jump Game
+        const canJump = function (nums) {
+            let leftindex = 0;
+            let rightindex = 0;
+
+            for (let i = 0; i < nums.length - 1; i++) {
+                leftindex = i;
+                if (rightindex < i) return false;
+                rightindex = Math.max(rightindex, leftindex + nums[i])
+            };
+
+            return rightindex >= nums.length - 1;
+
+        };
+
+        //canJump( [2,3,1,1,4]); // true
+        //canJump([0,2,3]) // 0 跳不到2
+        //canJump([3,2,1,0,4])
+
+        //45. Jump Game II
+        // reach the last index in the minimum number of jumps
+        const jump = function (nums) {
+            let minimumCount = 0;
+
+
+            for (let i = 0; i < nums.length - 1; ) {
+                let right = i;
+                let count = 0;
+
+                while(right < nums.length - 1) {
+                    right = right + nums[right];
+                    count++;
+                };    
+                minimumCount = Math.min(count, minimumCount) 
+            };
+
+            return minimumCount;
+        };
+
+        // jump([2,3,1,1,4]);//2
+        // jump([3,2,1]);
+        // jump([1,2,1,1,1]); //3
+        jump([7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3]);
 
 
     </script>
