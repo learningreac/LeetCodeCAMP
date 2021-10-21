@@ -855,7 +855,47 @@
             };
 
 
-        uniquePathsWithObstacles([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
+        //uniquePathsWithObstacles([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
+
+        //1014. Best Sightseeing Pair
+       /* const maxScoreSightseeingPair = function(values) {
+            let i=0, j=values.length-1;
+            let max_value = 0;
+
+            while(i<j) {
+                let value = values[i] + values[j] + i -j;
+                if(values[i]>= values[j]) {
+                    j--;
+                } else {
+                    i++;
+                };
+
+               
+                max_value = Math.max(max_value, value);
+            };
+
+            return max_value;
+        };
+        */ // 接雨水头尾双指针收缩 这种解法不行。当values[i]=values[j]时，该向那边收缩不确定。 而且这里需要的是ij间距较小的。
+
+        const maxScoreSightseeingPair = function(values) {
+            // value = values[i] + values[j] + i - j 
+            // equals to : (values[i] + i) + (values[j] -j);
+            
+            let dp = new Array(values.length);
+            dp[0] = values[0];
+            let res = 0;
+
+            for(let i=1; i<values.length; i++) {
+                dp[i] = Math.max(dp[i-1], values[i]+i);
+                res = Math.max(res, dp[i-1] + values[i] - i);
+            };
+
+            return res;
+
+        }
+
+        maxScoreSightseeingPair([8,1,5,2,6]);
     </script>
 
 </body>
