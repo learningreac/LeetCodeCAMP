@@ -878,7 +878,7 @@
         };
         */ // 接雨水头尾双指针收缩 这种解法不行。当values[i]=values[j]时，该向那边收缩不确定。 而且这里需要的是ij间距较小的。
 
-        const maxScoreSightseeingPair = function(values) {
+        const maxScoreSightseeingPair1 = function(values) {
             // value = values[i] + values[j] + i - j 
             // equals to : (values[i] + i) + (values[j] -j);
             
@@ -893,7 +893,20 @@
 
             return res;
 
+        };
+
+        // 压缩空间
+        const maxScoreSightseeingPair = function(values) { 
+            let res = 0, mx = values[0];
+
+            for(let i=1; i<values.length; i++) {
+                res = Math.max(res, mx + values[i]-i)
+                mx = Math.max(mx, values[i]+i);
+            };
+
+            return res;
         }
+        
 
         maxScoreSightseeingPair([8,1,5,2,6]);
     </script>
