@@ -1136,14 +1136,39 @@
                     stack.pop(); // pop out the smaller num
                 };
 
-                res[i%n] = stack.length === 0 ? -1 : stack[stack.length - 1];  // the cur nums[i] is smaller than the top of stack 
+                res[i%n] = stack.length === 0 ? -1 : stack[stack.length - 1];  // res[i%n] 会重写修改结果。 
                 stack.push(nums[i%n]); // monotone item
             };
 
             return res; 
         };
 
-        nextGreaterElements([1,2,1])
+       // nextGreaterElements([1,2,1]);
+
+       //739. Daily Temperatures
+       const dailyTemperatures = function(temperatures) {
+           let res = [], stack = [];
+
+           for(let i=temperatures.length-1; i>=0 ; i--) {
+               let count = 1;
+               while(stack.length>0 && temperatures[i] >= stack[stack.length -1][0]) {
+                   count += stack.pop()[1];
+
+               };
+
+               if(stack.length===0) {
+                   res[i] = 0;
+               } else {
+                   res[i] = count;
+               };
+
+               stack.push([temperatures[i],res[i]])
+           }
+           return res;
+        };
+
+        //改进版： 单调栈里面放下标
+       // dailyTemperatures([73,74,75,71,69,72,76,73]);//[1,1,4,2,1,1,0,0]
            
     </script>
 
