@@ -108,25 +108,10 @@
 
         }
 
-        //剑指 Offer 36. 二叉搜索树与双向链表
-        const treeToDoublyList = function (root) {
-            let res = new Map();
-            const dfs = function (node) {
-                if (!node) return;
-                dfs(node.left);
-                res.set(node);
-                dfs(node.right);
-
-            };
-            dfs(root);
-            return res;
-        };
 
         //剑指 Offer 59 - II. 队列的最大值
         // 本来想用类似Minstack的方式 维护辅助栈，但是这样做在本题中行不通
-        [
 
-        ]
         // queue是会双头出队的，所以当最大值从队首出队后，maxQ中的最大值就错了。
         /*
         const MaxQueue = function() {
@@ -1193,10 +1178,10 @@
         *    this.right = right;
         * };
         */
-        const treeToDoublyList = function (root) {
-            if(!root) return; // empty tree
+        const treeToDoublyList1 = function (root) {
+            if (!root) return; // empty tree
             let head = null;
-            let pre= head;
+            let pre = head;
             inOrder(root);
 
             // 中序遍历结束后，pre指向最后一个节点，head 指向第一个节点；
@@ -1207,23 +1192,95 @@
 
             function inOrder(node, pre) {
                 if (!node) return;
-
                 inOrder(node.left, pre);
 
                 // 当前层要做的事情；
-                if(!pre) {
-                    // left leaf node, as the head of the linked list
-                    head = node;
-                 } else {
-                     pre.right = node; 
-                 }
-                 node.left = pre;
-                 pre = node;
+                /* if(!pre) {
+                     // left leaf node, as the head of the linked list
+                     head = node;
+                  } else {
+                      pre.right = node; 
+                  }
+                 */
 
-                 inOrder(node.right, pre);
+                !pre ? head = node : pre.right = node;
+                node.left = pre;
+                pre = node;
+
+                inOrder(node.right, pre);
             }
+        };
+
+        // 迭代
+        const treeToDoublyList = function (root) {
+            if (!root) return; // empty tree
+            let stack = [];
+            let node = root;
+            let pre = null;
+            let head = null;
+
+            while (stack.length || node) {
+                if (node) {
+                    stack.push(node);
+                    node = node.left;
+                } else {
+                    const cur = stack.pop();
+                    !pre ? head = cur : pre.right = cur;
+                    cur.left = pre;
+                    pre = cur; // update pre
+
+                    node = cur.right;
+                }
+            }
+            head.left = pre;
+            pre.right = head;
+            return head;
+        };
+
+        //84. 柱状图中最大的矩形   
+        // 类似接雨水？
+        // 10.28 跟雨水的区别在于，1）接雨水不在意区间内中间的短柱子，因为水不会漏。此处计算面积需在意。
+        // 2）接雨水需要两个柱子， 这里一根就行。
+        /*const largestRectangleArea = function (height) {
+            let left = 0, right = height.length - 1, res = height[0];
+
+            while (left <= right && height.length >= 2) {
+                if (height[left] === 0) left++;
+                if (height[right] === 0) right--;
+                let area = Math.min(height[left], height[right]) * (right - left + 1);
+                height[left] < height[right] ? left++ : right--;
+                res = Math.max(res, area)
+            };
+
+            return res;
+        };
+        */
+
+       //solution: monotone stack (increasing)
+        const largestRectangleArea = function (heights) {
+            let stack= []; // for  stroring index
+            let area = 0;
+            let maxArea= 0;
+            heights = [0, ...heights, 0];
+
+            // get the left and right border index for each element.
+            for(let i=0; i<heights.length;i++) {
+                while(stack.length!==0 && heights[i] < heights[stack[stack.length -1]]) {
+                    let tmp = stack.pop(); 
+                    // 当前元素是右边第一个比tmp小的，当前栈顶元素是左边第一个比tmp小的
+                    // width = rightindex - leftindex -1; 
+                     area = heights[tmp] * [i - (stack[stack.length -1]) -1];
+                    maxArea = Math.max(maxArea, area);                    
+                };
+                stack.push(i);
+            };
+
+            return maxArea;
 
         };
+       // largestRectangleArea([2,1,5,6,2,3]);
+       largestRectangleArea([2,4]);
+      // largestRectangleArea([5,4,1,2])
 
     </script>
 
