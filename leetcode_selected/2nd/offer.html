@@ -1294,7 +1294,7 @@
             for (let i = 1; i < intervals.length; i++) {
                 if (intervals[i][0] <= end) { // start 落在区间内
                     //end = (end < intervals[i][1]) ? intervals[i][1] : end;  // undate end
-                    end = Math.max(end, intervals[i][1]); 
+                    end = Math.max(end, intervals[i][1]);// better code
                 } else {
                     res.push([start, end]); // start 在现有区间外
                     start = intervals[i][0];
@@ -1305,7 +1305,29 @@
             return res;
         };
 
-        merge([[1, 3], [2, 6], [8, 10], [15, 18]]);
+        const merge1 = function (intervals) {
+            // sort intervals ascendingly by the start of each interval
+            intervals.sort((firstNum, secondNum) => firstNum[0] - secondNum[0]);
+            let res = [];
+            let i=0;
+
+            while(i<intervals.length) {
+                cur = intervals[i];//[start,end]
+                let j=i+1;
+
+                while(j<intervals.length && intervals[j][0]<= cur[1]) {
+                    cur[1] = Math.max(cur[1], intervals[j][1]); 
+                    j++;
+                };
+
+                res.push(cur);
+                i = j;
+            };
+
+            return res;
+        }
+
+       //  merge([[1, 3], [2, 6], [8, 10], [15, 18]]);
       //  merge( [[1,4],[4,5]]);
 
     </script>
