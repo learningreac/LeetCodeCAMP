@@ -1256,21 +1256,22 @@
         };
         */
 
-       //solution: monotone stack (increasing)
+        //solution: monotone stack (increasing)
         const largestRectangleArea = function (heights) {
-            let stack= []; // for  stroring index
+            let stack = []; // for  stroring index
             let area = 0;
-            let maxArea= 0;
+            let maxArea = 0;
             heights = [0, ...heights, 0];
 
             // get the left and right border index for each element.
-            for(let i=0; i<heights.length;i++) {
-                while(stack.length!==0 && heights[i] < heights[stack[stack.length -1]]) {
-                    let tmp = stack.pop(); 
+            for (let i = 0; i < heights.length; i++) {
+                // heights[i] < heights[stack[stack.length -1]]
+                while (stack.length !== 0 && heights[i] < heights[stack[stack.length - 1]]) {
+                    let tmp = stack.pop();
                     // 当前元素是右边第一个比tmp小的，当前栈顶元素是左边第一个比tmp小的
                     // width = rightindex - leftindex -1; 
-                     area = heights[tmp] * [i - (stack[stack.length -1]) -1];
-                    maxArea = Math.max(maxArea, area);                    
+                    area = heights[tmp] * [i - (stack[stack.length - 1]) - 1];
+                    maxArea = Math.max(maxArea, area);
                 };
                 stack.push(i);
             };
@@ -1278,9 +1279,34 @@
             return maxArea;
 
         };
-       // largestRectangleArea([2,1,5,6,2,3]);
-       largestRectangleArea([2,4]);
-      // largestRectangleArea([5,4,1,2])
+        // largestRectangleArea([2,1,5,6,2,3]);
+        // largestRectangleArea([1,2,5,6,2,2,3])
+        //largestRectangleArea([2,4]);
+        // largestRectangleArea([5,4,1,2])
+
+        //56. Merge Intervals
+        const merge = function (intervals) {
+            // sort intervals ascendingly by the start of each interval
+            intervals.sort((firstNum, secondNum) => firstNum[0] - secondNum[0]);
+            let res = [];
+            let start = intervals[0][0];
+            let end = intervals[0][1];
+            for (let i = 1; i < intervals.length; i++) {
+                if (intervals[i][0] <= end) { // start 落在区间内
+                    //end = (end < intervals[i][1]) ? intervals[i][1] : end;  // undate end
+                    end = Math.max(end, intervals[i][1]); 
+                } else {
+                    res.push([start, end]); // start 在现有区间外
+                    start = intervals[i][0];
+                    end = intervals[i][1];
+                }
+            };
+            res.push([start,end]);
+            return res;
+        };
+
+        merge([[1, 3], [2, 6], [8, 10], [15, 18]]);
+      //  merge( [[1,4],[4,5]]);
 
     </script>
 
