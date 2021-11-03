@@ -1238,7 +1238,7 @@
         };
 
         //84. 柱状图中最大的矩形   
-        // 类似接雨水？
+        // 类似 11. 盛水最多的容器
         // 10.28 跟雨水的区别在于，1）接雨水不在意区间内中间的短柱子，因为水不会漏。此处计算面积需在意。
         // 2）接雨水需要两个柱子， 这里一根就行。
         /*const largestRectangleArea = function (height) {
@@ -1334,19 +1334,142 @@
         //57. Insert Interval
         //solution: find the index to insert the newInterval, then fall merge for the updated intervals.
         const insert = function (intervals, newInterval) {
-            for(var i=0; i<intervals.length;i++){ // var has function scope, can be acessed outside the block
-                if(intervals[i][1] > newInterval[0]) {
-                   break;
+            for (var i = 0; i < intervals.length; i++) { // var has function scope, can be acessed outside the block
+                if (intervals[i][1] > newInterval[0]) {
+                    break;
                 }
             };
             console.log(i);
-            intervals.splice(i+1, 0 , newInterval);
+            intervals.splice(i + 1, 0, newInterval);
             return merge(intervals);
-            
+
         };
 
         //insert( [[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8])
         // insert([[1,5]], [0,3]);
+
+        //575 Distribute Candies
+        const distributeCandies = function (candyType) {
+            let total = candyType.length / 2;
+            let set = new Set();
+
+            for (const candy of candyType) {
+                set.add(candy);
+            };
+
+            return Math.min(set.size, total);
+        };
+
+        // distributeCandies([1,1,2,2,3,3])
+
+        // 781 rabbits森林中的小兔子
+        const numRabbits = function (answers) {
+            let map = new Map();
+            let res = 0;
+
+            for (const type of answers) {
+                if (map.has(type)) {
+                    count = map.get(type);
+                    count++;
+                    map.set(type, count)
+                } else (
+                    map.set(type, 1)
+                )
+            };
+
+            for (const [key, value] of map) {
+                if (key === 0) {
+                    res += value;
+                } else {
+                    if (value % (key + 1) === 0) {
+                        res += value / (key + 1) * (key + 1);
+                    } else {
+                        res += Math.floor(value / (key + 1)) * (key + 1) + key + 1;
+                    }
+                }
+            };
+
+            return res;
+        };
+        // numRabbits([1,1,2]);
+        //numRabbits([1, 0, 1, 0, 0]);
+
+        //42 trapping-rain-water
+        const trap = function (height) {
+            let stack = [];
+            let area = 0;
+            let maxarea = 0;
+
+            for (let i = 0; i < height.length; i++) {
+                let count = 0;
+                while (stack.length !== 0 && height[i] >= height[stack[stack.length - 1]]) { //新元素大于栈顶元素
+                    var lastpop = stack.pop();
+                    if (stack.length) { count += height[lastpop] };
+                };
+
+                if (lastpop) {
+                    area = height[lastpop] * (i - lastpop - 1) - count;
+                    maxarea += area;
+                }
+
+
+                stack.push(i);
+            };
+
+            console.log(maxarea);
+
+        }
+
+        trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1])
+
+        // 11. Container With Most Water
+        // 单调递减栈 放坐标 
+        /* const maxArea1 = function(height) {
+          let stack = [];
+          let area = 0;
+          let maxarea = 0;
+  
+          for(let i=0; i<height.length;i++) {
+              while(stack.length!== 0 && height[i] > height[stack[stack.length -1]]){ //新元素大于栈顶元素
+                  stack.pop();
+              };
+              stack.push(i);
+              area = height[i] * (i- stack[0]); // 栈顶元素（新） *  宽度
+              maxarea = Math.max(maxarea, area);
+          };
+  
+          return maxarea;
+  
+         };
+  
+         //maxArea1([1,8,6,2,5,4,8,3,7]);
+         maxArea1([1,2,1])  // not working , failed on this case
+         */
+
+
+        // 24 24. Swap Nodes in Pairs
+        const swapPairs = function (head) {
+            if (!head) return null;
+            if (head.next === null) return head;
+
+            let dumpH = new ListNode();
+            dumpH.next = head;
+            let pre = dumpH;
+
+            while (head && head.next) {  // IMPORTANT head.next !== null  so that only swap when there are two nodes 
+                let tmp = head.next;
+                head.next = head.next.next;
+                pre.next = tmp;
+                tmp.next = head;
+
+                pre = head;
+                head = head.next;
+            };
+
+            return dumpH.next;
+
+        };
+
 
     </script>
 
