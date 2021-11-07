@@ -1416,11 +1416,11 @@
                 stack.push(i);
             };
 
-            console.log(maxarea);
+
 
         }
 
-        trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1])
+        //trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1])
 
         // 11. Container With Most Water
         // 单调递减栈 放坐标 
@@ -1470,6 +1470,89 @@
 
         };
 
+        //54. Spiral Matrix
+        const spiralOrder = function (matrix) {
+            const m = matrix.length;
+            const n = matrix[0].length;
+            let res = [];
+            let top = 0, bottom = m - 1;
+            let left = 0, right = n - 1;
+
+            while (top <= bottom && left <= right) {
+                for (let i = left; i <= right; i++) {  // left -> right
+                    res.push(matrix[top][i]);
+                };
+                top++;
+                for (let j = top; j <= bottom; j++) { // top -> bottom
+                    res.push(matrix[j][right]);
+                };
+                right--;
+                if (res.length === m * n) break; // 这里需要加这句条件，否则就会重复遍历          
+                for (let i = right; i >= left; i--) { // right -> left
+                    res.push(matrix[bottom][i]);
+                };
+                bottom--;
+                for (let j = bottom; j >= top; j--) { // bottom -> top
+                    res.push(matrix[j][left]);
+                };
+                left++;
+            };
+
+            return res;
+        };
+
+        //spiralOrder([[1,2,3],[4,5,6],[7,8,9]]);
+        //spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]);
+
+        //61. Rotate List
+        const mylist = {
+            val: 1,
+            next: {
+                val: 2,
+                next: {
+                    val: 3,
+                    next: {
+                        val: 4,
+                        next: {
+                            val: 5,
+                            next: null
+                        }
+                    }
+                }
+            }
+        };
+        const rotateRight = function (head, k) {
+            // special cases
+            if (!head) return null;
+            if (k === 0) return head;
+
+            let fast = head;
+            let slow = head;
+
+            while (k > 0) {
+                if (fast.next === null) {
+                    fast = head;
+                } else {
+                    fast = fast.next;
+                }
+                k--;
+            };
+
+            while (fast.next) { // while fast 的话，当fast指向最后一个节点5时，判断条件为true，所以还会再往下走一个节点。
+                slow = slow.next;
+                fast = fast.next;
+            };
+
+            let dumh = head;
+            head = (slow.next === null)? head: slow.next; // 如果slow指向最后一个节点的话，head就等于自身。
+            fast.next = dumh;
+            slow.next = null;  // 这句写在上一句后面，可以切断circle链表
+
+            return head;
+        };
+
+       // rotateRight(mylist, 5);
+        rotateRight({val:1, next:null},1)
 
     </script>
 
