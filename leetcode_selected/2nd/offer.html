@@ -1521,6 +1521,7 @@
                 }
             }
         };
+        // 快慢指针
         const rotateRight = function (head, k) {
             // special cases
             if (!head) return null;
@@ -1551,8 +1552,30 @@
             return head;
         };
 
-       // rotateRight(mylist, 5);
-        rotateRight({val:1, next:null},1)
+        // solution 2: count the size, k%size 
+        const rotateRight2 = function (head, k) {
+            if(!head) return null;
+            let size = 1; 
+            let dumh = head;
+            while(dumh.next){
+                dumh= dumh.next;
+                size++;
+            };
+
+            let move = (k%size===0)? 0 : size-k%size;
+            dumh.next = head;
+            while(move >0) {
+                dumh= dumh.next;
+                move--;
+            };
+            head = dumh.next;
+            dumh.next = null;
+
+            return head;
+        }
+
+       // rotateRight2(mylist, 2);
+       // rotateRight2({val:1, next:null},1)
 
     </script>
 
