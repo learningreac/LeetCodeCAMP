@@ -1602,6 +1602,32 @@
         return pos.length? pos.join('') : '0';
     };
 
+    //370 RANGE ADDITION  598. RANGE ADDITION II
+    const rangeAddition = function(length, updates) {
+        let res= new Array(length+1).fill(0); // the length is 1 bigger incase 指针越界
+        for(const update of updates) {
+            let start = update[0];
+            let end = update[1];
+            res[start] += update[2];
+            res[end+1] -= update[2];
+        };
+
+        for(let i=1; i<res.length; i++) {
+            res[i] += res[i-1];
+        };
+
+        res.splice(-1);
+
+        return res;
+
+    };
+
+    rangeAddition(5,  [
+                    [1,  3,  2],
+                    [2,  4,  3],
+                    [0,  2, -2]
+                ]);
+
     </script>
 
 </body>
