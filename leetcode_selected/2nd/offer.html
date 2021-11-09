@@ -1545,7 +1545,7 @@
             };
 
             let dumh = head;
-            head = (slow.next === null)? head: slow.next; // 如果slow指向最后一个节点的话，head就等于自身。
+            head = (slow.next === null) ? head : slow.next; // 如果slow指向最后一个节点的话，head就等于自身。
             fast.next = dumh;
             slow.next = null;  // 这句写在上一句后面，可以切断circle链表
 
@@ -1554,18 +1554,18 @@
 
         // solution 2: count the size, k%size  连成环状链表 然后截断成普通链表
         const rotateRight2 = function (head, k) {
-            if(!head) return null;
-            let size = 1; 
+            if (!head) return null;
+            let size = 1;
             let dumh = head;
-            while(dumh.next){
-                dumh= dumh.next;
+            while (dumh.next) {
+                dumh = dumh.next;
                 size++;
             };
 
-            let move = (k%size===0)? 0 : size-k%size;
+            let move = (k % size === 0) ? 0 : size - k % size;
             dumh.next = head;
-            while(move >0) {
-                dumh= dumh.next;
+            while (move > 0) {
+                dumh = dumh.next;
                 move--;
             };
             head = dumh.next;
@@ -1574,60 +1574,112 @@
             return head;
         }
 
-       // rotateRight2(mylist, 2);
-       // rotateRight2({val:1, next:null},1)
+        // rotateRight2(mylist, 2);
+        // rotateRight2({val:1, next:null},1)
 
-    //43. Multiply Strings
-    const multiply = function(num1, num2) {
-        const len1 = num1.length;
-        const len2 = num2.length;
-        const pos = new Array(len1 + len2).fill(0);
+        //43. Multiply Strings
+        const multiply = function (num1, num2) {
+            const len1 = num1.length;
+            const len2 = num2.length;
+            const pos = new Array(len1 + len2).fill(0);
 
-        for(let i=len1-1; i>= 0; i--) {
-            const digit1 = + num1[i]; // convet nums1[i] to a number && assign the value to digit1;
-            for(let j=len2-1; j>=0; j--) {
-                const digit2 = + num2[j];
-                const multi = digit1 * digit2;
-                const sum = pos[i+j+1] + multi;
+            for (let i = len1 - 1; i >= 0; i--) {
+                const digit1 = + num1[i]; // convet nums1[i] to a number && assign the value to digit1;
+                for (let j = len2 - 1; j >= 0; j--) {
+                    const digit2 = + num2[j];
+                    const multi = digit1 * digit2;
+                    const sum = pos[i + j + 1] + multi;
 
-                pos[i+j+1] = sum%10;
-                pos[i+j] += sum/10 | 0; // interger +=
+                    pos[i + j + 1] = sum % 10;
+                    pos[i + j] += sum / 10 | 0; // interger +=
+                }
+            };
+
+            while (pos[0] === 0) {
+                pos.shift(); // get rid of the 0s
+            };
+
+            return pos.length ? pos.join('') : '0';
+        };
+
+        //370 RANGE ADDITION  598. RANGE ADDITION II
+        const rangeAddition = function (length, updates) {
+            let res = new Array(length + 1).fill(0); // the length is 1 bigger incase 指针越界
+            for (const update of updates) {
+                let start = update[0];
+                let end = update[1];
+                res[start] += update[2];
+                res[end + 1] -= update[2];
+            };
+
+            for (let i = 1; i < res.length; i++) {
+                res[i] += res[i - 1];
+            };
+
+            res.splice(-1);
+
+            return res;
+
+        };
+
+        /* rangeAddition(5,  [
+         *                [1,  3,  2],
+         *                [2,  4,  3],
+         *                [0,  2, -2]
+         *            ]);
+         */
+
+        //228. 汇总区间
+       /* const summaryRanges = function (nums) {
+            let res = [];
+            for (let i = 0; i < nums.length;) {
+                let left = i
+                let j = i + 1;
+                while (j < nums.length) {
+                    if (nums[j] === nums[i] + 1) {
+                        i++; j++;
+                    } else {
+                        j - left > 1 ? res.push(`${nums[left]}->${nums[j - 1]}`) : res.push(`${nums[left]}`);
+                        i = j;
+                        break;
+                    }
+                };
+                if (left === nums.length - 1) {
+                    res.push(`${nums[left]}`);
+                    break;
+                }
+            };
+
+            return res;
+        };
+        */
+
+        const summaryRanges = function (nums) {
+            const res = [];
+            let i = 0;
+            const n = nums.length;
+            while (i < n) {
+                const low = i;
+                i++;
+                while (i < n && nums[i] === nums[i - 1] + 1) {
+                    i++;
+                }
+                const high = i - 1;
+
+                low<high ? res.push(`${nums[low]}->${nums[high]}`) : res.push(`${nums[low]}`);
+               
+               // const temp = ['' + nums[low]];
+               // if (low < high) {
+                //    temp.push('->');
+                //    temp.push('' + nums[high]);
+                //}
+                //ret.push(temp.join(''));
             }
+            return res;
         };
 
-        while(pos[0]===0) {
-            pos.shift(); // get rid of the 0s
-        };
 
-        return pos.length? pos.join('') : '0';
-    };
-
-    //370 RANGE ADDITION  598. RANGE ADDITION II
-    const rangeAddition = function(length, updates) {
-        let res= new Array(length+1).fill(0); // the length is 1 bigger incase 指针越界
-        for(const update of updates) {
-            let start = update[0];
-            let end = update[1];
-            res[start] += update[2];
-            res[end+1] -= update[2];
-        };
-
-        for(let i=1; i<res.length; i++) {
-            res[i] += res[i-1];
-        };
-
-        res.splice(-1);
-
-        return res;
-
-    };
-
-    rangeAddition(5,  [
-                    [1,  3,  2],
-                    [2,  4,  3],
-                    [0,  2, -2]
-                ]);
-
+        //summaryRanges([0, 1, 2, 4, 5, 7])
     </script>
 
 </body>
