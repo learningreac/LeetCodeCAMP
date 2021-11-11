@@ -1630,29 +1630,29 @@
          */
 
         //228. 汇总区间
-       /* const summaryRanges = function (nums) {
-            let res = [];
-            for (let i = 0; i < nums.length;) {
-                let left = i
-                let j = i + 1;
-                while (j < nums.length) {
-                    if (nums[j] === nums[i] + 1) {
-                        i++; j++;
-                    } else {
-                        j - left > 1 ? res.push(`${nums[left]}->${nums[j - 1]}`) : res.push(`${nums[left]}`);
-                        i = j;
-                        break;
-                    }
-                };
-                if (left === nums.length - 1) {
-                    res.push(`${nums[left]}`);
-                    break;
-                }
-            };
-
-            return res;
-        };
-        */
+        /* const summaryRanges = function (nums) {
+             let res = [];
+             for (let i = 0; i < nums.length;) {
+                 let left = i
+                 let j = i + 1;
+                 while (j < nums.length) {
+                     if (nums[j] === nums[i] + 1) {
+                         i++; j++;
+                     } else {
+                         j - left > 1 ? res.push(`${nums[left]}->${nums[j - 1]}`) : res.push(`${nums[left]}`);
+                         i = j;
+                         break;
+                     }
+                 };
+                 if (left === nums.length - 1) {
+                     res.push(`${nums[left]}`);
+                     break;
+                 }
+             };
+ 
+             return res;
+         };
+         */
 
         const summaryRanges = function (nums) {
             const res = [];
@@ -1666,10 +1666,10 @@
                 }
                 const high = i - 1;
 
-                low<high ? res.push(`${nums[low]}->${nums[high]}`) : res.push(`${nums[low]}`);
-               
-               // const temp = ['' + nums[low]];
-               // if (low < high) {
+                low < high ? res.push(`${nums[low]}->${nums[high]}`) : res.push(`${nums[low]}`);
+
+                // const temp = ['' + nums[low]];
+                // if (low < high) {
                 //    temp.push('->');
                 //    temp.push('' + nums[high]);
                 //}
@@ -1680,18 +1680,18 @@
         //summaryRanges([0, 1, 2, 4, 5, 7])
 
         //78. Subsets
-        const subsets = function(nums) {
+        const subsets = function (nums) {
             const res = [];
 
-            const dfs = (index,list) => {
-                if(index === nums.length) {
+            const dfs = (index, list) => {
+                if (index === nums.length) {
                     res.push(list.slice());
                     return;
                 };
                 list.push(nums[index]);
-                dfs(index+1, list);
+                dfs(index + 1, list);
                 list.pop();
-                dfs(index+1, list);
+                dfs(index + 1, list);
             };
 
             dfs(0, []);
@@ -1703,9 +1703,9 @@
 
             const dfs = (index, list) => {
                 res.push(list.slice());
-                for(let i=index; i<nums.length; i++) {
+                for (let i = index; i < nums.length; i++) {
                     list.push(nums[i]);
-                    dfs(i+1, list);
+                    dfs(i + 1, list);
                     list.pop();
                 }
             };
@@ -1713,7 +1713,85 @@
             return res;
         };
 
-        subsets1([1,2,3]);
+        // subsets1([1,2,3]);
+
+        //215 the kth biggest number in array
+        //solution 1: quick sort with partition
+        function partition(nums, left, right) {
+            let pivot = nums[left];
+            let i = left;
+
+            for (let j = left + 1; j <= right; j++) {
+                if (nums[j] < pivot) {
+                    i++;
+                    [nums[i], nums[j]] = [nums[j], nums[i]]; //实际上是把所有小于pivot的数字全部移动到左边来,
+                }
+            };
+            [nums[left], nums[i]] = [nums[i], nums[left]];
+            return i;
+        };
+
+        //partition([3,6,5,2,1,4], 0, 5);
+
+        const findKthLargest = (nums, k) => {
+            const len = nums.length;
+            let left = 0;
+            let right = nums.length - 1;
+
+            const target = len - k;
+
+            while (true) {
+                let index = partition(nums, left, right);
+                if (index === target) {
+                    return nums[index];
+                } else if (index < target) {
+                    left = index + 1;
+                } else {
+                    right = index - 1;
+                }
+            }
+        };
+
+        // solution 2: head sort
+        const findKthLargest1 = (nums, k) => {
+            let heapSize = nums.length;
+            buildMaxHeap(nums, heapSize); // build head 大顶堆
+
+            // swap the top of the heap(biggest) with the last node
+            for (let i = nums.length - 1; i >= nums.length - k + 1; i--) {
+                [nums[0], nums[i]] = [nums[i], nums[0]];
+                --heapSize; //  下沉后的元素不参与到大顶堆调整；
+                maxHeapify(nums, 0, heapSize); // 自顶向下再调整大顶堆；
+            };
+
+            return nums[0];// 调整 k 次之后的大顶堆堆顶
+        }
+
+        function buildMaxHeap(nums, heapSize) {
+            for (let i = Math.floor(heapSize / 2) - 1; i >= 0; i--) {
+                maxHeapify(nums, i, heapSize); // start from the last non-leaf node
+            }
+        };
+
+        function maxHeapify(nums, i, heapSize) {
+            let left = i * 2 + 1;
+            let right = i * 2 + 2;
+            let largest = i; // the current parent node
+
+            if (left < heapSize && nums[left] > nums[largest]) {
+                largest = left;
+            }; // compare the parent node with the left node;
+            if (right < heapSize && nums[right] > nums[largest]) {
+                largest = right; // compare the right node with the updated largest node;
+            };
+            if (largest !== i) {
+                [nums[i], nums[largest]] = [nums[largest], nums[i]]; // swap node VALUE, INDEX WON'T CHANGE
+                // update the child nodes
+                maxHeapify(nums, largest, heapSize)
+            }
+        }
+
+       findKthLargest1([3,2,1,5,6,4], 2)
     </script>
 
 </body>
