@@ -1796,14 +1796,14 @@
             let heap = [];
 
             // k-size min Heap
-            for(let i=0; i<k; i++){
+            for (let i = 0; i < k; i++) {
                 heap.push(nums[i]);
             };
             buildMinHeap(heap, k);
 
             // 从第kth遍历数组，若元素大于堆顶，替换堆顶元素并继续堆化
-            for(let i=k; i<nums.length; i++) {
-                if(heap[0] < nums[i]) {
+            for (let i = k; i < nums.length; i++) {
+                if (heap[0] < nums[i]) {
                     heap[0] = nums[i];
                     minHeapify(heap, 0, k);
                 }
@@ -1813,9 +1813,9 @@
         };
 
 
-        function buildMinHeap (nums, heapSize) {
-            for(let i=(Math.floor(nums.length/2)-1); i>=0;i--) {
-                minHeapify(nums, i,heapSize);
+        function buildMinHeap(nums, heapSize) {
+            for (let i = (Math.floor(nums.length / 2) - 1); i >= 0; i--) {
+                minHeapify(nums, i, heapSize);
             }
         }
         function minHeapify(nums, i, heapSize) {
@@ -1839,6 +1839,50 @@
         //buildMinHeap([3, 2, 1, 5, 6, 4])
 
         //findKthLargest2([3, 2, 1, 5, 6, 4], 2)
+
+
+        //384. Shuffle an Array
+        /**
+ * @param {number[]} nums
+ */
+        const Solution = function (nums) {
+            this.nums = nums;
+
+        };
+
+        /**
+         * @return {number[]}
+         */
+        Solution.prototype.reset = function () {
+            return this.nums;
+        };
+
+        /**
+         * @return {number[]}
+         */
+        Solution.prototype.shuffle = function () {
+            let copy = [...this.nums];
+            let res = [];
+
+            for (let i = copy.length; i > 0; i--) { // not >=
+                let idx = Math.floor(Math.random() * i);
+                res.push(copy[idx]);
+                copy.splice(idx, 1);
+            };
+
+            return res;
+
+        };
+
+        /**
+         * Your Solution object will be instantiated and called as such:
+         * var obj = new Solution(nums)
+         * var param_1 = obj.reset()
+         * var param_2 = obj.shuffle()
+         */
+
+         let mySolution = new Solution([1, 2, 3]);
+         mySolution.shuffle();
     </script>
 
 </body>
