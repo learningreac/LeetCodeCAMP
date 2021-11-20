@@ -1881,8 +1881,32 @@
          * var param_2 = obj.shuffle()
          */
 
-         let mySolution = new Solution([1, 2, 3]);
-         mySolution.shuffle();
+        // let mySolution = new Solution([1, 2, 3]);
+        // mySolution.shuffle();
+
+
+        //48. Rotate Image
+        const rotate = function(matrix) {
+            //flip twice: 右上-左下，竖中轴线 或左上-右下，恒中轴线
+
+            if(matrix.length===0 || matrix[0].length===0) return matrix;
+
+            const len = matrix.length;
+            for(let i=0; i<len;i++) {
+                for(let j=0; j<len-i; j++) {
+                    let rIdx = [len-1-j, len-1-i];
+                    [matrix[i][j], matrix[rIdx[0]][rIdx[1]]] = [ matrix[rIdx[0]][rIdx[1]], matrix[i][j]]
+                }
+            };
+
+            for(let i=0; i<Math.floor(len/2); i++) {
+                for(let j=0; j<len; j++) {
+                    let rIdx = [len-1-i, j];
+                    [matrix[i][j], matrix[rIdx[0]][rIdx[1]]] = [ matrix[rIdx[0]][rIdx[1]], matrix[i][j]];
+                }
+            } 
+        };
+        //rotate( [[1,2,3],[4,5,6],[7,8,9]])
     </script>
 
 </body>
