@@ -1886,27 +1886,157 @@
 
 
         //48. Rotate Image
-        const rotate = function(matrix) {
+        const rotate = function (matrix) {
             //flip twice: 右上-左下，竖中轴线 或左上-右下，恒中轴线
 
-            if(matrix.length===0 || matrix[0].length===0) return matrix;
+            if (matrix.length === 0 || matrix[0].length === 0) return matrix;
 
             const len = matrix.length;
-            for(let i=0; i<len;i++) {
-                for(let j=0; j<len-i; j++) {
-                    let rIdx = [len-1-j, len-1-i];
-                    [matrix[i][j], matrix[rIdx[0]][rIdx[1]]] = [ matrix[rIdx[0]][rIdx[1]], matrix[i][j]]
+            for (let i = 0; i < len; i++) {
+                for (let j = 0; j < len - i; j++) {
+                    let rIdx = [len - 1 - j, len - 1 - i];
+                    [matrix[i][j], matrix[rIdx[0]][rIdx[1]]] = [matrix[rIdx[0]][rIdx[1]], matrix[i][j]]
                 }
             };
 
-            for(let i=0; i<Math.floor(len/2); i++) {
-                for(let j=0; j<len; j++) {
-                    let rIdx = [len-1-i, j];
-                    [matrix[i][j], matrix[rIdx[0]][rIdx[1]]] = [ matrix[rIdx[0]][rIdx[1]], matrix[i][j]];
+            for (let i = 0; i < Math.floor(len / 2); i++) {
+                for (let j = 0; j < len; j++) {
+                    let rIdx = [len - 1 - i, j];
+                    [matrix[i][j], matrix[rIdx[0]][rIdx[1]]] = [matrix[rIdx[0]][rIdx[1]], matrix[i][j]];
                 }
-            } 
+            }
         };
         //rotate( [[1,2,3],[4,5,6],[7,8,9]])
+
+
+        //1446. Consecutive Characters
+        const maxPower = function (s) {
+            let max = 0;
+
+            for (let i = 0; i < s.length;) {
+                let curMax = 0;
+                let j = i + 1
+                for (; ;) {
+                    if (s[i] === s[j]) {
+                        j++;
+                    } else {
+                        curMax = j - i;
+                        i = j;
+                        break;
+                    }
+                };
+                max = Math.max(max, curMax);
+                if (j >= s.length) break;
+            };
+
+            return max;
+        };
+
+        //maxPower("leetcode");
+        // maxPower("ccbccbb");
+
+        //17 电话号码数字字母组合
+        const numMap = new Map();
+        numMap.set(2, ['a', 'b', 'c']);
+        numMap.set(3, ['d', 'e', 'f']);
+        numMap.set(4, ['g', 'h', 'i']);
+        numMap.set(5, ['j', 'k', 'l']);
+        numMap.set(6, ['m', 'n', 'o']);
+        numMap.set(7, ['p', 'q', 'r', 's']);
+        numMap.set(8, ['t', 'u', 'v']);
+        numMap.set(9, ['w', 'x', 'y', 'z']);
+
+        const letterCombinations = function (digits) {
+            const len = digits.length;
+            const res = [];
+            if (len === 0) return res;
+
+        };
+
+        //9.回文数
+        const isPalindrome = function (x) {
+            if (x < 0) return false;
+            if (x === 0) return true;
+            const digitsArr = [];
+            while (x > 0) {
+                if (Math.floor(x / 10) > 0) {
+                    digitsArr.unshift(x % 10);
+                } else {
+                    digitsArr.unshift(x);
+                };
+                x = Math.floor(x / 10)
+            }
+            if (digitsArr.length === 1) return true;
+
+            let left = 0;
+            let right = digitsArr.length - 1;
+            while (left <= right) {
+                if (digitsArr[left] !== digitsArr[right]) {
+                    return false;
+                };
+                left++;
+                right--;
+
+            }
+            return true;
+        };
+
+        //28. Implement strStr()
+        // 暴力解法1
+        const strStr = function (haystack, needle) {
+            const n = haystack.length, m = needle.length;
+            for (let i = 0; i + m <= n; i++) {
+                let flag = true;
+                for (let j = 0; j < m; j++) {
+                    if (haystack[i + j] != needle[j]) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        // 暴力解法2
+
+        //KMP 字符串匹配解法
+        const strStrKMP = function (haystack, needle) {
+            let m = haystack.length, n = needle.length;
+            if (n === 0) return 0;
+
+            //set up next Array
+            const next = new Array(n).fill(0);
+            for (let left = 0, right = 1; right < n; right++) {
+                while (left > 0 && needle[left] !== needle[right]) {
+                    left = next[left - 1]; // 回退
+                };
+
+                if (needle[left] === needle[right]) {
+                    left++;
+                };
+
+                next[right] = left; // start from 1？
+            };
+
+            for (let i = 0, j = 0; i < m; i++) {
+                while (j > 0 && haystack[i] !== needle[j]) {
+                    j = next[j - 1];
+                };
+                if (haystack[i] === needle[j]) {
+                    j++;
+                };
+                if (j === n) return i - n + 1;
+            }
+
+            return -1;
+
+        };
+
+      //  strStrKMP('abcabcabf', 'abcabf');
+        strStrKMP("mississippi","pi")
     </script>
 
 </body>
