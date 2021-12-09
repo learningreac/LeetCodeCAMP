@@ -1982,7 +1982,7 @@
         };
 
         //28. Implement strStr()
-        // 暴力解法1
+        // 暴力解法1  若匹配失败则flag为false, 如果匹配过程中（b 串的长度）没有改变flag的值，则说明可以完全匹配；
         const strStr = function (haystack, needle) {
             const n = haystack.length, m = needle.length;
             for (let i = 0; i + m <= n; i++) {
@@ -2001,6 +2001,22 @@
         };
 
         // 暴力解法2
+        // 若while走完之后b指针指到needle末尾，则说明能完全匹配
+        const strStr = function (haystack, needle) {
+            const n = haystack.length, m = needle.length;
+            
+            for(let i=0; i<= n-m; i++) {
+                //从原串的发起点 和 匹配串 的首位， 尝试匹配
+                let a= i, b=0;
+                while(b<m && haystack[a] === needle[b]) {
+                    a++;
+                    b++;
+                };
+                // 若能完全匹配，则返回原串发起点的下标
+                if(b===m) return i;
+            };
+            return -1;
+        }
 
         //KMP 字符串匹配解法
         const strStrKMP = function (haystack, needle) {
@@ -2036,7 +2052,7 @@
         };
 
       //  strStrKMP('abcabcabf', 'abcabf');
-        strStrKMP("mississippi","pi")
+      //  strStrKMP("mississippi","pi")
     </script>
 
 </body>
