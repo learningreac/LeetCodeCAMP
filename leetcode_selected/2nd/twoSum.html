@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        //1. two sum
+        // 坑1： 原始数组中可能出现重复的数字，比如[3,3], target=6；
+        // 坑2： 返回的是Index，所以如果对原始排序，要注意保留之前的顺序。
+        // 坑3： 数字可能会是负数，负数的指针操作跟正数不一样。
+        /*
+        const twoSum = function (numbers, target) {
+            let result= [];
+            let copyNum = [...numbers].sort((a,b) => a-b);
+
+           let left=0;
+           let right=numbers.length-1; 
+
+           while(left<right) {
+               if(copyNum[left]+copyNum[right] > target) {
+                   right--;
+               } else if(copyNum[left] + copyNum[right] < target) {
+                   left++;
+               } else {
+                   let firstIdx = numbers.indexOf(copyNum[left]); 
+                   let secondIdx = numbers.indexOf(copyNum[right], firstIdx+1); // 2nd params: start from index
+                   result.push(firstIdx);
+                   result.push(secondIdx);
+                   break;
+               }
+           };
+
+           return result; // return the orginal index in numbers array; 
+        };
+        */
+
+        //for 暴力解法
+        const twoSum = function (numbers, target) {
+            const result = [];
+            for(let i=0; i<numbers.length-1;i++) {
+                for(let j=i+1; j<numbers.length; j++) {
+                    if(numbers[i]+numbers[j]===target) {
+                        result.push(i);
+                        result.push(j);
+                    }
+                }
+            };
+
+            return result;
+        };
+
+
+        twoSum([3,3], 6);
+        twoSum([-1,-2,-3,-4,-5], -8)
+    </script>
+
+</body>
+
+</html>
