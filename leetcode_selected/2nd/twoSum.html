@@ -207,37 +207,44 @@
             return pre;
         };
 
-        // reverseLinkedList(list1);
+        const middleNode = function(head) {
+		    let slow = head;
+		    let fast = head;
 
-        const reorderList = function (head) {
-            let fast = head;
-            let slow = head;
+		    while(fast !== null && fast.next != null) {
+		        slow = slow.next;
+		        fast = fast.next.next;
+		    }
 
-            let dumh = new ListNode();
-            dumh.next = head;
+		    return slow;
+		};
 
-            while (fast.next.next) {
-                fast = fast.next.next;
-                slow = slow.next;
-            };
+        const mergeLinkedList = (list1, list2) => {
+            while(list1 && list2) {
+                let tmp1 = list1.next;
+                let tmp2 = list2.next;
 
-            let firstHalfLastNode = slow;
-            let secondHalf = reverseLinkedList(fast);
+                list1.next = list2;
+                list1 = tmp1;
 
-            while(secondHalf) {
-                let tmp1 = head.next;
-                head.next = secondHalf;
-                secondHalf = secondHalf.next;
-                head = head.next;
-                head.next = tmp1;   
-                head=head.next;  
-                if(head.val===slow.val) break;          
-            };
+                list2.next = list1;
+                list2 = tmp2;
 
-            return dumh.next;
+            }
         };
 
-        reorderList(list1);
+        const reorderList = function (head) {
+            if(head===null) return;
+
+            let midNode = middleNode(head);
+            let l1 = head;
+            let l2 = midNode.next;
+            midNode.next = null;// 截断left部分
+            l2 = reverseLinkedList(l2);
+
+            mergeLinkedList(l1,l2)
+        };
+
 
 
 
