@@ -112,8 +112,8 @@
                 add = Math.floor(sum / 10); // 进位值
                 sum = sum % 10; // 当前值
 
-               if(l1) { l1 = l1.next} ; // 这里是if里是l1, 如果是l1.next的话，指针就动不了了
-               if(l2) {l2 = l2.next} ;
+                if (l1) { l1 = l1.next }; // 这里是if里是l1, 如果是l1.next的话，指针就动不了了
+                if (l2) { l2 = l2.next };
 
                 cur.next = new ListNode(sum);
                 cur = cur.next;
@@ -126,8 +126,69 @@
             return Dumhead.next;
         };
 
-        addTwoNumbers(list1, list2);
+        // addTwoNumbers(list1, list2);
 
+        //剑指 Offer II 091. 粉刷房子
+        // 基本思路对，因为房子只有3种可能的颜色，所以算每行的最小值，不必这么复杂。
+        const minCost = function (costs) {
+            const m = costs.length;
+            const n = costs[0].length;
+
+            const dp = new Array(m).fill(0).map(item => new Array(n).fill(0));
+            dp[0] = costs[0];
+            let min = rowMin(dp[0]);
+            let pre_index = dp[0].indexOf(min);
+
+            for (let i = 1; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    dp[i][j] = j === pre_index ? costs[i][j] + rowMin(dp[i - 1], pre_index) : costs[i][j] + min;
+                };
+
+                min = rowMin(dp[i]);
+                pre_index = dp[i].indexOf(min);
+            };
+            console.log(dp);
+
+            return min;
+        };
+
+        const rowMin = function (arr, index) {
+            let min = 100;
+            for (let i = 0; i < arr.length; i++) {
+                if (i === index) {
+                    continue;
+                } else {
+                    min = Math.min(min, arr[i]);
+                }
+            };
+            return min;
+        };
+
+        // minCost([[17,2,17],[16,16,5],[14,3,19]]);
+
+        //括号生成
+        const generateParenthesis = n => {
+            if(!n) return [''];
+            const res = [];
+
+            const dfs = (path, left, right) => {
+                // 去除无效括号
+                // 左括号不能过半，右括号数量不能超过左括号
+                if (left > n || right > left) return;
+                //生成n对有效括号
+                if (path.length === 2 * n) {
+                    res.push(path);
+                    return;
+                };
+                //追加左括号
+                dfs(`${path}(`, left + 1, right);
+                //追加右括号
+                dfs(`${path})`, left, right + 1);
+            };
+
+            dfs('', 0, 0);
+            return res;
+        }
     </script>
 
 </body>
