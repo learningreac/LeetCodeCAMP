@@ -76,7 +76,10 @@
                 val: 4,
                 next: {
                     val: 3,
-                    next: null
+                    next: {
+                        val: 8,
+                        next: null
+                    }
                 }
             }
         };
@@ -166,9 +169,9 @@
 
         // minCost([[17,2,17],[16,16,5],[14,3,19]]);
 
-        //括号生成
+        //22.括号生成
         const generateParenthesis = n => {
-            if(!n) return [''];
+            if (!n) return [''];
             const res = [];
 
             const dfs = (path, left, right) => {
@@ -188,7 +191,57 @@
 
             dfs('', 0, 0);
             return res;
-        }
+        };
+
+        //143 重排链表
+        // 找到链表的中点，把后半段反转，然后拼接在一起
+        const reverseLinkedList = head => {
+            let pre = null;
+            while (head) {
+                let tmp = head.next;
+                head.next = pre;
+                pre = head;
+                head = tmp;
+            };
+
+            return pre;
+        };
+
+        // reverseLinkedList(list1);
+
+        const reorderList = function (head) {
+            let fast = head;
+            let slow = head;
+
+            let dumh = new ListNode();
+            dumh.next = head;
+
+            while (fast.next.next) {
+                fast = fast.next.next;
+                slow = slow.next;
+            };
+
+            let firstHalfLastNode = slow;
+            let secondHalf = reverseLinkedList(fast);
+
+            while(secondHalf) {
+                let tmp1 = head.next;
+                head.next = secondHalf;
+                secondHalf = secondHalf.next;
+                head = head.next;
+                head.next = tmp1;   
+                head=head.next;  
+                if(head.val===slow.val) break;          
+            };
+
+            return dumh.next;
+        };
+
+        reorderList(list1);
+
+
+
+
     </script>
 
 </body>
