@@ -207,20 +207,20 @@
             return pre;
         };
 
-        const middleNode = function(head) {
-		    let slow = head;
-		    let fast = head;
+        const middleNode = function (head) {
+            let slow = head;
+            let fast = head;
 
-		    while(fast !== null && fast.next != null) {
-		        slow = slow.next;
-		        fast = fast.next.next;
-		    }
+            while (fast !== null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
 
-		    return slow;
-		};
+            return slow;
+        };
 
         const mergeLinkedList = (list1, list2) => {
-            while(list1 && list2) {
+            while (list1 && list2) {
                 let tmp1 = list1.next;
                 let tmp2 = list2.next;
 
@@ -234,7 +234,7 @@
         };
 
         const reorderList = function (head) {
-            if(head===null) return;
+            if (head === null) return;
 
             let midNode = middleNode(head);
             let l1 = head;
@@ -242,10 +242,107 @@
             midNode.next = null;// 截断left部分
             l2 = reverseLinkedList(l2);
 
-            mergeLinkedList(l1,l2)
+            mergeLinkedList(l1, l2)
+        };
+
+        // 思路2 存入数组
+        const reorderList2 = head => {
+            if (!head) return null;
+            let dumh = head;
+            const listArr = [];
+
+            while (dumh) {
+                listArr.push(dumh);
+                dumh = dumh.next;
+            };
+
+            let left = 1, right = listArr.length - 1;
+
+            while (left <= right) {
+                head.next = listArr[right];
+                right--;
+                head = head.next;
+                head.next = listArr[left];
+                left++;
+                head = head.next;
+            }
+
+            head.next = null;
         };
 
 
+        //31. Next Permutation
+        //12385764 --12386457
+        //12 - 21        
+
+        const nextPermutation = function (nums) {
+            if (nums.length === 1) return nums;
+            let i = nums.length - 2;
+
+            for (i; i >= 0; i--) {
+                let cur = nums[i];
+                let next = nums[i + 1];
+                if (cur < next) {
+                    break;
+                };
+            }
+            let start = 0;
+            if (i !== 0) {
+                let k = nums.length - 1;
+                for (k; k >= i + 1; k--) {
+                    if (nums[k] > nums[i]) break;
+                };
+
+                // swap i and k
+                [nums[i], nums[k]] = [nums[k], nums[i]];
+                start = i + 1;
+            }
+
+            // reorder i+1 to end; bubble
+            for (let l = start; l < nums.length; l++) {
+                for (let j = l + 1; j < nums.length - l; j++) {
+                    if (nums[l] > nums[j]) {
+                        [nums[l], nums[j]] = [nums[j], nums[l]]
+                    };
+                }
+            };
+
+            return nums;
+        };
+
+
+        // 912 sort array
+        // 1. merge sort 
+        //执行用时：4580 ms,在所有 JavaScript 提交中击败了17.28%的用户
+        const _mergeArray = (a,b) => {
+            const c=[];
+
+            while(a.length && b.length) {
+                c.push( a[0] > b[0]? b.shift() : a.shift())
+            };
+
+            // a might not be equal length with b
+            while(a.length) {
+                c.push(a.shift());
+            };
+
+            while(b.length) {
+                c.push(b.shift())
+            };
+
+            return c;
+        }
+        sortArray = function (nums) {
+            if(nums.length===1) return nums;
+
+            const middle = Math.floor(nums.length/2);
+            const nums_l = nums.slice(0, middle);
+            const nums_r = nums.slice(middle);
+            
+            return _mergeArray(sortArray(nums_l), sortArray(nums_r));
+        };
+
+       sortArray([5,1,1,2,0,0]);
 
 
 
