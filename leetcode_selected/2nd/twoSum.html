@@ -314,40 +314,205 @@
         // 912 sort array
         // 1. merge sort 
         //执行用时：4580 ms,在所有 JavaScript 提交中击败了17.28%的用户
-        const _mergeArray = (a,b) => {
-            const c=[];
+        const _mergeArray = (a, b) => {
+            const c = [];
 
-            while(a.length && b.length) {
-                c.push( a[0] > b[0]? b.shift() : a.shift())
+            while (a.length && b.length) {
+                c.push(a[0] > b[0] ? b.shift() : a.shift())
             };
 
             // a might not be equal length with b
-            while(a.length) {
+            while (a.length) {
                 c.push(a.shift());
             };
 
-            while(b.length) {
+            while (b.length) {
                 c.push(b.shift())
             };
 
             return c;
         }
         sortArray = function (nums) {
-            if(nums.length===1) return nums;
+            if (nums.length === 1) return nums;
 
-            const middle = Math.floor(nums.length/2);
+            const middle = Math.floor(nums.length / 2);
             const nums_l = nums.slice(0, middle);
             const nums_r = nums.slice(middle);
-            
+
             return _mergeArray(sortArray(nums_l), sortArray(nums_r));
         };
 
-       sortArray([5,1,1,2,0,0]);
+        // 2.quick sort
+
+        // 复习基础排序算法
+        // leetcode 排序题
+
+        //如何把数组2快速复制到数组1的后半段
+        // 而不是一个个Push进去
+        const copytoTail = (nums1, m, nums2, n) => {
+            // array.splice replace item 
+            nums1.splice(m, nums1.length - m, ...nums2)
+        };
+
+
+        // 88 merge sort88. 合并两个有序数组
+        // 这个思路就是双指针，从前往后插， 因为可能会覆盖原有元素，所以得把它保存在临时变量里。
+        // 以下写法过不了corner cases
+        const merge = function (nums1, m, nums2, n) {
+            let tmp;
+            if (m === 0) {
+                nums1 = nums2;
+            } else {
+                for (let i = 0, j = 0; i < m + n, j < n; i++) {
+                    if (nums1[i] > nums2[j]) {
+                        tmp = nums1[i];
+                        nums1[i] = nums2[j];
+                        j++;
+                    }
+                };
+            }
+        };
+
+        // 双指针从后往前排，先把大的放在最后
+
+        //27 remove element in array 数组移除元素
+
+        const removeElement = function (nums, val) {
+            // let has block scope, can not be access if defined within for loop;
+            let j = nums.length - 1;
+
+            // key point; i<=j; 当i=j时，同时指向同一个元素，如果该元素是target，交换就等于没交换，但是关键点是j的值会减1.
+            for (let i = 0; i <= j; i++) {
+                if (nums[i] === val) {
+                    [nums[i], nums[j]] = [nums[j], nums[i]];
+                    i--; // 可能是target元素被交换过来，所以再减1重新判断一次。
+                    j--;
+                };
+            };
+
+            return j + 1;
+
+        };
+        // removeElement([0,1,2,2,3,0,4,2],2);
+        //removeElement([1],1); // i=j， 交换，j-- 值为-1。
+
+        //快慢双指针法
+        const removeElementTwoPointers = (nums, val) => {
+            let fast = 0;
+            let slow = 0;
+
+            for (fast, slow; fast < nums.length;) {
+                if (nums[fast] === val) {
+                    fast++;
+                } else {
+                    // when fast and slow point to diff items, swap 
+                    if (fast !== slow) {
+                        [nums[slow], nums[fast]] = [nums[fast], nums[slow]];
+                    };
+                    fast++;
+                    slow++;
+                }
+            };
+
+            return slow;
+        };
+
+        // 简单写法
+        const removeElementTwoPointers2 = (nums, val) => {
+            let fast = 0;
+            let slow = 0;
+
+            for (fast, slow; fast < nums.length; fast++) {
+                if (nums[fast] !== val) {
+                    [nums[slow], nums[fast]] = [nums[fast], nums[slow]];
+                    slow++;
+                }
+            };
+
+            return slow;
+        };
+
+        // removeElementTwoPointers([0,1,2,2,3,0,4,2],2)
+
+        //977 有序数组的平方
+        //首位双指针； 另外一种解法是借用stack，存入负值的平方，然后push正值平方时，每次跟栈首元素对比。
+        const sortedSquares = function (nums) {
+            let i = 0;
+            let j = nums.length - 1;
+            let res = [];
+
+            for (i, j; i <= j;) {   // i=j， push the last element otherwise res will miss one element in the middle of nums.
+                if (Math.abs(nums[i]) > Math.abs(nums[j])) {
+                    res.unshift(nums[i] * nums[i]);
+                    i++
+                } else {
+                    res.unshift(nums[j] * nums[j]);
+                    j--;
+                };
+            };
+            return res;
+        };
+
+        //  sortedSquares([-4,-1,0,3,10]); // return [0,1,9,16,100]
+
+        // 209 长度最小的数组   和>=target长度最小的数组
+        // solution 1: 暴力解法    时间复杂度O(N*N)
+        const minSubArrayLen = function (target, nums) {
+            let minLen = nums.length;
+            let flag = false;
+
+            for (let i = 0; i < nums.length; i++) {
+                let curSum = nums[i];
+                if (curSum >= target) {
+                    flag = true;
+                    minLen = 1;
+                    break;
+                } else {
+                    for (let j = i + 1; j < nums.length; j++) {
+                        curSum += nums[j]
+                        if (curSum >= target) {
+                            flag = true;
+                            minLen = Math.min(minLen, j - i + 1)
+                        };
+                    }
+                }
+
+            };
+
+            return flag === true ? minLen : 0;
+        };
+
+        //滑动窗口  双指针，窗口内和如果大于target则左边界缩，若小于则右边界扩张
+        // 如果不存在大于target 则返回0
+        const minSubArrayLen2 = function (target, nums) {
+            let left = 0, right = 0;
+            let curSum = nums[0];
+            let minLen = nums.length;
+            let flag = false;
+
+            for (left, right; right < nums.length;) {
+                while (curSum < target) {
+                    right++;
+                    curSum += nums[right];
+                };
+                // now curSum >=  target;
+                if (curSum >= target) {
+                    flag = true;
+                    minLen = Math.min(minLen, right - left + 1);
+                    curSum -= nums[left];
+                    left++;
+                }
+            };
+
+            return flag === true ? minLen : 0;
+        }
+
+        minSubArrayLen2(7, [2, 3, 1, 2, 4, 3]);
+        //target = 7, nums = [2,3,1,2,4,3]
 
 
 
     </script>
-
 </body>
 
 </html>
