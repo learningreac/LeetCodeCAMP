@@ -618,29 +618,38 @@
         // 思路1 双指针暴力解法 
         // 思路2 单调队列  单调递减队列，队首维护最大值，如果新入元素 > 当前队首，则把队列内的全Pop出来再入；
         // 如果新入元素 < 当前队首，则直接入队列。 
-        // 队列维护在size K.
+        // 队列维护在size K.   how?  queue数组存放下标，通过计算当前元素下标i 与队首（最大值）下标的差值，来判断是否在窗口内。
         //Monotonic Queue
         const maxSlidingWindow = function (nums, k) {
-            if(nums.length===1 || k===1) return nums;
-            const monoQueue = [nums[0]];
+            if (nums.length === 1 || k === 1) return nums;
+            const monoQueue = [];
             const result = [];
 
-           for(let i=1; i<nums.length; i++) {
-               while(nums[i]>monoQueue[monoQueue.length-1]) {// 比队尾元素大
-                monoQueue.pop();
-               };
-               monoQueue.push(nums[i]);
+            for (let i = 0; i < nums.length; i++) {
+                // queue is not empty; cur item > queue tail items
+                while (monoQueue.length && nums[i] > nums[monoQueue[monoQueue.length - 1]]) {
+                    monoQueue.pop();
+                };
 
-               if(i>=k-1) {
-                   result.push(monoQueue[0]);
-               }
-           };
+                // push index; the real item can be access by index at nums. 
+                monoQueue.push(i);
 
-           return result;
+                // shift queue head
+                while(i-monoQueue[0]>=k) {
+                    monoQueue.shift();
+                };
+
+                // push from the k-1 times.
+                if (i >= k - 1) {
+                    result.push(nums[monoQueue[0]]);
+                }
+            };
+
+            return result;
         };
 
         //maxSlidingWindow([1,3,-1,-3,5,3,6,7],3);
-        maxSlidingWindow([7,2,4], 2);
+        maxSlidingWindow([7, 2, 4], 2);
 
 
     </script>
