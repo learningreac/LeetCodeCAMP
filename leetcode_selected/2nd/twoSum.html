@@ -652,7 +652,7 @@
         // maxSlidingWindow([7, 2, 4], 2);
 
         //541. Reverse String II
-        // string can not be update with index;
+        // string can not be update with index; should transfer to array.
         const reverseStr = function (s, k) {
             if (s.length === 1 || k === 1) return s;
             let sArr = s.split('');
@@ -661,19 +661,19 @@
             let times = 1;
             for (slow, fast; fast < sArr.length;) {
                 if (times % 2 === 1) {
-                    while (fast < k * times-1) {
+                    while (fast < k * times - 1) {
                         fast++;
                     };
                     // reverse [slow, fast]
                     while (slow <= fast) {
-                       [sArr[slow], sArr[fast]] = [sArr[fast], sArr[slow]]
+                        [sArr[slow], sArr[fast]] = [sArr[fast], sArr[slow]]
                         slow++;
                         fast--;
                     };
 
                     // reset fast and slow;
-                    slow = times * k ;
-                    fast = times * k ;
+                    slow = times * k;
+                    fast = times * k;
                     times++;
                 } else {
                     while (slow < k * times && fast < k * times) {
@@ -687,7 +687,28 @@
             return sArr.join('');
         };
 
-        reverseStr("abcdefg",2);
+        const reverseStr2 = function (s, k) {
+            const reverse = (arr, left, right) => {
+                while (left <= right) {
+                    [arr[left], arr[right]] = [arr[right], arr[left]];
+                    left++;
+                    right--;
+                };
+            };
+
+            if (s.length === 1 || k === 1) return s;
+            let strArr = s.split('');
+
+            const len = s.length;
+            for (let l = 0; l < len; l += 2*k) {
+                let r = l + k - 1;
+                reverse(strArr, l, Math.min(r, len-1));
+            };
+
+            return strArr.join('');
+        }
+
+        reverseStr2("abcdefg", 2);
 
 
     </script>
