@@ -700,15 +700,48 @@
             let strArr = s.split('');
 
             const len = s.length;
-            for (let l = 0; l < len; l += 2*k) {
+            for (let l = 0; l < len; l += 2 * k) {
                 let r = l + k - 1;
-                reverse(strArr, l, Math.min(r, len-1));
+                reverse(strArr, l, Math.min(r, len - 1));
             };
 
             return strArr.join('');
-        }
+        };
 
-        reverseStr2("abcdefg", 2);
+        //151. Reverse Words in a String
+        const reverseWords = function (s) {
+            let arr = [];
+
+            for (let i = 0; i < s.length;) {
+                if (s[i] === ' ') {
+                    i++;
+                } else {
+                    let j = i;
+                    while (s[j] !== ' ' && s[j]!==undefined) {
+                        j++
+                    };
+
+                        arr.push(s.substring(i, j));
+                        console.log(arr);
+                        i = j;
+                        continue;
+                }
+            };
+
+            let result = '';
+            for(let i=arr.length-1;i>=0;i--) {
+
+                result = i===0? result.concat(`${arr[i]}`):result.concat(`${arr[i]} `);
+            };
+
+            return result;
+        };
+
+        // 题解思路： 从后向前遍历   待补充
+
+        //reverseWords("the sky is blue");
+
+
 
 
     </script>
