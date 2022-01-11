@@ -717,21 +717,21 @@
                     i++;
                 } else {
                     let j = i;
-                    while (s[j] !== ' ' && s[j]!==undefined) {
+                    while (s[j] !== ' ' && s[j] !== undefined) {
                         j++
                     };
 
-                        arr.push(s.substring(i, j));
-                        console.log(arr);
-                        i = j;
-                        continue;
+                    arr.push(s.substring(i, j));
+                    console.log(arr);
+                    i = j;
+                    continue;
                 }
             };
 
             let result = '';
-            for(let i=arr.length-1;i>=0;i--) {
+            for (let i = arr.length - 1; i >= 0; i--) {
 
-                result = i===0? result.concat(`${arr[i]}`):result.concat(`${arr[i]} `);
+                result = i === 0 ? result.concat(`${arr[i]}`) : result.concat(`${arr[i]} `);
             };
 
             return result;
@@ -741,6 +741,95 @@
 
         //reverseWords("the sky is blue");
 
+        //剑指 Offer II 077. 链表排序
+        // 用二维数组记录链表节点，[node.val, node];
+        // sort the outer array by node.value;
+        // dumpy node to store the head?
+        const sortList = function (head) {
+            const nodeArr = [];
+
+            while (head) {
+                //  nodeArr.push([head.val, head]);
+                nodeArr.push(head);
+                head = head.next;
+            };
+
+            // sort nodeArr by node.val;
+            // nodeArr.sort((a, b) => a[0] - b[0]);
+            nodeArr.sort((a, b) => a.val - b.val)
+
+            for (let i = 0; i < nodeArr.length - 1; i++) {
+                nodeArr[i].next = nodeArr[i + 1]
+            };
+            nodeArr[nodeArr.length - 1].next = null;// 不加这句被提示链表有环
+            return nodeArr[0]
+        };
+
+        // another solution MergeSort    tobe update
+        //sortList(list1);
+
+
+        // 225 两个队列实现栈
+        const MyStack = function () {
+            this.queue1 = [];
+            this.queue2 = [];
+        };
+
+        /** 
+         * @param {number} x
+         * @return {void}
+         */
+        MyStack.prototype.push = function (x) {
+            this.queue1.push(x);
+        };
+
+        /**
+         * @return {number}
+         */
+        MyStack.prototype.pop = function () {
+            while (this.queue1.length > 1) {
+                this.queue2.push(this.queue1.shift());
+                console.log(this.queue1);
+            };
+            let popItem = this.queue1.shift();
+            while (this.queue2.length) {
+                this.queue1.push(this.queue2.shift());
+            };
+            return popItem;
+
+        };
+
+        /**
+         * @return {number}
+         */
+        MyStack.prototype.top = function () {
+            return this.queue1[this.queue1.length - 1];
+        };
+
+        /**
+         * @return {boolean}
+         */
+        MyStack.prototype.empty = function () {
+            return this.queue1.length === 0
+        };
+
+        /**
+         * Your MyStack object will be instantiated and called as such:
+         * var obj = new MyStack()
+         * obj.push(x)
+         * var param_2 = obj.pop()
+         * var param_3 = obj.top()
+         * var param_4 = obj.empty()
+         */
+
+         function run() {
+             let mstack = new MyStack();
+             mstack.push(1);
+             mstack.push(2);
+             mstack.push(3);
+             mstack.pop()
+         };
+         run()
 
 
 
