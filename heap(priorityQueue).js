@@ -105,3 +105,48 @@ const topKFrequent = function (nums, k) {
         };
     };
 };
+
+
+
+//剑指 Offer 40. 最小的k个数
+// solution 大顶堆，K-Size;
+// 新元素如果比堆顶元素小，入堆，重新堆化； 新元素如果比堆顶元素大，跳过。
+
+const getLeastNumbers = function(arr, k) {
+    let heap= [...arr.slice(0,k)];
+
+    _buildMaxHeap(heap, k);
+    for(let i=k; i<arr.length; i++) {
+        if(arr[i] < heap[0]) {
+            heap[0]= arr[i];
+            _maxHeapify(heap, 0, k)
+        }
+    };
+
+    return heap;
+
+    function _buildMaxHeap(nums, heapsize) {
+        let i = Math.floor(nums.length/2) -1;
+        for(i; i>=0; i--) {
+            _maxHeapify(nums, i, heapsize);
+        };
+    };
+
+    function _maxHeapify(array, index, size) {
+        let max = index;
+        let left = 2* index +1;
+        let right = 2* index +2;
+
+        if(left < size && array[left] > array[max]) {
+            max = left;
+        };
+        if(right< size && array[right] > array[max]) {
+            max = right;
+        };
+
+        if(max!==index) {
+            [array[index], array[max]] = [array[max], array[index]];
+            _maxHeapify(array, max, size);
+        }
+    }
+}
