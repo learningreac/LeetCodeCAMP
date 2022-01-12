@@ -42,4 +42,66 @@ function minHeapify(nums, i, heapSize) {
         // update the child nodes
         minHeapify(nums, min, heapSize);
     };
-}
+};
+
+
+//347. 前 K 个高频元素
+//给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+// 利用harsh table 统计每个元素出现的频率，key -> value
+// heaP 还是传key 进去，但是在比较大小的时候heapify时是比较从map里get 的 value；
+
+// top K
+// solution: build a k-size min heap, the root of the heap is the smallest number.
+// for the k+1 item, add seperatey to the heap by comparing this item with the root of the heap.
+// if the item < root, skip this item. if the item > root, replace root with this item then conitnue heapity.
+// after iterate all the items, the heap will be the Top-k.
+const topKFrequent = function (nums, k) {
+    let map = new Map();
+    nums.forEach(element => { 
+        map.has(element) ? 
+                    map.set(element, map.get(element) + 1) 
+                  : map.set(element, 1);   
+    });
+
+    //const heap = [...nums.slice(0, k)];
+    let heap = []; // 这里不能用const 因为之后要改变这个数组的大小
+    const mapKeys = Array.from(map.keys());
+    heap = mapKeys.slice(0,k);
+    _buildHeap(heap, k);
+
+    // from the k+1 th num, add one by one
+    for(let i=k; i<mapKeys.length; i++) {
+        if(map.get(heap[0]) < map.get(mapKeys[i])) {
+            heap[0] = mapKeys[i]; // 替换堆顶
+            _minHeapify(0, heap, k);
+        }
+    }
+    return heap;
+
+    function _buildHeap(items, heapsize) {
+        let i = Math.floor(items.length / 2) - 1;    // 这里还要再减1.
+        for (i; i >= 0; i--) {
+            _minHeapify(i, items, heapsize);
+        };
+
+    };
+
+    function _minHeapify(idx, items, heapsize) {
+        let min = idx;
+        let left = 2*idx + 1;
+        let right = 2*idx + 2;
+
+        if(left < heapsize && map.get(items[left]) < map.get(items[min])) {
+            min = left;
+        };
+        if(right < heapsize && map.get(items[right]) < map.get(items[min])) {
+            min = right;
+        };
+
+        if(min !== idx) { // 说明调整了
+            [items[min], items[idx]] = [items[idx], items[min]];
+            // 把最小的项目交换到根节点，但是Min这个Index本身没有变
+            _minHeapify(min, items, heapsize);
+        };
+    };
+};
