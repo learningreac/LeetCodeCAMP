@@ -1,3 +1,11 @@
+// 动态建堆
+//当 heap 数组长度不够 k 时，新数从数组末尾推入，执行“上浮”，交换到它合适的位置。
+    // 新元素的idx如果是偶数，说明它是右侧Node, 其父节点的坐标是 (idx -2)/2;
+//当 heap 数组长度够 k 时，如果新数字比栈顶大，用它替换堆顶，执行“下沉”，交换到合适的位置。
+
+
+
+
 //215. 数组中的第K个最大元素
 
 const findKthLargest = (nums, k) => {
@@ -57,21 +65,21 @@ function minHeapify(nums, i, heapSize) {
 // after iterate all the items, the heap will be the Top-k.
 const topKFrequent = function (nums, k) {
     let map = new Map();
-    nums.forEach(element => { 
-        map.has(element) ? 
-                    map.set(element, map.get(element) + 1) 
-                  : map.set(element, 1);   
+    nums.forEach(element => {
+        map.has(element) ?
+            map.set(element, map.get(element) + 1)
+            : map.set(element, 1);
     });
 
     //const heap = [...nums.slice(0, k)];
     let heap = []; // 这里不能用const 因为之后要改变这个数组的大小
     const mapKeys = Array.from(map.keys());
-    heap = mapKeys.slice(0,k);
+    heap = mapKeys.slice(0, k);
     _buildHeap(heap, k);
 
     // from the k+1 th num, add one by one
-    for(let i=k; i<mapKeys.length; i++) {
-        if(map.get(heap[0]) < map.get(mapKeys[i])) {
+    for (let i = k; i < mapKeys.length; i++) {
+        if (map.get(heap[0]) < map.get(mapKeys[i])) {
             heap[0] = mapKeys[i]; // 替换堆顶
             _minHeapify(0, heap, k);
         }
@@ -88,17 +96,17 @@ const topKFrequent = function (nums, k) {
 
     function _minHeapify(idx, items, heapsize) {
         let min = idx;
-        let left = 2*idx + 1;
-        let right = 2*idx + 2;
+        let left = 2 * idx + 1;
+        let right = 2 * idx + 2;
 
-        if(left < heapsize && map.get(items[left]) < map.get(items[min])) {
+        if (left < heapsize && map.get(items[left]) < map.get(items[min])) {
             min = left;
         };
-        if(right < heapsize && map.get(items[right]) < map.get(items[min])) {
+        if (right < heapsize && map.get(items[right]) < map.get(items[min])) {
             min = right;
         };
 
-        if(min !== idx) { // 说明调整了
+        if (min !== idx) { // 说明调整了
             [items[min], items[idx]] = [items[idx], items[min]];
             // 把最小的项目交换到根节点，但是Min这个Index本身没有变
             _minHeapify(min, items, heapsize);
@@ -112,13 +120,13 @@ const topKFrequent = function (nums, k) {
 // solution 大顶堆，K-Size;
 // 新元素如果比堆顶元素小，入堆，重新堆化； 新元素如果比堆顶元素大，跳过。
 
-const getLeastNumbers = function(arr, k) {
-    let heap= [...arr.slice(0,k)];
+const getLeastNumbers = function (arr, k) {
+    let heap = [...arr.slice(0, k)];
 
     _buildMaxHeap(heap, k);
-    for(let i=k; i<arr.length; i++) {
-        if(arr[i] < heap[0]) {
-            heap[0]= arr[i];
+    for (let i = k; i < arr.length; i++) {
+        if (arr[i] < heap[0]) {
+            heap[0] = arr[i];
             _maxHeapify(heap, 0, k)
         }
     };
@@ -126,27 +134,108 @@ const getLeastNumbers = function(arr, k) {
     return heap;
 
     function _buildMaxHeap(nums, heapsize) {
-        let i = Math.floor(nums.length/2) -1;
-        for(i; i>=0; i--) {
+        let i = Math.floor(nums.length / 2) - 1;
+        for (i; i >= 0; i--) {
             _maxHeapify(nums, i, heapsize);
         };
     };
 
     function _maxHeapify(array, index, size) {
         let max = index;
-        let left = 2* index +1;
-        let right = 2* index +2;
+        let left = 2 * index + 1;
+        let right = 2 * index + 2;
 
-        if(left < size && array[left] > array[max]) {
+        if (left < size && array[left] > array[max]) {
             max = left;
         };
-        if(right< size && array[right] > array[max]) {
+        if (right < size && array[right] > array[max]) {
             max = right;
         };
 
-        if(max!==index) {
+        if (max !== index) {
             [array[index], array[max]] = [array[max], array[index]];
             _maxHeapify(array, max, size);
         }
     }
+};
+
+
+//剑指 Offer II 059. 数据流的第 K 大数值
+
+// 问题： 1. 当刚开始元素数量 < k时，该怎么处理？
+    // 2. 当遇到相同元素时怎么办？
+
+class KthLargest {
+    constructor(k, nums) {
+        this.heapSize = k;
+        this.heap = [];
+        //this.heap = [...nums.slice(0, k)];
+        if(nums.length) {
+            nums.forEach(num => this.add(num));
+        };
+    };
+
+  //  _buildMinHeap(arr, heapSize) {
+  //      for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
+  //          this._heapifyDown(i, arr, heapSize);
+  //      };
+  //  };
+
+    _heapifyDown(index, arr, heapSize) {
+        let min = index;
+        let left = 2 * index + 1;
+        let right = 2 * index + 2;
+
+        if (left < heapSize && arr[left] < arr[min]) {
+            min = left;
+        };
+        if (right < heapSize && arr[right] < arr[min]) {
+            min = right;
+        };
+
+        if (min !== index) {
+            [arr[min], arr[index]] = [arr[index], arr[min]];
+            this._heapifyDown(min, arr, heapSize);
+        }
+    };
+
+    _bubbleUp(idx, heap) { 
+        if(idx < 1) return;
+        let root = (idx%2 === 0)? (idx-2)/2 : (idx-1)/2;    // 偶数节点-2； 奇数节点 -1；
+        if(heap[root] > heap[idx]) {
+            [heap[root], heap[idx]] = [heap[idx], heap[root]]; 
+        };
+      this._bubbleUp(root, heap); 
+    };
 }
+
+
+
+/** 
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function (val) {
+    if (this.heap.length < this.heapSize) {
+        // 新元素Push到heap末尾，上浮
+        this.heap.push(val);
+        let idx = this.heap.length -1;
+        this._bubbleUp(idx, this.heap);
+    } else {
+        // 下沉
+        if (this.heap[0] < val) {
+            this.heap[0] = val;
+            this._heapifyDown(0, this.heap, this.heapSize);
+        }
+    }
+
+    return this.heap[0];
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * var obj = new KthLargest(k, nums)
+ * var param_1 = obj.add(val)
+ */
+
+const myobj = new KthLargest(3, [4, 5, 8, 2]);
