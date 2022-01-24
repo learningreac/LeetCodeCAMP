@@ -822,14 +822,155 @@
          * var param_4 = obj.empty()
          */
 
-         function run() {
-             let mstack = new MyStack();
-             mstack.push(1);
-             mstack.push(2);
-             mstack.push(3);
-             mstack.pop()
-         };
-         run()
+        function run() {
+            let mstack = new MyStack();
+            mstack.push(1);
+            mstack.push(2);
+            mstack.push(3);
+            mstack.pop()
+        };
+        // run()
+
+        //150. 逆波兰表达式求值
+        const evalRPN = function (tokens) {
+            const stack = [];
+            const operator = ['+', '-', '*', '/'];
+
+            for (const item of tokens) {
+                if (operator.includes(item)) { // 运算符
+                    let right = stack.pop();
+                    let left = stack.pop();
+                    // switch case
+                    switch (item) {
+                        case '+':
+                            stack.push(left + right);
+                            break;
+                        case '-':
+                            stack.push(left - right);
+                            break;
+                        case '*':
+                            stack.push(left * right);
+                            break;
+                        case '/':
+                            stack.push(left / right | 0)
+                            break;
+                    };
+                } else {
+                    // convert str to number when push in stack
+                    stack.push(Number(item));
+                }
+
+            };
+
+            return stack.pop();
+        };
+
+        //evalRPN(["2","1","+","3","*"])
+
+        //376. 摆动序列
+        const wiggleMaxLength = function (nums) {
+            //  if (nums.length === 0 || nums.length === 1) {
+            //      return nums.length;
+            //  };
+
+            if (nums.length < 2) return nums.length
+
+            let result = 1;
+            let preDiff = 0;
+            // let curDiff = 0;
+            for (let i = 1; i < nums.length; i++) {
+                let curDiff = nums[i] - nums[i - 1];
+
+                if (curDiff > 0 && preDiff <= 0 || curDiff < 0 && preDiff >= 0) {
+                    result++;
+                    preDiff = curDiff;
+                }
+            };
+
+            return result;
+        };
+
+        // 77. combination
+        // 组合问题，第一反应是用for循环，于是写出了如下代码，里面也有用到回溯的思想。
+        // 这里的问题是，此处K为2，所以我写了2层for循环，但对于k超过2的情况其实就不适用了。
+        // 所以正确的解法是，用回溯递归来纵向替代for循环，每次传进去新的Index.
+        /*    const combine = function (n, k) {
+                let result = [];
+                let queue = [...Array(n).keys()].map(item => ++item); // array from 1-n
+                if (k === 1) {
+                    for (const item of queue) {
+                        result.push([item]);
+                    };
+                    return result;
+                };
+    
+                let path = [];
+                for (let i = 0; i < queue.length; i++) {
+                    path.push(queue[i]);
+                    for (let j = i + 1; j < queue.length; j++) {
+                        path.push(queue[j]);
+                        if (path.length === k) {
+                            result.push(path.slice());// reference, must use slice()
+                            path.pop();
+                        };
+                    };
+                    path = [];
+                };
+                return result;
+            };
+     */
+
+        const combine = function (n, k) {
+            let result = [];
+            let path = [];
+            combineHelper(n, k, 1);
+            return result;
+
+            function combineHelper(n, k, startIdx) {
+                if (path.length === k) {
+                    result.push([...path]);
+                    return;
+                };
+
+                // 剪枝 当剩余元素不够拼成K大小的
+                for (let i = startIdx; i <= n; i++) {
+                    path.push(i);
+                    combineHelper(n, k, i + 1);
+                    path.pop();
+                };
+            };
+        };
+
+        //combine(4,3);
+
+
+        //216 组合总和
+        const combinationSum3 = function (k, n) {
+            let result = [];
+            let path = [];
+            let sum = 0;
+            helper(n, k, 1);
+
+            return result;
+
+
+            function helper(n, k, startIdx) {
+                if (path.length === k) {
+                    if (sum === n) {
+                        result.push([...path]);
+                        return;
+                    }
+                };
+
+                for (let i = startIdx; i <= 9; i++) {
+                    path.push(i);
+                    sum += i;
+                    helper(n, k, i + 1);
+                    path.pop();
+                    sum -= i;
+                }
+            };
+        };
 
 
 
