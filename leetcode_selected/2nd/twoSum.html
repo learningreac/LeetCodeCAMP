@@ -945,16 +945,18 @@
 
 
         //216 组合总和
+        // 剪枝思路，当当前的sum已经大于n了，就没有必要再把接下来的递归调用走下去。
         const combinationSum3 = function (k, n) {
             let result = [];
             let path = [];
             let sum = 0;
-            helper(n, k, 1);
+            helper(n, k, 1, 0);
 
             return result;
 
 
-            function helper(n, k, startIdx) {
+            function helper(n, k, startIdx, sum) {
+                if (sum > n) return;
                 if (path.length === k) {
                     if (sum === n) {
                         result.push([...path]);
@@ -965,12 +967,49 @@
                 for (let i = startIdx; i <= 9; i++) {
                     path.push(i);
                     sum += i;
-                    helper(n, k, i + 1);
+                    helper(n, k, i + 1, sum);
                     path.pop();
                     sum -= i;
                 }
             };
         };
+
+
+        //17. 电话号码的字母组合
+        const numMap = new Map();
+        numMap.set('2', ['a', 'b', 'c']);
+        numMap.set('3', ['d', 'e', 'f']);
+        numMap.set('4', ['g', 'h', 'i']);
+        numMap.set('5', ['j', 'k', 'l']);
+        numMap.set('6', ['m', 'n', 'o']);
+        numMap.set('7', ['p', 'q', 'r', 's']);
+        numMap.set('8', ['t', 'u', 'v']);
+        numMap.set('9', ['w', 'x', 'y', 'z']);
+
+        const letterCombinations = function (digits) {
+            const len = digits.length;
+            const result = [];
+            let path = [];;
+            if (len === 0) return result;
+            helper(0);
+            return result;
+
+            function helper(dIndex) {
+                if (path.length === len) {
+                    result.push([...path].join(''));
+                    return;
+                }
+              
+                let cur = numMap.get(digits[dIndex]);
+                for (const letter of cur) {     // 用for... of 省略掉另外一个index
+                    path.push(letter);
+                    helper(dIndex + 1);
+                    path.pop();
+                }
+            }
+        };
+
+        letterCombinations('23');
 
 
 
