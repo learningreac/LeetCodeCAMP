@@ -1136,17 +1136,23 @@
         // s="0" 时应该输出什么？
         const restoreIpAddresses = function (s) {
             if (s.length < 4 || s.length > 16) return [];
+            if(s.length===4) return s.split('').join('.');// 加了这句优化了空间。。。？
             let result = [];
             let path = [];
             partition(s);
             return result;
 
             function partition(str) {
+                // 优化 当当前分法path 已经多于4个数字时，直接return; 就不用再继续分下去，节约时间 && 栈空间。
+                //let len = path.length;
+                if(path.length > 4) return; 
+               // if (str.length === 0 && path.length === 4) {
                 if (str.length === 0 && path.length === 4) {
                     result.push(path.join('.'));
                 }
 
-                for (let i = 1; i <= str.length; i++) {
+                // for (let i = 1; i <= str.length; i++) {
+                for (let i = 1; i <= Math.min(3, str.length); i++) {   // 优化：each integers' length is 3 at most 
                     let cur = str.slice(0, i);
                     // 剪枝
                     if (Number(cur) > 255 || hasZero(cur)) continue;
@@ -1155,15 +1161,54 @@
                     path.pop();
                 }
             };
-            function hasZero(arr) {
-                if (arr[0] === '0' && arr.length > 1) {
+            function hasZero(str2) {
+                if (str2[0] === '0' && str2.length > 1) {
                     return true;
                 };
                 return false;
             };
         };
 
-        restoreIpAddresses("101023");
+        //restoreIpAddresses("101023");
+
+        // 78 子集
+        const subsets = function(nums) {
+            let result = [];
+            let path = [];
+            combineNum(0);
+         //   result.push([]);  delete this one as the first time running helper function it push a empty path
+            return result;
+
+            function combineNum (idx) {
+                result.push([...path]); // remember to make a copy. no slice method here.
+
+                for(let i=idx; i<nums.length;i++) {
+                    path.push(nums[i]);
+                    combineNum(i+1);
+                    path.pop();
+                };
+            }
+        };
+
+        const subsets2 = function(nums) {
+            const res = [];
+
+            const dfs = (index,list) => {
+                if(index === nums.length) {
+                    res.push(list.slice());
+                    return;
+                };
+                list.push(nums[index]);
+                dfs(index+1, list);
+                list.pop();
+                dfs(index+1, list);
+            };
+
+            dfs(0, []);
+            return res;
+        };
+
+        subsets([1,2,3]);
 
 
 
