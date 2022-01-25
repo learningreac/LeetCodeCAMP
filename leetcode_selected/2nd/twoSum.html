@@ -1135,8 +1135,8 @@
         //93. 复原 IP 地址
         // s="0" 时应该输出什么？
         const restoreIpAddresses = function (s) {
-            if (s.length < 4 || s.length > 16) return [];
-            if(s.length===4) return s.split('').join('.');// 加了这句优化了空间。。。？
+            if (s.length < 4 || s.length > 12) return []; // s>12  4*3
+            if (s.length === 4) return s.split('').join('.');// 加了这句优化了空间。。。？
             let result = [];
             let path = [];
             partition(s);
@@ -1145,8 +1145,8 @@
             function partition(str) {
                 // 优化 当当前分法path 已经多于4个数字时，直接return; 就不用再继续分下去，节约时间 && 栈空间。
                 //let len = path.length;
-                if(path.length > 4) return; 
-               // if (str.length === 0 && path.length === 4) {
+                if (path.length > 4) return;
+                // if (str.length === 0 && path.length === 4) {
                 if (str.length === 0 && path.length === 4) {
                     result.push(path.join('.'));
                 }
@@ -1172,43 +1172,96 @@
         //restoreIpAddresses("101023");
 
         // 78 子集
-        const subsets = function(nums) {
+        const subsets = function (nums) {
             let result = [];
             let path = [];
             combineNum(0);
-         //   result.push([]);  delete this one as the first time running helper function it push a empty path
+            //   result.push([]);  delete this one as the first time running helper function it push a empty path
             return result;
 
-            function combineNum (idx) {
+            function combineNum(idx) {
                 result.push([...path]); // remember to make a copy. no slice method here.
 
-                for(let i=idx; i<nums.length;i++) {
+                for (let i = idx; i < nums.length; i++) {
                     path.push(nums[i]);
-                    combineNum(i+1);
+                    combineNum(i + 1);
                     path.pop();
                 };
             }
         };
 
-        const subsets2 = function(nums) {
+        const subsets2 = function (nums) {
             const res = [];
 
-            const dfs = (index,list) => {
-                if(index === nums.length) {
+            const dfs = (index, list) => {
+                if (index === nums.length) {
                     res.push(list.slice());
                     return;
                 };
                 list.push(nums[index]);
-                dfs(index+1, list);
+                dfs(index + 1, list);
                 list.pop();
-                dfs(index+1, list);
+                dfs(index + 1, list);
             };
 
             dfs(0, []);
             return res;
         };
 
-        subsets([1,2,3]);
+        //subsets([1,2,2]);
+
+        //子集II
+        // 含重复元素，返回所有非重复子集。
+        // 思路1 是参照之前的题，先把数组排序，然后在for循环中跳过重复的元素。 做下来时间不是很理想。
+        // 考虑如何优化。
+        const subsetsWithDup = function (nums) {
+            nums.sort();
+            let result = [];
+            let path = [];
+            combineNum(0);
+            return result;
+
+            function combineNum(idx) {
+                result.push([...path]); // remember to make a copy. no slice method here.
+
+                for (let i = idx; i < nums.length; i++) {
+                    path.push(nums[i]);
+                    combineNum(i + 1);
+                    path.pop();
+                    if (nums[i + 1] !== undefined) {
+                        while (nums[i + 1] === nums[i]) {
+                            i++;
+                        }
+                    }
+                };
+            }
+        };
+
+        const subsetsWithDup2 = function (nums) {
+            nums.sort();
+            let result = [];
+            let path = [];
+            let pre = 11;
+            combineNum(0);
+            return result;
+
+            function combineNum(idx) {
+                result.push([...path]); // remember to make a copy. no slice method here.
+
+                for (let i = idx; i < nums.length; i++) {
+                    if (pre === nums[i]) continue;
+                    path.push(nums[i]);
+                    combineNum(i + 1);
+                    // PRE 的位置很重要，写在递归之前的话，就会把新的Pre 值传下去，就变成了纵向去重（树枝）
+                    // 写在递归之后，实现了横向去重（树层）
+                    pre = nums[i]; 
+                    path.pop();
+                }
+            }
+        };
+
+        subsetsWithDup2([1,2,2]);
+
 
 
 
