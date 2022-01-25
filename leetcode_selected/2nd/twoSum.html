@@ -1087,34 +1087,39 @@
         const partition = function (s) {
             let result = [];
             let path = [];
-            helper(s); 
+            helper(s);
             return result;
 
-            function helper(str) {       
-                if(str.length===0) {
+            function helper(str) {
+                if (str.length === 0) {
                     //先把所有可能的分法找出来
                     // 判断是否回文串
-                    if(path.every(isPanlindrom)) {
-                        result.push([...path]);
-                    }
-                    
+                    /* if(path.every(isPanlindrom)) {
+                         result.push([...path]);
+                     };
+                     */
+                    result.push([...path]);
                 };
-                
+
                 // 当前层要做的事情
                 for (let i = 1; i <= str.length; i++) { // 从后往前
-                    let cur = str.slice(0,i);
+                    let cur = str.slice(0, i);
+                    // 剪枝 如果当前切出来的不是回文串，直接continue
+                    if (isPanlindrom(cur) === false) {
+                        continue;
+                    }
                     path.push(cur);
                     helper(str.slice(i));
                     path.pop();
                 };
             };
 
-            function isPanlindrom (arr) {
+            function isPanlindrom(arr) {
                 let left = 0;
-                let right = arr.length -1;
+                let right = arr.length - 1;
 
-                while(left<=right) {
-                    if(arr[left] !== arr[right]) {
+                while (left <= right) {
+                    if (arr[left] !== arr[right]) {
                         return false;
                     };
                     left++;
@@ -1125,7 +1130,40 @@
             }
         };
 
-        partition('aab');
+        //partition('aab');
+
+        //93. 复原 IP 地址
+        // s="0" 时应该输出什么？
+        const restoreIpAddresses = function (s) {
+            if (s.length < 4 || s.length > 16) return [];
+            let result = [];
+            let path = [];
+            partition(s);
+            return result;
+
+            function partition(str) {
+                if (str.length === 0 && path.length === 4) {
+                    result.push(path.join('.'));
+                }
+
+                for (let i = 1; i <= str.length; i++) {
+                    let cur = str.slice(0, i);
+                    // 剪枝
+                    if (Number(cur) > 255 || hasZero(cur)) continue;
+                    path.push(cur);
+                    partition(str.slice(i));
+                    path.pop();
+                }
+            };
+            function hasZero(arr) {
+                if (arr[0] === '0' && arr.length > 1) {
+                    return true;
+                };
+                return false;
+            };
+        };
+
+        restoreIpAddresses("101023");
 
 
 
