@@ -943,8 +943,70 @@
 
         //combine(4,3);
 
+        //39 组合问题 I 
+        // 这题的区别是数字可以重复选择，返回的结果需要时unique的， 如[2,2,3] 和 [2,3,2] 就算是同一结果。
+        // 解题的trick是 递归函数需要什么参数呢，一个是当前的sum，另外一个就是下一层递归开始从数组的哪个元素开始。
+        // 下一层递归不是从startIndex开始，而是从i开始。它俩最开始是相等的，但是i在for循环中改变了值。
+        // 这样的结果就是每次新加元素，只能选当前以及后面的元素，不能再往前选了。这样就实现了结果去重unique.
+        const combinationSum = function (candidates, target) {
+            let result = [];
+            let path = [];
+            helper(0, 0);
+            return result;
 
-        //216 组合总和
+            function helper(startIdx, sum) {
+                if (sum > target) return;
+                if (sum === target) {
+                    result.push([...path]);
+                    return;
+                };
+
+                for (let i = startIdx; i < candidates.length; i++) {
+                    let num = candidates[i];
+                    sum += num;
+                    path.push(num);
+                    helper(i, sum);
+                    path.pop();
+                    sum -= num;
+                };
+            };
+
+        };
+
+        // 40 组合问题 II 
+        // 这道题candidates = [10,1,2,7,6,1,5] 每个元素只能用1次，但是数组中有重复数字；要求结果unique.
+        // 如下解法没办法做到结果unique.
+        const combinationSum2 = function (candidates, target) {
+            candidates.sort((a, b) => a - b);
+            let result = [];
+            let path = [];
+            helper(0, 0);
+            return result;
+
+            function helper(sum, startIdx) {
+                if (sum > target) return;
+                if (sum === target) {
+                    result.push([...path]);
+                    return;
+                };
+
+                for (let i = startIdx; i < candidates.length; i++) {
+                    let cur = candidates[i];
+                    path.push(cur);
+                    sum += cur;
+                    helper(sum, i + 1);
+                    path.pop();
+                    sum -= cur;
+                    while (candidates[i] === candidates[i + 1]) {
+                        i++;
+                    }
+                };
+            }
+
+
+        };
+
+        //216 组合总和 III
         // 剪枝思路，当当前的sum已经大于n了，就没有必要再把接下来的递归调用走下去。
         const combinationSum3 = function (k, n) {
             let result = [];
@@ -974,6 +1036,14 @@
             };
         };
 
+        /*
+        摘自代码随想录。
+        本题还需要startIndex来控制for循环的起始位置，对于组合问题，什么时候需要startIndex呢？
+        我举过例子，如果是一个集合来求组合的话，就需要startIndex，例如：77.组合 (opens new window)，216.组合总和III (opens new window)。
+        如果是多个集合取组合，各个集合之间相互不影响，那么就不用startIndex，例如：17.电话号码的字母组合
+        
+        */
+
 
         //17. 电话号码的字母组合
         const numMap = new Map();
@@ -986,6 +1056,8 @@
         numMap.set('8', ['t', 'u', 'v']);
         numMap.set('9', ['w', 'x', 'y', 'z']);
 
+        // 我一开始想到了有两个index，一个是指向digits的，一个是指向数字对应的字母array。
+        // 字母array的index不需要传到递归函数的参数里，是作为横向for循环的一部分。
         const letterCombinations = function (digits) {
             const len = digits.length;
             const result = [];
@@ -998,9 +1070,9 @@
                 if (path.length === len) {
                     result.push([...path].join(''));
                     return;
-                }
-              
-                let cur = numMap.get(digits[dIndex]);
+                };
+
+                let cur = numMap.get(digits[dIndex]);// digits是string 把map key改成string
                 for (const letter of cur) {     // 用for... of 省略掉另外一个index
                     path.push(letter);
                     helper(dIndex + 1);
@@ -1009,7 +1081,51 @@
             }
         };
 
-        letterCombinations('23');
+        //letterCombinations('23');
+
+        //131 分割字符串
+        const partition = function (s) {
+            let result = [];
+            let path = [];
+            helper(s); 
+            return result;
+
+            function helper(str) {       
+                if(str.length===0) {
+                    //先把所有可能的分法找出来
+                    // 判断是否回文串
+                    if(path.every(isPanlindrom)) {
+                        result.push([...path]);
+                    }
+                    
+                };
+                
+                // 当前层要做的事情
+                for (let i = 1; i <= str.length; i++) { // 从后往前
+                    let cur = str.slice(0,i);
+                    path.push(cur);
+                    helper(str.slice(i));
+                    path.pop();
+                };
+            };
+
+            function isPanlindrom (arr) {
+                let left = 0;
+                let right = arr.length -1;
+
+                while(left<=right) {
+                    if(arr[left] !== arr[right]) {
+                        return false;
+                    };
+                    left++;
+                    right--;
+                };
+
+                return true;
+            }
+        };
+
+        partition('aab');
 
 
 
