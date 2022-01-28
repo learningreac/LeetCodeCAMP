@@ -1229,7 +1229,7 @@
                     combineNum(i + 1);
                     path.pop();
                     if (nums[i + 1] !== undefined) {
-                        while (nums[i + 1] === nums[i]) {
+                        while (nums[i + 1] === nums[i]) { // num[i] === nums[i-1] 位置移到刚进for那里
                             i++;
                         }
                     }
@@ -1254,13 +1254,50 @@
                     combineNum(i + 1);
                     // PRE 的位置很重要，写在递归之前的话，就会把新的Pre 值传下去，就变成了纵向去重（树枝）
                     // 写在递归之后，实现了横向去重（树层）
-                    pre = nums[i]; 
+                    pre = nums[i];
                     path.pop();
                 }
             }
         };
 
-        subsetsWithDup2([1,2,2]);
+        // subsetsWithDup2([1,2,2]);
+
+        //491. 递增子序列  491. Increasing Subsequences;
+        // 同一层 不能选重复的数字
+        // 同一枝 保证递增
+                        // 参考 代码随想录 用used 数组 表示该数有没有被用过。
+                        // used[i-1] = false 表示同一树层用过
+                        // used[i-1] = true 表示同一树枝用过。
+        // nums 数组不能排序，所以之前的去重方式不适用
+        // 我想到的是用set去重。这边tricky 的部分在于，set 要定义在递归函数里面，这样每一层一个set； 
+        const findSubsequences = function (nums) {
+            let result = [];
+            let path = [];
+            let sameBranchPre = -111;
+            seQuence(0, sameBranchPre);
+            return result;
+
+            function seQuence(startIdx, pre) {
+                if (path.length >= 2) {
+                    result.push([...path]);
+                };
+
+                let set = new Set();
+
+                for (let i = startIdx; i < nums.length; i++) {
+                    let cur = nums[i];
+                    if (pre > cur || set.has(cur)) continue;  
+                    pre = cur;
+                    path.push(cur);
+                    set.add(cur);
+                    seQuence(i + 1, pre);   
+                    path.pop();
+                    pre = path[path.length-1]; // reset pre;  
+                }
+            }
+        };
+
+        findSubsequences([4,4,3,2,1]);
 
 
 
