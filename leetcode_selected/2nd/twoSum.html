@@ -1265,9 +1265,9 @@
         //491. 递增子序列  491. Increasing Subsequences;
         // 同一层 不能选重复的数字
         // 同一枝 保证递增
-                        // 参考 代码随想录 用used 数组 表示该数有没有被用过。
-                        // used[i-1] = false 表示同一树层用过
-                        // used[i-1] = true 表示同一树枝用过。
+        // 参考 代码随想录 用used 数组 表示该数有没有被用过。
+        // used[i-1] = false 表示同一树层用过
+        // used[i-1] = true 表示同一树枝用过。
         // nums 数组不能排序，所以之前的去重方式不适用
         // 我想到的是用set去重。这边tricky 的部分在于，set 要定义在递归函数里面，这样每一层一个set； 
         const findSubsequences = function (nums) {
@@ -1282,24 +1282,150 @@
                     result.push([...path]);
                 };
 
-                let set = new Set();
+                let set = new Set(); // same level 
 
                 for (let i = startIdx; i < nums.length; i++) {
                     let cur = nums[i];
-                    if (pre > cur || set.has(cur)) continue;  
+                    if (pre > cur || set.has(cur)) continue;
                     pre = cur;
                     path.push(cur);
                     set.add(cur);
-                    seQuence(i + 1, pre);   
+                    seQuence(i + 1, pre);    // pre pass to same branch 
                     path.pop();
-                    pre = path[path.length-1]; // reset pre;  
+                    pre = path[path.length - 1]; // reset pre;  
                 }
             }
         };
 
-        findSubsequences([4,4,3,2,1]);
+        // findSubsequences([4,4,3,2,1]);
+
+        //46. Permutations
+        const permute = (nums) => {
+            let result = [];
+            let usedMap = {};
+
+            function backtrack(path) {
+                if (path.length === nums.length) {
+                    result.push([...path]);
+                }
+
+                for (let i = 0; i < nums.length; i++) {
+                    if (usedMap[i] === true) continue;
+                    path.push(nums[i]);
+                    usedMap[i] = true;
+                    backtrack(path);
+                    path.pop();
+                    usedMap[i] = false;
+                }
+            };
+
+            backtrack([]);
+            return result;
+        };
+
+        //47. Permutations II   
+        // 46 和 47 的区别： 47 中数组可能包含重复元素
+        // 思路: 46 用used harsh map 记录该数字是否用过, map Key是数字； 47 将idx作为Key 存进去
+        // 上面的思路行不通，记录Index 跟记录实际数字 是一个效果。
+        // 等于优化了46的代码，提升了时间。
+
+        const permuteUnique = function (nums) {
+            // sort !!!!
+            nums.sort();
+            let path = [];
+            let result = [];
+
+            function backtrack(used) {
+                if (path.length === nums.length) {
+                    result.push([...path]);
+                    return;
+                };
+
+                for (let i = 0; i < nums.length; i++) {
+                    if (i > 0 && used[i - 1] === false && nums[i] === nums[i - 1]) continue;
+                    if (!used[i]) {
+                        path.push(nums[i]);
+                        used[i] = true;
+                        backtrack(used);
+                        path.pop();
+                        used[i] = false;
+                    }
+
+                }
+            };
+
+            backtrack([]);
+            return result;
+        };
+
+        // permuteUnique([1, 1, 2]); //[[1,1,2],[1,2,1],[2,1,1]]
+
+        //排列和组合的差异 组合通过控制startIdx来缩减每次for循环的范围，排列的话每次都遍历每个元素但通过used数组来略过使用过的元素。
+
+        //51. N 皇后
+        const solveNQueens = function (n) {
+            // let grid = Array(n).fill(0).map(item => Array(n).fill('.')); // n*n grid fill with . dot
+            let result = [];
+            let path = [];
+
+            function backtrack(level, used) {
+                if (level > n) return;
+                if (level === n) {
+                    result.push([...path])
+                };
+                let crossY;
+                if (path.length > 0) {
+                    crossY = isCross(path, level);  // variable scope can not pass curly braces.
+                };
+
+                for (let i = 0; i < n; i++) {
+                    // 该列用过
+                    if (used[i] === true) {
+                        continue;
+                    };
+                    // 对角线  理解错误 要求【整个棋盘】统一斜线只有一个 
+                    if (crossY !== undefined && crossY.includes(i)) {
+                        continue;
+                    }
+                    used[i] = true;
+                    path.push([level, i]);
+                    backtrack(level + 1, used, i);
+                    path.pop();
+                    used[i] = false;
+                }
+            };
+
+            function isCross(preArr, curX) {   //preArr is path here
+                let curY = [];
+                for (let i = 0; i < preArr.length; i++) {
+                    let y = curX - preArr[i][0];
+                    curY.push(preArr[i][1] + y);
+                    curY.push(preArr[i][1] - y);
+                };
+                return curY;
+            }
+
+            backtrack(0, []);
+
+            // convert result array to the required answer format
+            let row = new Array(4).fill('.');
+            let final = [];
+            let cur = [];
+            result.map(subArr => {
+                subArr.map(idx => {
+                    let copyRow = [...row];
+                    copyRow[idx[1]] = 'Q';
+                    cur.push(copyRow.join(''));
+                });
+                final.push([...cur]);
+                cur = [];
+            }
+            );
+            return final;
+        };
 
 
+        solveNQueens(4);
 
 
     </script>
