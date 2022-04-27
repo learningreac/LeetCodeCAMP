@@ -1,3 +1,4 @@
 # LeetCodeCAMP
 
-### my first repo for leecode camp
+- Part of my leetcode problems solutions.
+
